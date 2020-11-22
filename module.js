@@ -30,21 +30,21 @@ const TokenFactions = (() => {
   class TokenFactions {
     static onInit() {
       game.settings.register(moduleKey, 'color-from', {
-        name: game.i18n.localize(`${moduleKey}.options.color-from.name`),
+        name: 'Generate token faction color',
         scope: 'world',
         config: true,
         default: 'token-disposition',
         type: String,
         choices: {
-          'token-disposition': game.i18n.localize(`${moduleKey}.options.color-from.choices.token-disposition`),
-          'actor-folder-color': game.i18n.localize(`${moduleKey}.options.color-from.choices.actor-folder-color`),
-          'custom-disposition': game.i18n.localize(`${moduleKey}.options.color-from.choices.custom-disposition`),
+          'token-disposition': 'From the token\'s disposition',
+          'actor-folder-color': 'From the folder color the actor belongs to',
+          'custom-disposition': 'From a customized set of colors',
         },
       });
 
       dispositions.forEach((disposition) => {
         game.settings.register(moduleKey, `custom-${disposition}-color`, {
-          name: game.i18n.localize(`${moduleKey}.options.custom-${disposition}-color.name`),
+          name: `Custom ${disposition.replace(/-/g, ' ').replace(/npc/g, 'NPC')} color`,
           scope: 'world',
           config: true,
           type: String,
@@ -109,12 +109,11 @@ const TokenFactions = (() => {
     static onRenderTokenConfig(sheet, html) {
       const token = sheet.object;
       const flags = token.data.flags[moduleKey];
-      const label = game.i18n.localize(`${moduleKey}.options.token-frame-overlay.name`);
       const checked = (flags && flags['draw-frame']) ? ' checked="checked"' : '';
 
       html.find('input[name="mirrorY"]').parent().after(`\
         <div class="form-group">
-          <label>${label}</label>
+          <label>Overlay A Faction-Based Frame</label>
           <input type="checkbox" name="flags.${moduleKey}.draw-frame" data-dtype="Boolean"${checked}>
         </div>`);
     }
