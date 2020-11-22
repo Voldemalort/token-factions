@@ -109,11 +109,12 @@ const TokenFactions = (() => {
     static onRenderTokenConfig(sheet, html) {
       const token = sheet.object;
       const flags = token.data.flags[moduleKey];
+      const label = 'token-factions.options.token-frame-overlay.name';
       const checked = (flags && flags['draw-frame']) ? ' checked="checked"' : '';
 
       html.find('input[name="mirrorY"]').parent().after(`\
         <div class="form-group">
-          <label>token-factions.options.token-frame-overlay.name</label>
+          <label>${label}</label>
           <input type="checkbox" name="flags.${moduleKey}.draw-frame" data-dtype="Boolean"${checked}>
         </div>`);
     }
