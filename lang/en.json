@@ -1,11 +1,29 @@
 {
-  "token-factions.options.color-from.name": "Generate token base and frame color",
-  "token-factions.options.color-from.choices.token-disposition": "From the token's disposition",
-  "token-factions.options.color-from.choices.actor-folder-color": "From the folder color the actor belongs to",
-  "token-factions.options.color-from.choices.custom-disposition": "From a customized set of colors",
-  "token-factions.options.custom-party-member-color.name": "Custom party member color",
-  "token-factions.options.custom-friendly-npc-color.name": "Custom friendly NPC color",
-  "token-factions.options.custom-neutral-npc-color.name": "Custom neutral NPC color",
-  "token-factions.options.custom-hostile-npc-color.name": "Custom hostile NPC color",
-  "token-factions.options.token-frame-overlay.name": "Overlay A Faction-Based Frame"
+  "token-factions" : {
+    "options" : {
+      "color-from": {
+        "name": "Generate token faction color",
+        "choices": {
+          "token-disposition": "From the token's disposition",
+          "actor-folder-color": "From the folder color the actor belongs to",
+          "custom-disposition": "From a customized set of colors"
+        }
+      },
+      "custom-party-member-color": {
+        "name": "Custom party member color"
+      },
+      "custom-friendly-npc-color": {
+        "name": "Custom friendly NPC color"
+      },
+      "custom-neutral-npc-color": {
+        "name": "Custom neutral NPC color"
+      },
+      "custom-hostile-npc-color": {
+        "name": "Custom hostile NPC color"
+      },
+      "token-frame-overlay": {
+        "name": "Overlay A Faction-Based Frame"
+      }
+    }
+  }
 }

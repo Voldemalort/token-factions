@@ -30,21 +30,21 @@ const TokenFactions = (() => {
   class TokenFactions {
     static onInit() {
       game.settings.register(moduleKey, 'color-from', {
-        name: `${moduleKey}.options.color-from.name`,
+        name: game.i18n.localize(`${moduleKey}.options.color-from.name`),
         scope: 'world',
         config: true,
         default: 'token-disposition',
         type: String,
         choices: {
-          'token-disposition': `${moduleKey}.options.color-from.choices.token-disposition`,
-          'actor-folder-color': `${moduleKey}.options.color-from.choices.actor-folder-color`,
-          'custom-disposition': `${moduleKey}.options.color-from.choices.custom-disposition`,
+          'token-disposition': game.i18n.localize(`${moduleKey}.options.color-from.choices.token-disposition`),
+          'actor-folder-color': game.i18n.localize(`${moduleKey}.options.color-from.choices.actor-folder-color`),
+          'custom-disposition': game.i18n.localize(`${moduleKey}.options.color-from.choices.custom-disposition`),
         },
       });
 
       dispositions.forEach((disposition) => {
         game.settings.register(moduleKey, `custom-${disposition}-color`, {
-          name: `${moduleKey}.options.custom-${disposition}-color.name`,
+          name: game.i18n.localize(`${moduleKey}.options.custom-${disposition}-color.name`),
           scope: 'world',
           config: true,
           type: String,
@@ -109,7 +109,7 @@ const TokenFactions = (() => {
     static onRenderTokenConfig(sheet, html) {
       const token = sheet.object;
       const flags = token.data.flags[moduleKey];
-      const label = 'token-factions.options.token-frame-overlay.name';
+      const label = game.i18n.localize(`${moduleKey}.options.token-frame-overlay.name`);
       const checked = (flags && flags['draw-frame']) ? ' checked="checked"' : '';
 
       html.find('input[name="mirrorY"]').parent().after(`\
