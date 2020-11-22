@@ -1,0 +1,19 @@
+{
+  "name": "token-factions",
+  "title": "Token Factions",
+  "description": "Generate token bases based on token disposition or actor folder color.",
+  "author": "Voldemalort",
+  "version": "0.1.0",
+  "minimumCoreVersion": "0.7.7",
+  "compatibleCoreVersion": "0.7.7",
+  "scripts": [
+    "module.js"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ]
+}
