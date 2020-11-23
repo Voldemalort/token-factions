@@ -1,5 +1,5 @@
 const TokenFactions = (() => {
-  const moduleKey = 'faction-based-tokens';
+  const moduleKey = 'token-factions';
 
   const defaultColors = {
     'party-member': '#33bc4e',
