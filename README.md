@@ -31,12 +31,12 @@ Round tokens require an additional frame to be generated to cover the built-in f
 1. Open the actor and click prototype token in the upper right, or double-right-click a tokens
 2. open the Image tab and check the Overlay A Faction-Based Frame option
 
-### Frame Enabled
-
-![alt text](https://github.com/Voldemalort/token-factions/blob/master/frame-enabled.png?raw=true)
-
 ### Frame Disabled
 
 ![alt text](https://github.com/Voldemalort/token-factions/blob/master/frame-disabled.png?raw=true)
+
+### Frame Enabled
+
+![alt text](https://github.com/Voldemalort/token-factions/blob/master/frame-enabled.png?raw=true)
 
 ## More Features Coming Soon!
