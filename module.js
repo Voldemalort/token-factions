@@ -70,19 +70,38 @@ const TokenFactions = (() => {
         const colorInput = document.createElement('input');
 
         colorInput.setAttribute('type', 'color');
-        colorInput.setAttribute('value', html.find(`input[name='${moduleKey}.custom-${disposition}-color']`).val());
+        colorInput.setAttribute('value', html.find(`input[name="${moduleKey}.custom-${disposition}-color"]`).val());
         colorInput.setAttribute('data-edit', `${moduleKey}.custom-${disposition}-color`);
-        html.find(`input[name='${moduleKey}.custom-${disposition}-color']`).after(colorInput);
+        html.find(`input[name="${moduleKey}.custom-${disposition}-color"]`).after(colorInput);
 
         $(colorInput).on('change', sheet._onChangeInput.bind(sheet));
       });
 
+      html.find(`input[name="${moduleKey}.custom-hostile-npc-color"]`).parent().parent().after(`\
+        <div class="form-group submenu">
+          <label></label>
+          <button name="${moduleKey}-colors-reset" type="button">
+            <i class="fas fa-undo"></i>
+            <label>Reset Colors</label>
+          </button>
+        </div>`);
+
+      const resetColors = () => {
+        dispositions.forEach((disposition) => {
+          const $input = html.find(`input[name="${moduleKey}.custom-${disposition}-color"]`);
+          const $color = $input.next();
+
+          $input.val(defaultColors[disposition]);
+          $color.val($input.val());
+        });
+      };
+
       const update = () => {
-        const colorFrom = html.find(`select[name='${moduleKey}.color-from']`).val();
+        const colorFrom = html.find(`select[name="${moduleKey}.color-from"]`).val();
         const customColorsEnabled = (colorFrom === 'custom-disposition');
 
         dispositions.forEach((disposition) => {
-          const $input = html.find(`input[name='${moduleKey}.custom-${disposition}-color']`);
+          const $input = html.find(`input[name="${moduleKey}.custom-${disposition}-color"]`);
           const $color = $input.next();
           const $fieldGroup = $input.parent().parent();
 
@@ -90,20 +109,28 @@ const TokenFactions = (() => {
           $color.prop('disabled', !customColorsEnabled);
 
           if (!customColorsEnabled) {
-            $input.val(defaultColors[disposition]);
             $fieldGroup.hide();
           } else {
             $fieldGroup.show();
           }
 
+          $input.val($input.val() || defaultColors[disposition]);
           $color.val($input.val());
         });
+
+        const $resetButton = html.find(`button[name="${moduleKey}-colors-reset"]`);
+
+        if (!customColorsEnabled) {
+          $resetButton.parent().hide();
+        } else {
+          $resetButton.parent().show();
+        }
       };
 
       update();
 
       html.find(`select[name="${moduleKey}.color-from"]`).change(update);
-      html.find('button[name="reset"]').click(update);
+      html.find(`button[name="${moduleKey}-colors-reset"]`).click(resetColors);
     }
 
     static onRenderTokenConfig(sheet, html) {
