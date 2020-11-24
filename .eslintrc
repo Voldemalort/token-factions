@@ -6,6 +6,7 @@ globals: {
   document: true,
   game: true,
   Hooks: true,
+  loadTexture: true,
   PIXI: true,
   Token: true,
 }

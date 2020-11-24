@@ -10,19 +10,19 @@ This module will allow you to assign tokens to factions by leveraging the built-
 
 ### Module Disabled
 
-![alt text](https://github.com/Voldemalort/token-factions/blob/master/disabled.png?raw=true)
+![alt text](https://github.com/Voldemalort/token-factions/blob/master/docs/disabled.png?raw=true)
 
 ### Module Enabled - Token Disposition
 
-![alt text](https://github.com/Voldemalort/token-factions/blob/master/enabled-disposition.png?raw=true)
+![alt text](https://github.com/Voldemalort/token-factions/blob/master/docs/enabled-disposition.png?raw=true)
 
 ### Module Enabled - Actor Folder Color
 
-![alt text](https://github.com/Voldemalort/token-factions/blob/master/enabled-folder.png?raw=true)
+![alt text](https://github.com/Voldemalort/token-factions/blob/master/docs/enabled-folder.png?raw=true)
 
 ### Module Enabled - Custom Token Disposition Colors
 
-![alt text](https://github.com/Voldemalort/token-factions/blob/master/enabled-custom.png?raw=true)
+![alt text](https://github.com/Voldemalort/token-factions/blob/master/docs/enabled-custom.png?raw=true)
 
 ## Round Tokens
 
@@ -33,10 +33,10 @@ Round tokens require an additional frame to be generated to cover the built-in f
 
 ### Frame Disabled
 
-![alt text](https://github.com/Voldemalort/token-factions/blob/master/frame-disabled.png?raw=true)
+![alt text](https://github.com/Voldemalort/token-factions/blob/master/docs/frame-disabled.png?raw=true)
 
 ### Frame Enabled
 
-![alt text](https://github.com/Voldemalort/token-factions/blob/master/frame-enabled.png?raw=true)
+![alt text](https://github.com/Voldemalort/token-factions/blob/master/docs/frame-enabled.png?raw=true)
 
 ## More Features Coming Soon!
