@@ -30,21 +30,29 @@ const TokenFactions = (() => {
   class TokenFactions {
     static onInit() {
       game.settings.register(moduleKey, 'color-from', {
-        name: 'Generate token faction color',
+        name: 'Generate Token Faction Color From',
         scope: 'world',
         config: true,
         default: 'token-disposition',
         type: String,
         choices: {
-          'token-disposition': 'From the token\'s disposition',
-          'actor-folder-color': 'From the folder color the actor belongs to',
-          'custom-disposition': 'From a customized set of colors',
+          'token-disposition': 'Default: A Token\'s Disposition',
+          'actor-folder-color': 'An Actor\'s Folder Color',
+          'custom-disposition': 'A Cusom Color Set For Token Disposition',
         },
+      });
+
+      game.settings.register(moduleKey, 'draw-frames-by-default', {
+        name: 'Draw Token Frames By Default?',
+        hint: 'Token frames (rings) are layered above token graphics. Enable this if you primarily use round tokens. Disable it if you primarily use irregularly-shaped tokens.',
+        config: true,
+        default: true,
+        type: Boolean,
       });
 
       dispositions.forEach((disposition) => {
         game.settings.register(moduleKey, `custom-${disposition}-color`, {
-          name: `Custom ${disposition.replace(/-/g, ' ').replace(/npc/g, 'NPC')} color`,
+          name: `Custom ${disposition.charAt(0).toUpperCase()}${disposition.slice(1).replace(/-/g, ' ').replace(/npc/g, 'NPC').replace(/member/g, 'Member')} Color`,
           scope: 'world',
           config: true,
           type: String,
@@ -136,7 +144,10 @@ const TokenFactions = (() => {
     static onRenderTokenConfig(sheet, html) {
       const token = sheet.object;
       const flags = token.data.flags[moduleKey];
-      const checked = (flags && flags['draw-frame']) ? ' checked="checked"' : '';
+      const drawFramesByDefault = game.settings.get(moduleKey, 'draw-frames-by-default');
+      const drawFrameOverride = flags ? flags['draw-frame'] : undefined;
+      const drawFrame = drawFrameOverride === undefined ? drawFramesByDefault : drawFrameOverride;
+      const checked = drawFrame ? ' checked="checked"' : '';
 
       html.find('input[name="mirrorY"]').parent().after(`\
         <div class="form-group">
@@ -180,7 +191,9 @@ const TokenFactions = (() => {
         }
 
         const flags = token.data.flags[moduleKey];
-        const drawFrame = flags ? flags['draw-frame'] : false;
+        const drawFramesByDefault = game.settings.get(moduleKey, 'draw-frames-by-default');
+        const drawFrameOverride = flags ? flags['draw-frame'] : undefined;
+        const drawFrame = drawFrameOverride === undefined ? drawFramesByDefault : drawFrameOverride;
         const colorFrom = game.settings.get(moduleKey, 'color-from');
 
         let color;
