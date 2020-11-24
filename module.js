@@ -200,7 +200,7 @@ const TokenFactions = (() => {
     }
 
     static updateTokenBase(token) {
-      if ((token instanceof Token) && token.icon) {
+      if ((token instanceof Token) && token.icon && bevelTexture.baseTexture) {
         if (token.factionBase) {
           token.factionBase.destroy();
         }
@@ -261,8 +261,8 @@ const TokenFactions = (() => {
         const bg = new PIXI.Sprite(bevelGradient);
 
         bg.anchor.set(0.0, 0.0);
-        bg.width = canvas.grid.grid.w;
-        bg.height = canvas.grid.grid.h;
+        bg.width = token.w;
+        bg.height = token.h;
         bg.tint = color;
 
         return bg;
