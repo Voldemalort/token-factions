@@ -103,6 +103,10 @@ const TokenFactions = (() => {
       TokenFactions.updateTokens();
     }
 
+    static onSightRefresh() {
+      TokenFactions.updateTokens();
+    }
+
     static onRenderSettingsConfig(sheet, html) {
       dispositions.forEach((disposition) => {
         const colorInput = document.createElement('input');
@@ -182,8 +186,13 @@ const TokenFactions = (() => {
         </div>`);
     }
 
-    static updateTokens(tokenData) {
+    static async updateTokens(tokenData) {
       let tokens = canvas.tokens.placeables;
+
+      if (!bevelGradient || !bevelGradient.baseTexture) {
+        bevelGradient = await loadTexture('modules/token-factions/assets/bevel-gradient.jpg');
+        bevelTexture = await loadTexture('modules/token-factions/assets/bevel-texture.png');
+      }
 
       if (tokenData && tokenData._id) {
         const token = canvas.tokens.placeables.find(
@@ -252,12 +261,12 @@ const TokenFactions = (() => {
         .drawCircle(token.w / 2, token.h / 2, token.w / 2);
     }
 
-    static async drawFrame({ color, container, token }) {
+    static drawFrame({ color, container, token }) {
       const frameWidth = canvas.grid.grid.w * (game.settings.get(module, 'frame-width') / 100);
       const frameStyle = game.settings.get(module, 'frame-style');
       const frame = container.addChild(new PIXI.Graphics());
 
-      async function drawGradient() {
+      function drawGradient() {
         const bg = new PIXI.Sprite(bevelGradient);
 
         bg.anchor.set(0.0, 0.0);
@@ -268,7 +277,7 @@ const TokenFactions = (() => {
         return bg;
       }
 
-      async function drawTexture() {
+      function drawTexture() {
         const bg = new PIXI.Sprite(bevelTexture);
 
         bg.anchor.set(0.0, 0.0);
@@ -284,9 +293,9 @@ const TokenFactions = (() => {
           .lineStyle(frameWidth, color, 1.0, 0)
           .drawCircle(token.w / 2, token.h / 2, token.w / 2);
       } else { // frameStyle === 'bevelled'
-        const outerRing = await drawGradient();
-        const innerRing = await drawGradient();
-        const ringTexture = await drawTexture();
+        const outerRing = drawGradient();
+        const innerRing = drawGradient();
+        const ringTexture = drawTexture();
         const outerRingMask = new PIXI.Graphics();
         const innerRingMask = new PIXI.Graphics();
         const ringTextureMask = new PIXI.Graphics();
