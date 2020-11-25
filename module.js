@@ -209,7 +209,7 @@ const TokenFactions = (() => {
     }
 
     static updateTokenBase(token) {
-      if ((token instanceof Token) && token.icon && bevelTexture.baseTexture) {
+      if ((token instanceof Token) && token.icon && bevelTexture && bevelTexture.baseTexture) {
         if (token.factionBase) {
           token.factionBase.destroy();
         }
