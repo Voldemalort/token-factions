@@ -74,9 +74,35 @@ const TokenFactions = (() => {
         default: 7.5,
         type: Number,
         range: {
-          min: 2,
+          min: 0,
           max: 10,
           step: 0.5,
+        },
+      });
+
+      game.settings.register(module, 'base-opacity', {
+        name: 'Base Opacity',
+        scope: 'world',
+        config: true,
+        default: 1,
+        type: Number,
+        range: {
+          min: 0,
+          max: 1,
+          step: 0.05,
+        },
+      });
+
+      game.settings.register(module, 'frame-opacity', {
+        name: 'Frame Opacity',
+        scope: 'world',
+        config: true,
+        default: 1,
+        type: Number,
+        range: {
+          min: 0,
+          max: 1,
+          step: 0.05,
         },
       });
 
@@ -210,26 +236,28 @@ const TokenFactions = (() => {
 
     static updateTokenBase(token) {
       if ((token instanceof Token) && token.icon && bevelTexture && bevelTexture.baseTexture) {
-        if (token.factionBase) {
-          token.factionBase.destroy();
-        }
-
-        token.factionBase = token.addChildAt(new PIXI.Container(), 0);
-
-        if (token.factionFrame) {
-          token.factionFrame.destroy();
-        }
-
-        token.factionFrame = token.addChildAt(
-          new PIXI.Container(), token.getChildIndex(token.icon) + 1,
-        );
-
         const flags = token.data.flags[module];
         const drawFramesByDefault = game.settings.get(module, 'draw-frames-by-default');
         const drawFrameOverride = flags ? flags['draw-frame'] : undefined;
         const drawFrame = drawFrameOverride === undefined ? drawFramesByDefault : drawFrameOverride;
         const colorFrom = game.settings.get(module, 'color-from');
         let color;
+
+        if (token.factionBase) {
+          token.factionBase.destroy();
+        }
+
+        token.factionBase = token.addChildAt(
+          new PIXI.Container(), token.getChildIndex(token.icon) - 1,
+        );
+
+        if (token.factionFrame) {
+          token.factionFrame.destroy();
+        }
+
+        token.factionFrame = token.addChildAt(
+          new PIXI.Container(), token.getChildIndex(token.icon) + (drawFrame ? 1 : -1),
+        );
 
         if (colorFrom === 'token-disposition') {
           color = TokenFactions.getDispositionColor(token);
@@ -252,19 +280,26 @@ const TokenFactions = (() => {
 
     static drawBase({ color, container, token }) {
       const base = container.addChild(new PIXI.Graphics());
+      const frameWidth = canvas.grid.grid.w * (game.settings.get(module, 'frame-width') / 100);
+      const baseOpacity = game.settings.get(module, 'base-opacity');
+
+      base.alpha = baseOpacity;
 
       base
         .lineStyle(0)
         .beginFill(color, 1.0)
-        .drawCircle(token.w / 2, token.h / 2, token.w / 2)
-        .beginFill(0x000000, 0.25)
-        .drawCircle(token.w / 2, token.h / 2, token.w / 2);
+        .drawCircle(token.w / 2, token.h / 2, (token.w / 2) - frameWidth)
+        .beginFill(0x000000, 0.25 * baseOpacity)
+        .drawCircle(token.w / 2, token.h / 2, (token.w / 2) - frameWidth);
     }
 
     static drawFrame({ color, container, token }) {
       const frameWidth = canvas.grid.grid.w * (game.settings.get(module, 'frame-width') / 100);
       const frameStyle = game.settings.get(module, 'frame-style');
       const frame = container.addChild(new PIXI.Graphics());
+      const frameOpacity = game.settings.get(module, 'frame-opacity');
+
+      frame.alpha = frameOpacity;
 
       function drawGradient() {
         const bg = new PIXI.Sprite(bevelGradient);
@@ -288,47 +323,49 @@ const TokenFactions = (() => {
         return bg;
       }
 
-      if (frameStyle === 'flat') {
-        frame
-          .lineStyle(frameWidth, color, 1.0, 0)
-          .drawCircle(token.w / 2, token.h / 2, token.w / 2);
-      } else { // frameStyle === 'bevelled'
-        const outerRing = drawGradient();
-        const innerRing = drawGradient();
-        const ringTexture = drawTexture();
-        const outerRingMask = new PIXI.Graphics();
-        const innerRingMask = new PIXI.Graphics();
-        const ringTextureMask = new PIXI.Graphics();
+      if (frameWidth) {
+        if (frameStyle === 'flat') {
+          frame
+            .lineStyle(frameWidth, color, 1.0, 0)
+            .drawCircle(token.w / 2, token.h / 2, token.w / 2);
+        } else { // frameStyle === 'bevelled'
+          const outerRing = drawGradient();
+          const innerRing = drawGradient();
+          const ringTexture = drawTexture();
+          const outerRingMask = new PIXI.Graphics();
+          const innerRingMask = new PIXI.Graphics();
+          const ringTextureMask = new PIXI.Graphics();
 
-        innerRing.pivot.set(1000.0, 1000.0);
-        innerRing.angle = 180;
+          innerRing.pivot.set(1000.0, 1000.0);
+          innerRing.angle = 180;
 
-        outerRingMask
-          .lineStyle(frameWidth / 2, 0xFFFFFF, 1.0, 0)
-          .beginFill(0xFFFFFF, 0.0)
-          .drawCircle(token.w / 2, token.h / 2, token.w / 2);
+          outerRingMask
+            .lineStyle(frameWidth / 2, 0xFFFFFF, 1.0, 0)
+            .beginFill(0xFFFFFF, 0.0)
+            .drawCircle(token.w / 2, token.h / 2, token.w / 2);
 
-        innerRingMask
-          .lineStyle(frameWidth / 2, 0xFFFFFF, 1.0, 0)
-          .beginFill(0xFFFFFF, 0.0)
-          .drawCircle(token.w / 2, token.h / 2, token.w / 2 - (frameWidth / 2));
+          innerRingMask
+            .lineStyle(frameWidth / 2, 0xFFFFFF, 1.0, 0)
+            .beginFill(0xFFFFFF, 0.0)
+            .drawCircle(token.w / 2, token.h / 2, token.w / 2 - (frameWidth / 2));
 
-        ringTextureMask
-          .lineStyle(frameWidth, 0xFFFFFF, 1.0, 0)
-          .beginFill(0xFFFFFF, 0.0)
-          .drawCircle(token.w / 2, token.h / 2, token.w / 2);
+          ringTextureMask
+            .lineStyle(frameWidth, 0xFFFFFF, 1.0, 0)
+            .beginFill(0xFFFFFF, 0.0)
+            .drawCircle(token.w / 2, token.h / 2, token.w / 2);
 
-        container.addChild(outerRing);
-        container.addChild(outerRingMask);
-        outerRing.mask = outerRingMask;
+          container.addChild(outerRing);
+          container.addChild(outerRingMask);
+          outerRing.mask = outerRingMask;
 
-        container.addChild(innerRing);
-        container.addChild(innerRingMask);
-        innerRing.mask = innerRingMask;
+          container.addChild(innerRing);
+          container.addChild(innerRingMask);
+          innerRing.mask = innerRingMask;
 
-        container.addChild(ringTexture);
-        container.addChild(ringTextureMask);
-        ringTexture.mask = ringTextureMask;
+          container.addChild(ringTexture);
+          container.addChild(ringTextureMask);
+          ringTexture.mask = ringTextureMask;
+        }
       }
     }
 
