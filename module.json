@@ -12,6 +12,6 @@
   "languages": [],
   "url": "https://github.com/Voldemalort/token-factions",
   "manifest": "https://raw.githubusercontent.com/Voldemalort/token-factions/master/module.json",
-  "download": "https://github.com/Voldemalort/token-factions/archive/v0.1.10.zip",
+  "download": "https://github.com/Voldemalort/token-factions/releases/download/v0.1.10/token-factions-0.1.10.zip",
   "readme": "https://raw.githubusercontent.com/Voldemalort/token-factions/master/README.md"
 }
