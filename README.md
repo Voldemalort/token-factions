@@ -1,5 +1,7 @@
 ![alt text](https://github.com/Voldemalort/token-factions/blob/master/docs/module-on.png?raw=true)
 
+Artwork and assets kindly provided by and used with permission of Caeora. [www.caeora.com](http://www.caeora.com)
+
 # Faction Tokens
 
 This module will allow you to assign tokens to factions by using the token's disposition colors, the token actor's folder color, or defining your own custom replacement colors for token dispositions.
