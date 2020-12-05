@@ -18,7 +18,7 @@ This option uses the default Token Disposition color to render the token base an
 
 #### An Actor's Folder Color
 
-This option uses the color of the folder a token's actor belongs in. A color of **#000000**, or the default color of a newactor folder, is treated as if there is no folder which will prevent a base and frame from being rendered for contained actor tokens.
+This option uses the color of the folder a token's actor belongs in. A color of **#000000**, or the default color of a new actor folder, is treated as if there is no folder that will prevent a base and frame from being rendered for contained actor tokens.
 
 ![alt text](https://github.com/Voldemalort/token-factions/blob/master/docs/actor-folder-color.png?raw=true)
 
@@ -28,7 +28,7 @@ This option reveals additional configuration options allowing you to customize c
 
 ![alt text](https://github.com/Voldemalort/token-factions/blob/master/docs/custom-settings.png?raw=true)
 
-#### Draw Token Frames By Default?
+### Draw Token Frames By Default?
 
 Token frames (rings) are layered above token graphics. Enable this if you primarily use round tokens. Disable it if you primarily use irregular-shaped tokens.
 
