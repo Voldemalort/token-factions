@@ -1,5 +1,5 @@
 const TokenFactions = (() => {
-  const module = 'token-factions';
+  const MODULE = 'token-factions';
 
   const defaultColors = {
     'party-member': '#33bc4e',
@@ -33,7 +33,7 @@ const TokenFactions = (() => {
       bevelGradient = await loadTexture('modules/token-factions/assets/bevel-gradient.jpg');
       bevelTexture = await loadTexture('modules/token-factions/assets/bevel-texture.png');
 
-      game.settings.register(module, 'color-from', {
+      game.settings.register(MODULE, 'color-from', {
         name: 'Generate Token Faction Color From',
         scope: 'world',
         config: true,
@@ -46,7 +46,7 @@ const TokenFactions = (() => {
         },
       });
 
-      game.settings.register(module, 'draw-frames-by-default', {
+      game.settings.register(MODULE, 'draw-frames-by-default', {
         name: 'Draw Token Frames By Default?',
         hint: 'Token frames (rings) are layered above token graphics. Enable this if you primarily use round tokens. Disable it if you primarily use irregularly-shaped tokens.',
         scope: 'world',
@@ -55,7 +55,7 @@ const TokenFactions = (() => {
         type: Boolean,
       });
 
-      game.settings.register(module, 'frame-style', {
+      game.settings.register(MODULE, 'frame-style', {
         name: 'Frame Render Style',
         scope: 'world',
         config: true,
@@ -67,7 +67,7 @@ const TokenFactions = (() => {
         },
       });
 
-      game.settings.register(module, 'frame-width', {
+      game.settings.register(MODULE, 'frame-width', {
         name: 'Frame Width (Percent of Grid Unit)',
         scope: 'world',
         config: true,
@@ -80,7 +80,7 @@ const TokenFactions = (() => {
         },
       });
 
-      game.settings.register(module, 'base-opacity', {
+      game.settings.register(MODULE, 'base-opacity', {
         name: 'Base Opacity',
         scope: 'world',
         config: true,
@@ -93,7 +93,7 @@ const TokenFactions = (() => {
         },
       });
 
-      game.settings.register(module, 'frame-opacity', {
+      game.settings.register(MODULE, 'frame-opacity', {
         name: 'Frame Opacity',
         scope: 'world',
         config: true,
@@ -107,7 +107,7 @@ const TokenFactions = (() => {
       });
 
       dispositions.forEach((disposition) => {
-        game.settings.register(module, `custom-${disposition}-color`, {
+        game.settings.register(MODULE, `custom-${disposition}-color`, {
           name: `Custom ${disposition.charAt(0).toUpperCase()}${disposition.slice(1).replace(/-/g, ' ').replace(/npc/g, 'NPC').replace(/member/g, 'Member')} Color`,
           scope: 'world',
           config: true,
@@ -117,36 +117,20 @@ const TokenFactions = (() => {
       });
     }
 
-    static onCloseSettingsConfig() {
-      TokenFactions.updateTokens();
-    }
-
-    static onUpdateActor() {
-      TokenFactions.updateTokens();
-    }
-
-    static onUpdateFolder() {
-      TokenFactions.updateTokens();
-    }
-
-    static onSightRefresh() {
-      TokenFactions.updateTokens();
-    }
-
-    static onRenderSettingsConfig(sheet, html) {
+    static renderSettingsConfig(sheet, html) {
       dispositions.forEach((disposition) => {
         const colorInput = document.createElement('input');
         colorInput.setAttribute('type', 'color');
-        colorInput.setAttribute('value', html.find(`input[name="${module}.custom-${disposition}-color"]`).val());
-        colorInput.setAttribute('data-edit', `${module}.custom-${disposition}-color`);
-        html.find(`input[name="${module}.custom-${disposition}-color"]`).after(colorInput);
+        colorInput.setAttribute('value', html.find(`input[name="${MODULE}.custom-${disposition}-color"]`).val());
+        colorInput.setAttribute('data-edit', `${MODULE}.custom-${disposition}-color`);
+        html.find(`input[name="${MODULE}.custom-${disposition}-color"]`).after(colorInput);
         $(colorInput).on('change', sheet._onChangeInput.bind(sheet));
       });
 
-      html.find(`input[name="${module}.custom-hostile-npc-color"]`).parent().parent().after(`\
+      html.find(`input[name="${MODULE}.custom-hostile-npc-color"]`).parent().parent().after(`\
         <div class="form-group submenu">
           <label></label>
-          <button name="${module}-colors-reset" type="button">
+          <button name="${MODULE}-colors-reset" type="button">
             <i class="fas fa-undo"></i>
             <label>Reset Colors</label>
           </button>
@@ -154,7 +138,7 @@ const TokenFactions = (() => {
 
       const resetColors = () => {
         dispositions.forEach((disposition) => {
-          const $input = html.find(`input[name="${module}.custom-${disposition}-color"]`);
+          const $input = html.find(`input[name="${MODULE}.custom-${disposition}-color"]`);
           const $color = $input.next();
 
           $input.val(defaultColors[disposition]);
@@ -163,11 +147,11 @@ const TokenFactions = (() => {
       };
 
       const update = () => {
-        const colorFrom = html.find(`select[name="${module}.color-from"]`).val();
+        const colorFrom = html.find(`select[name="${MODULE}.color-from"]`).val();
         const customColorsEnabled = (colorFrom === 'custom-disposition');
 
         dispositions.forEach((disposition) => {
-          const $input = html.find(`input[name="${module}.custom-${disposition}-color"]`);
+          const $input = html.find(`input[name="${MODULE}.custom-${disposition}-color"]`);
           const $color = $input.next();
           const $fieldGroup = $input.parent().parent();
 
@@ -183,7 +167,7 @@ const TokenFactions = (() => {
           $input.val($input.val() || defaultColors[disposition]);
           $color.val($input.val());
         });
-        const $resetButton = html.find(`button[name="${module}-colors-reset"]`);
+        const $resetButton = html.find(`button[name="${MODULE}-colors-reset"]`);
         if (!customColorsEnabled) {
           $resetButton.parent().hide();
         } else {
@@ -193,14 +177,14 @@ const TokenFactions = (() => {
 
       update();
 
-      html.find(`select[name="${module}.color-from"]`).change(update);
-      html.find(`button[name="${module}-colors-reset"]`).click(resetColors);
+      html.find(`select[name="${MODULE}.color-from"]`).change(update);
+      html.find(`button[name="${MODULE}-colors-reset"]`).click(resetColors);
     }
 
-    static onRenderTokenConfig(sheet, html) {
+    static renderTokenConfig(sheet, html) {
       const token = sheet.object;
-      const flags = token.data.flags[module];
-      const drawFramesByDefault = game.settings.get(module, 'draw-frames-by-default');
+      const flags = token.data.flags[MODULE];
+      const drawFramesByDefault = game.settings.get(MODULE, 'draw-frames-by-default');
       const drawFrameOverride = flags ? flags['draw-frame'] : undefined;
       const drawFrame = drawFrameOverride === undefined ? drawFramesByDefault : drawFrameOverride;
       const checked = drawFrame ? ' checked="checked"' : '';
@@ -208,7 +192,7 @@ const TokenFactions = (() => {
       html.find('input[name="mirrorY"]').parent().after(`\
         <div class="form-group">
           <label>Overlay A Faction-Based Frame</label>
-          <input type="checkbox" name="flags.${module}.draw-frame" data-dtype="Boolean"${checked}>
+          <input type="checkbox" name="flags.${MODULE}.draw-frame" data-dtype="Boolean"${checked}>
         </div>`);
     }
 
@@ -236,11 +220,11 @@ const TokenFactions = (() => {
 
     static updateTokenBase(token) {
       if ((token instanceof Token) && token.icon && bevelTexture && bevelTexture.baseTexture) {
-        const flags = token.data.flags[module];
-        const drawFramesByDefault = game.settings.get(module, 'draw-frames-by-default');
+        const flags = token.data.flags[MODULE];
+        const drawFramesByDefault = game.settings.get(MODULE, 'draw-frames-by-default');
         const drawFrameOverride = flags ? flags['draw-frame'] : undefined;
         const drawFrame = drawFrameOverride === undefined ? drawFramesByDefault : drawFrameOverride;
-        const colorFrom = game.settings.get(module, 'color-from');
+        const colorFrom = game.settings.get(MODULE, 'color-from');
         let color;
 
         if (token.factionBase) {
@@ -280,8 +264,8 @@ const TokenFactions = (() => {
 
     static drawBase({ color, container, token }) {
       const base = container.addChild(new PIXI.Graphics());
-      const frameWidth = canvas.grid.grid.w * (game.settings.get(module, 'frame-width') / 100);
-      const baseOpacity = game.settings.get(module, 'base-opacity');
+      const frameWidth = canvas.grid.grid.w * (game.settings.get(MODULE, 'frame-width') / 100);
+      const baseOpacity = game.settings.get(MODULE, 'base-opacity');
 
       base.alpha = baseOpacity;
 
@@ -294,10 +278,10 @@ const TokenFactions = (() => {
     }
 
     static drawFrame({ color, container, token }) {
-      const frameWidth = canvas.grid.grid.w * (game.settings.get(module, 'frame-width') / 100);
-      const frameStyle = game.settings.get(module, 'frame-style');
+      const frameWidth = canvas.grid.grid.w * (game.settings.get(MODULE, 'frame-width') / 100);
+      const frameStyle = game.settings.get(MODULE, 'frame-style');
       const frame = container.addChild(new PIXI.Graphics());
-      const frameOpacity = game.settings.get(module, 'frame-opacity');
+      const frameOpacity = game.settings.get(MODULE, 'frame-opacity');
 
       frame.alpha = frameOpacity;
 
@@ -400,7 +384,7 @@ const TokenFactions = (() => {
       let color;
 
       if (disposition) {
-        color = colorStringToHex(game.settings.get(module, `custom-${disposition}-color`));
+        color = colorStringToHex(game.settings.get(MODULE, `custom-${disposition}-color`));
       }
 
       return color;
@@ -419,11 +403,11 @@ Token.prototype.refresh = function refresh() {
 
 Hooks.once('init', TokenFactions.onInit);
 
-Hooks.on('renderSettingsConfig', TokenFactions.onRenderSettingsConfig);
-Hooks.on('renderTokenConfig', TokenFactions.onRenderTokenConfig);
-Hooks.on('updateActor', TokenFactions.onUpdateActor);
-Hooks.on('updateFolder', TokenFactions.onUpdateFolder);
+Hooks.on('renderSettingsConfig', TokenFactions.renderSettingsConfig);
+Hooks.on('renderTokenConfig', TokenFactions.renderTokenConfig);
+Hooks.on('updateActor', TokenFactions.updateTokens);
+Hooks.on('updateFolder', TokenFactions.updateTokens);
 
 Hooks.on('ready', () => {
-  Hooks.on('closeSettingsConfig', TokenFactions.onCloseSettingsConfig);
+  Hooks.on('closeSettingsConfig', TokenFactions.updateTokens);
 });
