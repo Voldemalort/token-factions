@@ -11,7 +11,7 @@
   "bugs": "https://github.com/Voldemalort/token-factions/issues",
   "compatibleCoreVersion": "0.7.8",
   "description": "Generate token bases based on token disposition or actor folder color.",
-  "download": "https://github.com/Voldemalort/token-factions/releases/download/v0.1.12/token-factions.zip",
+  "download": "https://github.com/Voldemalort/token-factions/releases/download/v0.2.0/token-factions.zip",
   "includes": [
     "assets",
     "module.js",
