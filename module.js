@@ -280,10 +280,7 @@ const TokenFactions = (() => {
     static drawFrame({ color, container, token }) {
       const frameWidth = canvas.grid.grid.w * (game.settings.get(MODULE, 'frame-width') / 100);
       const frameStyle = game.settings.get(MODULE, 'frame-style');
-      const frame = container.addChild(new PIXI.Graphics());
       const frameOpacity = game.settings.get(MODULE, 'frame-opacity');
-
-      frame.alpha = frameOpacity;
 
       function drawGradient() {
         const bg = new PIXI.Sprite(bevelGradient);
@@ -309,9 +306,12 @@ const TokenFactions = (() => {
 
       if (frameWidth) {
         if (frameStyle === 'flat') {
+          const frame = container.addChild(new PIXI.Graphics());
+
           frame
             .lineStyle(frameWidth, color, 1.0, 0)
             .drawCircle(token.w / 2, token.h / 2, token.w / 2);
+          frame.alpha = frameOpacity;
         } else { // frameStyle === 'bevelled'
           const outerRing = drawGradient();
           const innerRing = drawGradient();
@@ -319,6 +319,10 @@ const TokenFactions = (() => {
           const outerRingMask = new PIXI.Graphics();
           const innerRingMask = new PIXI.Graphics();
           const ringTextureMask = new PIXI.Graphics();
+
+          outerRing.alpha = frameOpacity;
+          innerRing.alpha = frameOpacity;
+          ringTexture.alpha = frameOpacity;
 
           innerRing.pivot.set(1000.0, 1000.0);
           innerRing.angle = 180;
