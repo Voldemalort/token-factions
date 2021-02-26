@@ -188,13 +188,19 @@ const TokenFactions = (() => {
       const drawFrameOverride = flags ? flags['draw-frame'] : undefined;
       const drawFrame = drawFrameOverride === undefined ? drawFramesByDefault : drawFrameOverride;
       const checked = drawFrame ? ' checked="checked"' : '';
-
+      const skipDraw = flags ? flags['disable'] : undefined;
+      const isDisabled = skipDraw ? ' checked="checked"' : '';
       html.find('input[name="mirrorY"]').parent().after(`\
+      <div class="form-group">
+        <label>Disable Faction Disposition Visualization</label>
+        <input type="checkbox" name="flags.${MODULE}.disable" data-dtype="Boolean"${isDisabled}>
+      </div>
         <div class="form-group">
           <label>Overlay A Faction-Based Frame</label>
           <input type="checkbox" name="flags.${MODULE}.draw-frame" data-dtype="Boolean"${checked}>
         </div>`);
     }
+    
 
     static async updateTokens(tokenData) {
       let tokens = canvas.tokens.placeables;
@@ -221,6 +227,9 @@ const TokenFactions = (() => {
     static updateTokenBase(token) {
       if ((token instanceof Token) && token.icon && bevelTexture && bevelTexture.baseTexture) {
         const flags = token.data.flags[MODULE];
+        const skipDraw = flags ? flags['disable'] : undefined;
+        if(skipDraw)
+          return;
         const drawFramesByDefault = game.settings.get(MODULE, 'draw-frames-by-default');
         const drawFrameOverride = flags ? flags['draw-frame'] : undefined;
         const drawFrame = drawFrameOverride === undefined ? drawFramesByDefault : drawFrameOverride;
@@ -228,7 +237,7 @@ const TokenFactions = (() => {
         let color;
 
         if (token.factionBase) {
-          token.factionBase.destroy();
+          token.factionBase.destroy({children:true});
         }
 
         token.factionBase = token.addChildAt(
@@ -236,7 +245,7 @@ const TokenFactions = (() => {
         );
 
         if (token.factionFrame) {
-          token.factionFrame.destroy();
+          token.factionFrame.destroy({children:true});
         }
 
         token.factionFrame = token.addChildAt(
