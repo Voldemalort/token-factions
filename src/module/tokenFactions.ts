@@ -44,7 +44,7 @@ export const TokenFactions = (() => {
         //   choices: {
         //     'token-disposition': 'Default: A Token\'s Disposition',
         //     'actor-folder-color': 'An Actor\'s Folder Color',
-        //     'custom-disposition': 'A Cusom Color Set For Token Disposition',
+        //     'custom-disposition': 'A Custom Color Set For Token Disposition',
         //   },
         // });
 

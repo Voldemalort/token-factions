@@ -37,6 +37,12 @@ export let readyHooks = async () => {
     }
   });
 
+  Hooks.on('updateToken', (tokenData) => {
+    if (game.settings.get(MODULE_NAME, "tokenFactionsEnabled")){
+      TokenFactions.updateTokens(tokenData);
+    }
+  });
+
   Hooks.on('updateFolder', (tokenData) => {
     if (game.settings.get(MODULE_NAME, "tokenFactionsEnabled")){
       TokenFactions.updateTokens(tokenData);

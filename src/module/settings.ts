@@ -12,7 +12,7 @@ export const registerSettings = function () {
   game.settings.register(MODULE_NAME, "tokenFactionsEnabled", {
     name: i18n(MODULE_NAME+".tokenFactionsEnabled.name"),
     hint: i18n(MODULE_NAME+".tokenFactionsEnabled.hint"),
-    default: false,
+    default: true,
     type: Boolean,
     scope: 'world',
     config: true
@@ -27,7 +27,7 @@ export const registerSettings = function () {
       choices: {
         'token-disposition': 'Default: A Token\'s Disposition',
         'actor-folder-color': 'An Actor\'s Folder Color',
-        'custom-disposition': 'A Cusom Color Set For Token Disposition',
+        'custom-disposition': 'A Custom Color Set For Token Disposition',
       },
     });
 

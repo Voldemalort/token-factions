@@ -58,7 +58,7 @@
   "url": "https://github.com/Voldemalort/token-factions",
   "readme": "https://raw.githubusercontent.com/Voldemalort/token-factions/master/README.md",
   "manifest": "https://raw.githubusercontent.com/Voldemalort/token-factions/master/src/module.json",
-  "download": "https://github.com/Voldemalort/token-factions/archive/v0.2.2.zip",
+  "download": "https://raw.githubusercontent.com/Voldemalort/token-factions/master/package/token-factions-v0.2.2.zip",
   "minimumCoreVersion": "0.7.7",
   "compatibleCoreVersion": "0.7.9",
   "changelog": "https://raw.githubusercontent.com/Voldemalort/token-factions/master/changelog.md",
