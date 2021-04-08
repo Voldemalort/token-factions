@@ -16,7 +16,7 @@ import { registerSettings } from './module/settings';
 import { preloadTemplates } from './module/preloadTemplates';
 import { MODULE_NAME } from './module/settings';
 import { initHooks, readyHooks } from './module/Hooks';
-import { installedModules, setupModules } from './module/setupModules';
+// import { installedModules, setupModules } from './module/setupModules';
 import {libWrapper} from './module/libs/shim.js'
 
 export let debugEnabled = 0;

@@ -93,7 +93,7 @@ Any issues, bugs, or feature requests are always welcome to be reported directly
 
 ## Acknowledgements
 
-Bootstrapped with Nick East's [create-foundry-project](https://gitlab.com/foundry-projects/foundry-pc/create-foundry-project).
+Bootstrapped with League of Extraordinary FoundryVTT Developers  [foundry-vtt-types](https://github.com/League-of-Foundry-Developers/foundry-vtt-types).
 
 Mad props to the 'League of Extraordinary FoundryVTT Developers' community which helped me figure out a lot.
 

@@ -1,6 +1,8 @@
 import { MODULE_NAME } from "./settings";
 
-export const TokenFactions = (() => {
+import { getCanvas as canvas }  from './settings';
+
+export const TokenFactions = ((canvas) => {
     const MODULE = MODULE_NAME; //'token-factions';
 
     const defaultColors = {
@@ -34,79 +36,6 @@ export const TokenFactions = (() => {
       static async onInit() {
         bevelGradient = await loadTexture(`modules/${MODULE_NAME}/assets/bevel-gradient.jpg`);
         bevelTexture = await loadTexture(`modules/${MODULE_NAME}/assets/bevel-texture.png`);
-
-        // game.settings.register(MODULE, 'color-from', {
-        //   name: 'Generate Token Faction Color From',
-        //   scope: 'world',
-        //   config: true,
-        //   default: 'token-disposition',
-        //   type: String,
-        //   choices: {
-        //     'token-disposition': 'Default: A Token\'s Disposition',
-        //     'actor-folder-color': 'An Actor\'s Folder Color',
-        //     'custom-disposition': 'A Custom Color Set For Token Disposition',
-        //   },
-        // });
-
-        // game.settings.register(MODULE, 'draw-frames-by-default', {
-        //   name: 'Draw Token Frames By Default?',
-        //   hint: 'Token frames (rings) are layered above token graphics. Enable this if you primarily use round tokens. Disable it if you primarily use irregularly-shaped tokens.',
-        //   scope: 'world',
-        //   config: true,
-        //   default: true,
-        //   type: Boolean,
-        // });
-
-        // game.settings.register(MODULE, 'frame-style', {
-        //   name: 'Frame Render Style',
-        //   scope: 'world',
-        //   config: true,
-        //   default: 'flat',
-        //   type: String,
-        //   choices: {
-        //     flat: 'Default: Flat',
-        //     beveled: 'Beveled',
-        //   },
-        // });
-
-        // game.settings.register(MODULE, 'frame-width', {
-        //   name: 'Frame Width (Percent of Grid Unit)',
-        //   scope: 'world',
-        //   config: true,
-        //   default: 7.5,
-        //   type: Number,
-        //   range: {
-        //     min: 0,
-        //     max: 10,
-        //     step: 0.5,
-        //   },
-        // });
-
-        // game.settings.register(MODULE, 'base-opacity', {
-        //   name: 'Base Opacity',
-        //   scope: 'world',
-        //   config: true,
-        //   default: 1,
-        //   type: Number,
-        //   range: {
-        //     min: 0,
-        //     max: 1,
-        //     step: 0.05,
-        //   },
-        // });
-
-        // game.settings.register(MODULE, 'frame-opacity', {
-        //   name: 'Frame Opacity',
-        //   scope: 'world',
-        //   config: true,
-        //   default: 1,
-        //   type: Number,
-        //   range: {
-        //     min: 0,
-        //     max: 1,
-        //     step: 0.05,
-        //   },
-        // });
 
         dispositions.forEach((disposition) => {
           game.settings.register(MODULE, `custom-${disposition}-color`, {
@@ -275,8 +204,8 @@ export const TokenFactions = (() => {
 
       static drawBase({ color, container, token }) {
         const base = container.addChild(new PIXI.Graphics());
-        const frameWidth = canvas.grid.grid.w * (game.settings.get(MODULE, 'frame-width') / 100);
-        const baseOpacity = game.settings.get(MODULE, 'base-opacity');
+        const frameWidth = canvas.grid.grid.w * (<number>game.settings.get(MODULE, 'frame-width') / 100);
+        const baseOpacity = <number>game.settings.get(MODULE, 'base-opacity');
 
         base.alpha = baseOpacity;
 
@@ -289,7 +218,7 @@ export const TokenFactions = (() => {
       }
 
       static drawFrame({ color, container, token }) {
-        const frameWidth = canvas.grid.grid.w * (game.settings.get(MODULE, 'frame-width') / 100);
+        const frameWidth = canvas.grid.grid.w * (<number>game.settings.get(MODULE, 'frame-width') / 100);
         const frameStyle = game.settings.get(MODULE, 'frame-style');
         const frameOpacity = game.settings.get(MODULE, 'frame-opacity');
 
@@ -331,9 +260,9 @@ export const TokenFactions = (() => {
             const innerRingMask = new PIXI.Graphics();
             const ringTextureMask = new PIXI.Graphics();
 
-            outerRing.alpha = frameOpacity;
-            innerRing.alpha = frameOpacity;
-            ringTexture.alpha = frameOpacity;
+            outerRing.alpha = <number>frameOpacity;
+            innerRing.alpha = <number>frameOpacity;
+            ringTexture.alpha = <number>frameOpacity;
 
             innerRing.pivot.set(1000.0, 1000.0);
             innerRing.angle = 180;
@@ -399,7 +328,7 @@ export const TokenFactions = (() => {
         let color;
 
         if (disposition) {
-          color = colorStringToHex(game.settings.get(MODULE, `custom-${disposition}-color`));
+          color = colorStringToHex(<string>game.settings.get(MODULE, `custom-${disposition}-color`));
         }
 
         return color;

@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "token-factions",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Generate token bases based on token disposition or actor folder color.",
   "main": "module.js",
   "repository": {
@@ -16,12 +16,12 @@
     "build": "gulp build && gulp link",
     "build:watch": "gulp watch",
     "clean": "gulp clean && gulp link --clean",
-    "update": "npm install --save-dev gitlab:foundry-projects/foundry-pc/foundry-pc-types"
+    "update": "npm install --save-dev @league-of-foundry-developers/foundry-vtt-types@fvtt-0.7.9"
   },
   "devDependencies": {
+    "@league-of-foundry-developers/foundry-vtt-types": "^0.7.9-6",
     "archiver": "^5.2.0",
     "chalk": "^4.1.0",
-    "foundry-pc-types": "gitlab:foundry-projects/foundry-pc/foundry-pc-types",
     "fs-extra": "^9.0.1",
     "gulp": "^4.0.2",
     "gulp-git": "^2.10.1",
@@ -30,7 +30,7 @@
     "gulp-typescript": "^6.0.0-alpha.1",
     "json-stringify-pretty-compact": "^2.0.0",
     "sass": "^1.26.10",
-    "typescript": "^3.9.7",
+    "typescript": "^4.2.4",
     "yargs": "^15.4.1"
   },
   "dependencies": {
