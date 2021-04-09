@@ -1,6 +1,4 @@
-import { MODULE_NAME } from "./settings";
-
-import { getCanvas as canvas }  from './settings';
+import { getCanvas, MODULE_NAME } from "./settings";
 
 export const TokenFactions = ((canvas) => {
     const MODULE = MODULE_NAME; //'token-factions';
@@ -134,15 +132,15 @@ export const TokenFactions = ((canvas) => {
 
 
       static async updateTokens(tokenData) {
-        let tokens = canvas.tokens.placeables;
+        let tokens = getCanvas().tokens.placeables;
 
         if (!bevelGradient || !bevelGradient.baseTexture) {
-          bevelGradient = await loadTexture('modules/token-factions/assets/bevel-gradient.jpg');
-          bevelTexture = await loadTexture('modules/token-factions/assets/bevel-texture.png');
+          bevelGradient = await loadTexture(`modules/${MODULE}/assets/bevel-gradient.jpg`);
+          bevelTexture = await loadTexture(`modules/${MODULE}/assets/bevel-texture.png`);
         }
 
         if (tokenData && tokenData._id) {
-          const token = canvas.tokens.placeables.find(
+          const token = getCanvas().tokens.placeables.find(
             (tokenPlaceable) => tokenPlaceable.id === tokenData._id,
           );
           if (token) {
@@ -168,7 +166,7 @@ export const TokenFactions = ((canvas) => {
           let color;
 
           if (token['factionBase']) {
-            token['factionBase'].destroy();
+            token['factionBase'].destroy({children:true});
           }
 
           token['factionBase'] = token.addChildAt(
@@ -176,7 +174,7 @@ export const TokenFactions = ((canvas) => {
           );
 
           if (token['factionFrame']) {
-            token['factionFrame'].destroy();
+            token['factionFrame'].destroy({children:true});
           }
 
           token['factionFrame'] = token.addChildAt(
@@ -204,7 +202,7 @@ export const TokenFactions = ((canvas) => {
 
       static drawBase({ color, container, token }) {
         const base = container.addChild(new PIXI.Graphics());
-        const frameWidth = canvas.grid.grid.w * (<number>game.settings.get(MODULE, 'frame-width') / 100);
+        const frameWidth = getCanvas().grid.grid.w * (<number>game.settings.get(MODULE, 'frame-width') / 100);
         const baseOpacity = <number>game.settings.get(MODULE, 'base-opacity');
 
         base.alpha = baseOpacity;
@@ -218,7 +216,7 @@ export const TokenFactions = ((canvas) => {
       }
 
       static drawFrame({ color, container, token }) {
-        const frameWidth = canvas.grid.grid.w * (<number>game.settings.get(MODULE, 'frame-width') / 100);
+        const frameWidth = getCanvas().grid.grid.w * (<number>game.settings.get(MODULE, 'frame-width') / 100);
         const frameStyle = game.settings.get(MODULE, 'frame-style');
         const frameOpacity = game.settings.get(MODULE, 'frame-opacity');
 
