@@ -1,3 +1,4 @@
+![](https://img.shields.io/badge/Foundry-v0.7.9-informational)
 ![alt text](./docs/module-on.png?raw=true)
 
 Artwork and assets kindly provided by and used with permission of Caeora. [www.caeora.com](http://www.caeora.com)
