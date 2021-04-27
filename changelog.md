@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v0.2.4
+
+- Integration with BorderFrame project by Kandashi
+
+## v0.2.3
+
+- Small bug fix
+
 ## v0.2.2
 
 - Preapration to foundryvtt 0.8.0

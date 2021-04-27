@@ -131,7 +131,7 @@ export const TokenFactions = ((canvas) => {
       }
 
 
-      static async updateTokens(tokenData) {
+      static async updateTokens(tokenData:Token.Data) {
         let tokens = getCanvas().tokens.placeables;
 
         if (!bevelGradient || !bevelGradient.baseTexture) {
@@ -157,29 +157,39 @@ export const TokenFactions = ((canvas) => {
         if ((token instanceof Token) && token['icon'] && bevelTexture && bevelTexture.baseTexture) {
           const flags = token.data.flags[MODULE];
           const skipDraw = flags ? flags['disable'] : undefined;
-          if(skipDraw)
+          if(skipDraw){
             return;
+          }
           const drawFramesByDefault = game.settings.get(MODULE, 'draw-frames-by-default');
           const drawFrameOverride = flags ? flags['draw-frame'] : undefined;
           const drawFrame = drawFrameOverride === undefined ? drawFramesByDefault : drawFrameOverride;
           const colorFrom = game.settings.get(MODULE, 'color-from');
           let color;
 
-          if (token['factionBase']) {
-            token['factionBase'].destroy({children:true});
+          let child = null;
+          try{
+            child = token.getChildIndex(token['icon']);
+          }catch(e){
+            // WHY THIS ???????????????
           }
+          if(child){
 
-          token['factionBase'] = token.addChildAt(
-            new PIXI.Container(), token.getChildIndex(token['icon']) - 1,
-          );
+            if (token['factionBase']) {
+              token['factionBase'].destroy({children:true});
+            }
 
-          if (token['factionFrame']) {
-            token['factionFrame'].destroy({children:true});
+            token['factionBase'] = token.addChildAt(
+              new PIXI.Container(), child - 1,
+            );
+
+            if (token['factionFrame']) {
+              token['factionFrame'].destroy({children:true});
+            }
+  
+            token['factionFrame'] = token.addChildAt(
+              new PIXI.Container(), child + (drawFrame ? 1 : -1),
+            );
           }
-
-          token['factionFrame'] = token.addChildAt(
-            new PIXI.Container(), token.getChildIndex(token['icon']) + (drawFrame ? 1 : -1),
-          );
 
           if (colorFrom === 'token-disposition') {
             color = TokenFactions.getDispositionColor(token);
@@ -358,7 +368,7 @@ export const TokenFactions = ((canvas) => {
 
 export const TokenFactiosHelper = {
     tokenRefreshHandler : function (wrapped, ...args) {
-        TokenFactions['tokenRefresh'].bind(this)();
+        //TokenFactions['tokenRefresh'].bind(this)();
         TokenFactions.updateTokens(this);
         return wrapped(...args);
     }

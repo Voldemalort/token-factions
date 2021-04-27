@@ -53,12 +53,15 @@ export class BorderFrame {
     }
 
     static async ToggleBorder(event) {
+        //@ts-ignore
         const border = this.object.getFlag(MODULE_NAME, "noBorder")
+        //@ts-ignore
         await this.object.setFlag(MODULE_NAME, "noBorder", !border)
         event.currentTarget.classList.toggle("active", !border);
 
     }
-    static newBorder() {
+
+    static newBorder = function () {
         this.border.clear();
         const borderColor = this._getBorderColor();
         if (!borderColor) return;
@@ -79,7 +82,7 @@ export class BorderFrame {
         if (this.getFlag(MODULE_NAME, "noBorder")){
           return;
         }
-        const t = game.settings.get(MODULE_NAME, "borderWidth") || CONFIG.Canvas.objectBorderThickness;
+        const t = <number>game.settings.get(MODULE_NAME, "borderWidth") || CONFIG.Canvas.objectBorderThickness;
 
         // Draw Hex border for size 1 tokens on a hex grid
         const gt = CONST.GRID_TYPES;
@@ -90,8 +93,10 @@ export class BorderFrame {
             this.border.lineStyle(t, borderColor.EX, 0.8).drawCircle(this.w/2, this.h/2, this.w/2 + t);
             this.border.lineStyle(h, borderColor.INT, 1.0).drawCircle(this.w/2, this.h/2, this.w/2 + h+t/2);
         }
-        else if (hexTypes.includes(canvas.grid.type) && (this.data.width === 1) && (this.data.height === 1)) {
-            const polygon = canvas.grid.grid.getPolygon(-1, -1, this.w + 2, this.h + 2);
+        //@ts-ignore
+        else if (hexTypes.includes(getCanvas().grid.type) && (this.data.width === 1) && (this.data.height === 1)) {
+            //@ts-ignore
+            const polygon = getCanvas().grid.grid.getPolygon(-1, -1, this.w + 2, this.h + 2);
             this.border.lineStyle(t, borderColor.EX, 0.8).drawPolygon(polygon);
             this.border.lineStyle(t / 2, borderColor.INT, 1.0).drawPolygon(polygon);
         }
@@ -106,31 +111,33 @@ export class BorderFrame {
         return;
     }
 
-    static newBorderColor() {
+    static newBorderColor = function () {
 
         const overrides = {
             CONTROLLED: {
-                INT: parseInt(game.settings.get(MODULE_NAME, "controlledColor").substr(1),16),
-                EX : parseInt(game.settings.get(MODULE_NAME, "controlledColorEx").substr(1),16),
+                INT: parseInt(String(game.settings.get(MODULE_NAME, "controlledColor")).substr(1),16),
+                EX : parseInt(String(game.settings.get(MODULE_NAME, "controlledColorEx")).substr(1),16),
             },
             FRIENDLY: {
-                INT: parseInt(game.settings.get(MODULE_NAME, "friendlyColor").substr(1),16),
-                EX: parseInt(game.settings.get(MODULE_NAME, "friendlyColorEx").substr(1),16),
+                INT: parseInt(String(game.settings.get(MODULE_NAME, "friendlyColor")).substr(1),16),
+                EX: parseInt(String(game.settings.get(MODULE_NAME, "friendlyColorEx")).substr(1),16),
             },
             NEUTRAL: {
-                INT: parseInt(game.settings.get(MODULE_NAME, "neutralColor").substr(1),16),
-                EXT: parseInt(game.settings.get(MODULE_NAME, "neutralColorEx").substr(1),16),
+                INT: parseInt(String(game.settings.get(MODULE_NAME, "neutralColor")).substr(1),16),
+                EXT: parseInt(String(game.settings.get(MODULE_NAME, "neutralColorEx")).substr(1),16),
             },
             HOSTILE: {
-                INT: parseInt(game.settings.get(MODULE_NAME, "hostileColor").substr(1),16),
-                EX: parseInt(game.settings.get(MODULE_NAME, "hostileColorEx").substr(1),16),
+                INT: parseInt(String(game.settings.get(MODULE_NAME, "hostileColor")).substr(1),16),
+                EX: parseInt(String(game.settings.get(MODULE_NAME, "hostileColorEx")).substr(1),16),
             },
             PARTY: {
-                INT: parseInt(game.settings.get(MODULE_NAME, "partyColor").substr(1),16),
-                EXT: parseInt(game.settings.get(MODULE_NAME, "partyColorEx").substr(1),16),
+                INT: parseInt(String(game.settings.get(MODULE_NAME, "partyColor")).substr(1),16),
+                EXT: parseInt(String(game.settings.get(MODULE_NAME, "partyColorEx")).substr(1),16),
             },
         }
-        if (this._controlled) return overrides.CONTROLLED;
+        if (this._controlled) {
+            return overrides.CONTROLLED;
+        }
         else if (this._hover) {
             let d = parseInt(this.data.disposition);
             if (!game.user.isGM && this.owner){
@@ -149,6 +156,8 @@ export class BorderFrame {
               return overrides.HOSTILE;
             }
         }
-        else return null;
+        else{
+            return null;
+        }
     }
 }

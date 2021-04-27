@@ -11,7 +11,7 @@
       "reddit": "u/voldemalort"
     }
   ],
-  "version": "0.2.3",
+  "version": "0.2.4",
   "type": "module",
   "socket": true,
   "includes": [
@@ -47,7 +47,6 @@
     }
   ],
   "scripts": [
-    "./module/libs/shim.js"
   ],
   "esmodules": [
     "main.js"

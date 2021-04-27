@@ -1,4 +1,5 @@
 import { warn, error, debug, i18n } from "../main";
+import { BorderFrame } from "./libs/BorderControl";
 import { MODULE_NAME } from "./settings";
 
 import { TokenFactions, TokenFactiosHelper } from "./tokenFactions";
@@ -21,7 +22,7 @@ export let readyHooks = async () => {
 
   if (game.settings.get(MODULE_NAME, "tokenFactionsEnabled")){
     //@ts-ignore
-		libWrapper.register(MODULE_NAME, 'Token.prototype.refresh', TokenFactiosHelper.tokenRefreshHandler, 'WRAPPER');
+		libWrapper.register(MODULE_NAME, 'Token.prototype.refresh', TokenFactiosHelper.tokenRefreshHandler, 'MIXED');
     //@ts-ignore
     libWrapper.register(MODULE_NAME, 'Token.prototype._refreshBorder', BorderFrame.newBorder, 'OVERRIDE');
     //@ts-ignore
