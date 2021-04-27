@@ -1,8 +1,6 @@
 import { warn, error, debug, i18n } from "../main";
 import { MODULE_NAME } from "./settings";
 
-import {libWrapper} from './libs/shim.js'
-
 import { TokenFactions, TokenFactiosHelper } from "./tokenFactions";
 
 export let readyHooks = async () => {
@@ -22,7 +20,12 @@ export let readyHooks = async () => {
   });
 
   if (game.settings.get(MODULE_NAME, "tokenFactionsEnabled")){
+    //@ts-ignore
 		libWrapper.register(MODULE_NAME, 'Token.prototype.refresh', TokenFactiosHelper.tokenRefreshHandler, 'WRAPPER');
+    //@ts-ignore
+    libWrapper.register(MODULE_NAME, 'Token.prototype._refreshBorder', BorderFrame.newBorder, 'OVERRIDE');
+    //@ts-ignore
+    libWrapper.register(MODULE_NAME, 'Token.prototype._getBorderColor', BorderFrame.newBorderColor, 'OVERRIDE');
 	}
 
   Hooks.on('renderSettingsConfig', (sheet, html) => {
@@ -57,5 +60,7 @@ export let initHooks = () => {
   if (game.settings.get(MODULE_NAME, "tokenFactionsEnabled")){
     TokenFactions.onInit();
   }
+
+
 
 }

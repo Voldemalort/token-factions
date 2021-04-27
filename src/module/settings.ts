@@ -107,6 +107,111 @@ export const registerSettings = function () {
         step: 0.05,
       },
     });
+
+    // =================================================
+    // BORDER COLORS
+    // =================================================
+
+    game.settings.register(MODULE_NAME, "removeBorders", {
+      name: 'Remove Borders',
+      hint: 'Remove the border from specific tokens',
+      scope: 'world',
+      type: String,
+      choices: {
+          "0": "None",
+          "1": "Non Owned",
+          "2": "All",
+      },
+      default: "0",
+      config: true,
+    });
+    game.settings.register(MODULE_NAME, "borderWidth", {
+        name: 'Border Width',
+        hint: 'Override border width',
+        scope: 'client',
+        type: Number,
+        default: 4,
+        config: true,
+    });
+
+    game.settings.register(MODULE_NAME, "circleBorders", {
+        name: 'Circular Borders',
+        scope: 'client',
+        type: Boolean,
+        default: false,
+        config: true,
+    });
+
+    game.settings.register(MODULE_NAME, "controlledColor", {
+        name: 'Color: Controlled',
+        scope: 'client',
+        type: String,
+        default: "#FF9829",
+        config: true,
+    });
+    game.settings.register(MODULE_NAME, "controlledColorEx", {
+        name: 'Color: Controlled External',
+        scope: 'client',
+        type: String,
+        default: "#000000",
+        config: true,
+    });
+    game.settings.register(MODULE_NAME, "hostileColor", {
+        name: 'Color: Hostile',
+        scope: 'client',
+        type: String,
+        default: "#E72124",
+        config: true,
+    });
+    game.settings.register(MODULE_NAME, "hostileColorEx", {
+        name: 'Color: Hostile External',
+        scope: 'client',
+        type: String,
+        default: "#000000",
+        config: true,
+    });
+    game.settings.register(MODULE_NAME, "friendlyColor", {
+        name: 'Color: Friendly',
+        scope: 'client',
+        type: String,
+        default: "#43DFDF",
+        config: true,
+    });
+    game.settings.register(MODULE_NAME, "friendlyColorEx", {
+        name: 'Color: Friendly External',
+        scope: 'client',
+        type: String,
+        default: "#000000",
+        config: true,
+    });
+    game.settings.register(MODULE_NAME, "neutralColor", {
+        name: 'Color: Neutral',
+        scope: 'client',
+        type: String,
+        default: "#F1D836",
+        config: true,
+    });
+    game.settings.register(MODULE_NAME, "neutralColorEx", {
+        name: 'Color: Neutral External',
+        scope: 'client',
+        type: String,
+        default: "#000000",
+        config: true,
+    });
+    game.settings.register(MODULE_NAME, "partyColor", {
+        name: 'Color: Party',
+        scope: 'client',
+        type: String,
+        default: "#33BC4E",
+        config: true,
+    });
+    game.settings.register(MODULE_NAME, "partyColorEx", {
+        name: 'Color: Party External',
+        scope: 'client',
+        type: String,
+        default: "#000000",
+        config: true,
+    });
 }
 
 // function setup(templateSettings) {
