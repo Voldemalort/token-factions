@@ -14,17 +14,21 @@ Hooks.on('renderSettingsConfig', (app, el, data) => {
     let hCE = game.settings.get(MODULE_NAME, "hostileColorEx");
     let cCE = game.settings.get(MODULE_NAME, "controlledColorEx");
     let pCE = game.settings.get(MODULE_NAME, "partyColorEx");
+    let tC = game.settings.get(MODULE_NAME, "targetColor");
+    let tCE = game.settings.get(MODULE_NAME, "targetColorEx");
     el.find('[name="token-factions.neutralColor"]').parent().append(`<input type="color" value="${nC}" data-edit="token-factions.neutralColor">`)
     el.find('[name="token-factions.friendlyColor"]').parent().append(`<input type="color" value="${fC}" data-edit="token-factions.friendlyColor">`)
     el.find('[name="token-factions.hostileColor"]').parent().append(`<input type="color" value="${hC}" data-edit="token-factions.hostileColor">`)
     el.find('[name="token-factions.controlledColor"]').parent().append(`<input type="color"value="${cC}" data-edit="token-factions.controlledColor">`)
     el.find('[name="token-factions.partyColor"]').parent().append(`<input type="color"value="${pC}" data-edit="token-factions.partyColor">`)
+    el.find('[name="token-factions.targetColor"]').parent().append(`<input type="color"value="${tC}" data-edit="token-factions.targetColor">`)
+
     el.find('[name="token-factions.neutralColorEx"]').parent().append(`<input type="color" value="${nCE}" data-edit="token-factions.neutralColorEx">`)
     el.find('[name="token-factions.friendlyColorEx"]').parent().append(`<input type="color" value="${fCE}" data-edit="token-factions.friendlyColorEx">`)
     el.find('[name="token-factions.hostileColorEx"]').parent().append(`<input type="color" value="${hCE}" data-edit="token-factions.hostileColorEx">`)
     el.find('[name="token-factions.controlledColorEx"]').parent().append(`<input type="color"value="${cCE}" data-edit="token-factions.controlledColorEx">`)
     el.find('[name="token-factions.partyColorEx"]').parent().append(`<input type="color"value="${pCE}" data-edit="token-factions.partyColorEx">`)
-
+    el.find('[name="token-factions.targetColorEx"]').parent().append(`<input type="color"value="${tCE}" data-edit="token-factions.targetColorEx">`)
 });
 
 
@@ -45,10 +49,11 @@ Hooks.once("ready", () => {
 
 export class BorderFrame {
     static AddBorderToggle(app, html, data) {
-        if(!game.user.isGM) return;
+        if (!game.user.isGM) return;
+        const buttonPos = game.settings.get(MODULE_NAME, "hudPos")
         const borderButton = `<div class="control-icon border ${app.object.data.flags[MODULE_NAME]?.noBorder ? "active" : ""}" title="Toggle Border"> <i class="fas fa-border-style"></i></div>`
-        let rightCol = html.find('.right')
-        rightCol.append(borderButton)
+        let Pos = html.find(buttonPos)
+        Pos.append(borderButton)
         html.find('.border').click(this.ToggleBorder.bind(app))
     }
 
@@ -66,32 +71,22 @@ export class BorderFrame {
         const borderColor = this._getBorderColor();
         if (!borderColor) return;
         switch (game.settings.get(MODULE_NAME, "removeBorders")) {
-            case "0": {
-              break;
-            }
-            case "1": {
-              if (!this.owner){
-                return;
-              }
-              break;
-            }
-            case "2": {
-              return;
-            }
+            case "0": break;
+            case "1": if (!this.owner) return;
+                break;
+            case "2": return;
         }
-        if (this.getFlag(MODULE_NAME, "noBorder")){
-          return;
-        }
+        if (this.getFlag(MODULE_NAME, "noBorder")) return;
         const t = <number>game.settings.get(MODULE_NAME, "borderWidth") || CONFIG.Canvas.objectBorderThickness;
 
         // Draw Hex border for size 1 tokens on a hex grid
         const gt = CONST.GRID_TYPES;
         const hexTypes = [gt.HEXEVENQ, gt.HEXEVENR, gt.HEXODDQ, gt.HEXODDR];
-        if(game.settings.get(MODULE_NAME, "circleBorders")){
+        if (game.settings.get(MODULE_NAME, "circleBorders")) {
             const h = Math.round(t / 2);
             const o = Math.round(h / 2);
-            this.border.lineStyle(t, borderColor.EX, 0.8).drawCircle(this.w/2, this.h/2, this.w/2 + t);
-            this.border.lineStyle(h, borderColor.INT, 1.0).drawCircle(this.w/2, this.h/2, this.w/2 + h+t/2);
+            this.border.lineStyle(t, borderColor.EX, 0.8).drawCircle(this.w / 2, this.h / 2, this.w / 2 + t);
+            this.border.lineStyle(h, borderColor.INT, 1.0).drawCircle(this.w / 2, this.h / 2, this.w / 2 + h + t / 2);
         }
         //@ts-ignore
         else if (hexTypes.includes(getCanvas().grid.type) && (this.data.width === 1) && (this.data.height === 1)) {
@@ -115,49 +110,114 @@ export class BorderFrame {
 
         const overrides = {
             CONTROLLED: {
-                INT: parseInt(String(game.settings.get(MODULE_NAME, "controlledColor")).substr(1),16),
-                EX : parseInt(String(game.settings.get(MODULE_NAME, "controlledColorEx")).substr(1),16),
+                INT: parseInt(String(game.settings.get(MODULE_NAME, "controlledColor")).substr(1), 16),
+                EX: parseInt(String(game.settings.get(MODULE_NAME, "controlledColorEx")).substr(1), 16),
             },
             FRIENDLY: {
-                INT: parseInt(String(game.settings.get(MODULE_NAME, "friendlyColor")).substr(1),16),
-                EX: parseInt(String(game.settings.get(MODULE_NAME, "friendlyColorEx")).substr(1),16),
+                INT: parseInt(String(game.settings.get(MODULE_NAME, "friendlyColor")).substr(1), 16),
+                EX: parseInt(String(game.settings.get(MODULE_NAME, "friendlyColorEx")).substr(1), 16),
             },
             NEUTRAL: {
-                INT: parseInt(String(game.settings.get(MODULE_NAME, "neutralColor")).substr(1),16),
-                EXT: parseInt(String(game.settings.get(MODULE_NAME, "neutralColorEx")).substr(1),16),
+                INT: parseInt(String(game.settings.get(MODULE_NAME, "neutralColor")).substr(1), 16),
+                EXT: parseInt(String(game.settings.get(MODULE_NAME, "neutralColorEx")).substr(1), 16),
             },
             HOSTILE: {
-                INT: parseInt(String(game.settings.get(MODULE_NAME, "hostileColor")).substr(1),16),
-                EX: parseInt(String(game.settings.get(MODULE_NAME, "hostileColorEx")).substr(1),16),
+                INT: parseInt(String(game.settings.get(MODULE_NAME, "hostileColor")).substr(1), 16),
+                EX: parseInt(String(game.settings.get(MODULE_NAME, "hostileColorEx")).substr(1), 16),
             },
             PARTY: {
-                INT: parseInt(String(game.settings.get(MODULE_NAME, "partyColor")).substr(1),16),
-                EXT: parseInt(String(game.settings.get(MODULE_NAME, "partyColorEx")).substr(1),16),
+                INT: parseInt(String(game.settings.get(MODULE_NAME, "partyColor")).substr(1), 16),
+                EX: parseInt(String(game.settings.get(MODULE_NAME, "partyColorEx")).substr(1), 16),
             },
         }
-        if (this._controlled) {
-            return overrides.CONTROLLED;
-        }
+        if (this._controlled) return overrides.CONTROLLED;
         else if (this._hover) {
             let d = parseInt(this.data.disposition);
-            if (!game.user.isGM && this.owner){
-              return overrides.CONTROLLED;
-            }
-            else if (this.actor?.hasPlayerOwner){
-              return overrides.PARTY;
-            }
-            else if (d === TOKEN_DISPOSITIONS.FRIENDLY){
-              return overrides.FRIENDLY;
-            }
-            else if (d === TOKEN_DISPOSITIONS.NEUTRAL){
-              return overrides.NEUTRAL;
-            }
-            else{
-              return overrides.HOSTILE;
-            }
+            if (!game.user.isGM && this.owner) return overrides.CONTROLLED;
+            else if (this.actor?.hasPlayerOwner) return overrides.PARTY;
+            else if (d === TOKEN_DISPOSITIONS.FRIENDLY) return overrides.FRIENDLY;
+            else if (d === TOKEN_DISPOSITIONS.NEUTRAL) return overrides.NEUTRAL;
+            else return overrides.HOSTILE;
         }
-        else{
-            return null;
+        else return null;
+    }
+
+    static newTarget = function() {
+        const multiplier = <number>game.settings.get(MODULE_NAME, "targetSize");
+        const INT = parseInt(String(game.settings.get(MODULE_NAME, "targetColor")).substr(1), 16);
+        const EX = parseInt(String(game.settings.get(MODULE_NAME, "targetColorEx")).substr(1), 16);
+
+        this.target.clear();
+        if (!this.targeted.size) return;
+
+        // Determine whether the current user has target and any other users
+        const [others, user] = Array.from(this.targeted).partition(u => u === game.user);
+        const userTarget = user.length;
+
+
+
+        // For the current user, draw the target arrows
+        if (userTarget) {
+            if (game.settings.get(MODULE_NAME, "internatTarget")) {
+                let p = -4; // padding
+                let aw = -12 * multiplier; // arrow width
+                let h = this.h; // token height
+                let hh = h / 2; // half height
+                let w = this.w; // token width
+                let hw = w / 2; // half width
+                let ah = getCanvas().dimensions.size / 3 * multiplier;
+                this.target.beginFill(INT, 1.0).lineStyle(1, EX)
+                    .drawPolygon([
+                        -p - aw, hh,
+                        -p, hh - ah,
+                        -p, hh + ah
+                    ])
+                    .drawPolygon([
+                        w + p + aw, hh,
+                        w + p, hh - ah,
+                        w + p, hh + ah
+                    ])
+                    .drawPolygon([
+                        hw, -p - aw,
+                        hw - ah, -p,
+                        hw + ah, -p
+                    ])
+                    .drawPolygon([
+                        hw, h + p + aw,
+                        hw - ah, h + p,
+                        hw + ah, h + p
+                    ]);
+            }
+            else {
+                let p = 4; // padding
+                let aw = 12 * multiplier; // arrow width
+                let h = this.h; // token height
+                let hh = h / 2; // half height
+                let w = this.w; // token width
+                let hw = w / 2; // half width
+                let ah = getCanvas().dimensions.size / 3 * multiplier;
+                this.target.beginFill(INT, 1.0).lineStyle(1, EX)
+                    .drawPolygon([
+                        -p, hh,
+                        -p - aw, hh - ah,
+                        -p - aw, hh + ah
+                    ])
+                    .drawPolygon([
+                        w + p, hh,
+                        w + p + aw, hh - ah,
+                        w + p + aw, hh + ah
+                    ])
+                    .drawPolygon([
+                        hw, -p, hw - ah,
+                        -p - aw, hw + ah,
+                        -p - aw
+                    ])
+                    .drawPolygon([
+                        hw, h + p,
+                        hw - ah, h + p + aw,
+                        hw + ah, h + p + aw
+                    ]);
+            }
         }
     }
 }

@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.2.5 (ON DEVELOPING)
+
+- Update [Border-Control](https://github.com/kandashi/Border-Control) ty to [kandashi](https://github.com/kandashi) with a customize typescript class
+
 ## v0.2.4
 
 - Integration with BorderFrame project by Kandashi

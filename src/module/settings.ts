@@ -133,7 +133,21 @@ export const registerSettings = function () {
         default: 4,
         config: true,
     });
-
+    game.settings.register(MODULE_NAME, "targetSize", {
+        name: 'Target Size Multiplier',
+        scope: 'client',
+        type: Number,
+        default: 1,
+        config: true,
+    });
+    game.settings.register(MODULE_NAME, "internatTarget", {
+        name: 'Internal Target',
+        hint: "Target reticule inside  token borders",
+        scope: 'client',
+        type: Boolean,
+        default: false,
+        config: true,
+    });
     game.settings.register(MODULE_NAME, "circleBorders", {
         name: 'Circular Borders',
         scope: 'client',
@@ -141,7 +155,17 @@ export const registerSettings = function () {
         default: false,
         config: true,
     });
-
+    game.settings.register(MODULE_NAME, "hudPos", {
+        name: 'Border Control HUD Position',
+        scope: 'client',
+        type: String,
+        default: ".right",
+        choices: {
+            ".right" : "Right",
+            ".left" : "Left",
+        },
+        config: true,
+    });
     game.settings.register(MODULE_NAME, "controlledColor", {
         name: 'Color: Controlled',
         scope: 'client',
@@ -207,6 +231,20 @@ export const registerSettings = function () {
     });
     game.settings.register(MODULE_NAME, "partyColorEx", {
         name: 'Color: Party External',
+        scope: 'client',
+        type: String,
+        default: "#000000",
+        config: true,
+    });
+    game.settings.register(MODULE_NAME, "targetColor", {
+        name: 'Color: Target',
+        scope: 'client',
+        type: String,
+        default: "#FF9829",
+        config: true,
+    });
+    game.settings.register(MODULE_NAME, "targetColorEx", {
+        name: 'Color: Target External',
         scope: 'client',
         type: String,
         default: "#000000",

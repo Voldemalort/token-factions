@@ -27,6 +27,8 @@ export let readyHooks = async () => {
     libWrapper.register(MODULE_NAME, 'Token.prototype._refreshBorder', BorderFrame.newBorder, 'OVERRIDE');
     //@ts-ignore
     libWrapper.register(MODULE_NAME, 'Token.prototype._getBorderColor', BorderFrame.newBorderColor, 'OVERRIDE');
+    //@ts-ignore
+    libWrapper.register('Border-Control', 'Token.prototype._refreshTarget', BorderFrame.newTarget, 'OVERRIDE')
 	}
 
   Hooks.on('renderSettingsConfig', (sheet, html) => {
