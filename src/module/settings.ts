@@ -125,12 +125,51 @@ export const registerSettings = function () {
       default: "0",
       config: true,
     });
+
+    game.settings.register(MODULE_NAME, "healthGradient", {
+        name: 'HP Gradient',
+        scope: 'world',
+        type: Boolean,
+        default: false,
+        config: true,
+    });
+    game.settings.register(MODULE_NAME, "healthGradientA", {
+        name: 'HP Gradient Start',
+        scope: 'world',
+        type: String,
+        default: "#1b9421",
+        config: true,
+    });
+    game.settings.register(MODULE_NAME, "healthGradientB", {
+        name: 'HP Gradient End',
+        scope: 'world',
+        type: String,
+        default: "#c9240a",
+        config: true,
+    });
+    game.settings.register(MODULE_NAME, "stepLevel", {
+        name: 'Gradient Step Level',
+        hint: 'How many individual colors are part of the gradient',
+        scope: 'world',
+        type: Number,
+        default: 10,
+        config: true,
+    });
+
     game.settings.register(MODULE_NAME, "borderWidth", {
         name: 'Border Width',
         hint: 'Override border width',
         scope: 'client',
         type: Number,
         default: 4,
+        config: true,
+    });
+    game.settings.register(MODULE_NAME, "borderOffset", {
+        name: 'Border Offset',
+        hint: 'Customize border offset',
+        scope: 'client',
+        type: Number,
+        default: 0,
         config: true,
     });
     game.settings.register(MODULE_NAME, "targetSize", {
@@ -161,8 +200,8 @@ export const registerSettings = function () {
         type: String,
         default: ".right",
         choices: {
-            ".right" : "Right",
-            ".left" : "Left",
+            ".right": "Right",
+            ".left": "Left",
         },
         config: true,
     });

@@ -24,11 +24,12 @@ export let readyHooks = async () => {
     //@ts-ignore
 		libWrapper.register(MODULE_NAME, 'Token.prototype.refresh', TokenFactiosHelper.tokenRefreshHandler, 'MIXED');
     //@ts-ignore
-    libWrapper.register(MODULE_NAME, 'Token.prototype._refreshBorder', BorderFrame.newBorder, 'OVERRIDE');
+    libWrapper.register(MODULE_NAME, 'Token.prototype._refreshBorder', BorderControl.newBorder, 'OVERRIDE')
     //@ts-ignore
-    libWrapper.register(MODULE_NAME, 'Token.prototype._getBorderColor', BorderFrame.newBorderColor, 'OVERRIDE');
+    libWrapper.register(MODULE_NAME, 'Token.prototype._getBorderColor', BorderControl.newBorderColor, 'OVERRIDE')
     //@ts-ignore
-    libWrapper.register('Border-Control', 'Token.prototype._refreshTarget', BorderFrame.newTarget, 'OVERRIDE')
+    libWrapper.register(MODULE_NAME, 'Token.prototype._refreshTarget', BorderControl.newTarget, 'OVERRIDE')
+
 	}
 
   Hooks.on('renderSettingsConfig', (sheet, html) => {
