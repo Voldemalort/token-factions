@@ -1,7 +1,8 @@
-import { getCanvas, MODULE_NAME } from "./settings";
+import { TokenData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs";
+import { getCanvas, getGame, TOKEN_FACTIONS_MODULE_NAME } from "./settings";
 
 export const TokenFactions = ((canvas) => {
-    const MODULE = MODULE_NAME; //'token-factions';
+    const MODULE = TOKEN_FACTIONS_MODULE_NAME; //'token-factions';
 
     const defaultColors = {
       'party-member': '#33bc4e',
@@ -32,11 +33,11 @@ export const TokenFactions = ((canvas) => {
 
     class TokenFactions {
       static async onInit() {
-        bevelGradient = await loadTexture(`modules/${MODULE_NAME}/assets/bevel-gradient.jpg`);
-        bevelTexture = await loadTexture(`modules/${MODULE_NAME}/assets/bevel-texture.png`);
+        bevelGradient = await loadTexture(`modules/${TOKEN_FACTIONS_MODULE_NAME}/assets/bevel-gradient.jpg`);
+        bevelTexture = await loadTexture(`modules/${TOKEN_FACTIONS_MODULE_NAME}/assets/bevel-texture.png`);
 
         dispositions.forEach((disposition) => {
-          game.settings.register(MODULE, `custom-${disposition}-color`, {
+          getGame().settings.register(MODULE, `custom-${disposition}-color`, {
             name: `Custom ${disposition.charAt(0).toUpperCase()}${disposition.slice(1).replace(/-/g, ' ').replace(/npc/g, 'NPC').replace(/member/g, 'Member')} Color`,
             scope: 'world',
             config: true,
@@ -113,7 +114,7 @@ export const TokenFactions = ((canvas) => {
       static renderTokenConfig(sheet, html) {
         const token = sheet.object;
         const flags = token.data.flags[MODULE];
-        const drawFramesByDefault = game.settings.get(MODULE, 'draw-frames-by-default');
+        const drawFramesByDefault = getGame().settings.get(MODULE, 'draw-frames-by-default');
         const drawFrameOverride = flags ? flags['draw-frame'] : undefined;
         const drawFrame = drawFrameOverride === undefined ? drawFramesByDefault : drawFrameOverride;
         const checked = drawFrame ? ' checked="checked"' : '';
@@ -131,8 +132,8 @@ export const TokenFactions = ((canvas) => {
       }
 
 
-      static async updateTokens(tokenData:Token.Data) {
-        let tokens = getCanvas().tokens.placeables;
+      static async updateTokens(tokenData:TokenData) {
+        let tokens:Token[] = <Token[]>getCanvas().tokens?.placeables;
 
         if (!bevelGradient || !bevelGradient.baseTexture) {
           bevelGradient = await loadTexture(`modules/${MODULE}/assets/bevel-gradient.jpg`);
@@ -140,7 +141,7 @@ export const TokenFactions = ((canvas) => {
         }
 
         if (tokenData && tokenData._id) {
-          const token = getCanvas().tokens.placeables.find(
+          const token = getCanvas().tokens?.placeables.find(
             (tokenPlaceable) => tokenPlaceable.id === tokenData._id,
           );
           if (token) {
@@ -155,18 +156,18 @@ export const TokenFactions = ((canvas) => {
 
       static updateTokenBase(token) {
         if ((token instanceof Token) && token['icon'] && bevelTexture && bevelTexture.baseTexture) {
-          const flags = token.data.flags[MODULE];
+          const flags = <Record<string,unknown>>token.data.flags[MODULE];
           const skipDraw = flags ? flags['disable'] : undefined;
           if(skipDraw){
             return;
           }
-          const drawFramesByDefault = game.settings.get(MODULE, 'draw-frames-by-default');
+          const drawFramesByDefault = getGame().settings.get(MODULE, 'draw-frames-by-default');
           const drawFrameOverride = flags ? flags['draw-frame'] : undefined;
           const drawFrame = drawFrameOverride === undefined ? drawFramesByDefault : drawFrameOverride;
-          const colorFrom = game.settings.get(MODULE, 'color-from');
+          const colorFrom = getGame().settings.get(MODULE, 'color-from');
           let color;
 
-          let child = null;
+          let child:number = 0;
           try{
             child = token.getChildIndex(token['icon']);
           }catch(e){
@@ -212,8 +213,8 @@ export const TokenFactions = ((canvas) => {
 
       static drawBase({ color, container, token }) {
         const base = container.addChild(new PIXI.Graphics());
-        const frameWidth = getCanvas().grid.grid.w * (<number>game.settings.get(MODULE, 'frame-width') / 100);
-        const baseOpacity = <number>game.settings.get(MODULE, 'base-opacity');
+        const frameWidth = <number>(getCanvas().grid?.grid?.w) * (<number>getGame().settings.get(MODULE, 'frame-width') / 100);
+        const baseOpacity = <number>getGame().settings.get(MODULE, 'base-opacity');
 
         base.alpha = baseOpacity;
 
@@ -226,9 +227,9 @@ export const TokenFactions = ((canvas) => {
       }
 
       static drawFrame({ color, container, token }) {
-        const frameWidth = getCanvas().grid.grid.w * (<number>game.settings.get(MODULE, 'frame-width') / 100);
-        const frameStyle = game.settings.get(MODULE, 'frame-style');
-        const frameOpacity = game.settings.get(MODULE, 'frame-opacity');
+        const frameWidth = <number>(getCanvas().grid?.grid?.w) * (<number>getGame().settings.get(MODULE, 'frame-width') / 100);
+        const frameStyle = getGame().settings.get(MODULE, 'frame-style');
+        const frameOpacity = getGame().settings.get(MODULE, 'frame-opacity');
 
         function drawGradient() {
           const bg = new PIXI.Sprite(bevelGradient);
@@ -336,7 +337,7 @@ export const TokenFactions = ((canvas) => {
         let color;
 
         if (disposition) {
-          color = colorStringToHex(<string>game.settings.get(MODULE, `custom-${disposition}-color`));
+          color = colorStringToHex(<string>getGame().settings.get(MODULE, `custom-${disposition}-color`));
         }
 
         return color;

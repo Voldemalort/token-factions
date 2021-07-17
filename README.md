@@ -7,6 +7,8 @@ Artwork and assets kindly provided by and used with permission of Caeora. [www.c
 
 This module will allow you to assign tokens to factions by using the token's disposition colors, the token actor's folder color, or defining your own custom replacement colors for token dispositions.
 
+## NOTE: If you are a javascript developer and not a typescript developer, you can just use the javascript files under the dist folder or rename the file from .ts to .js
+
 ## Installation
 
 It's always easiest to install modules from the in game add-on browser.

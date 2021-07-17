@@ -2,7 +2,7 @@
 
 ## v0.2.5 (ON DEVELOPING)
 
-- Update [Border-Control](https://github.com/kandashi/Border-Control) ty to [kandashi](https://github.com/kandashi) with a customize typescript class
+- beta version for anyone fwnat to take on this project
 
 ## v0.2.4
 

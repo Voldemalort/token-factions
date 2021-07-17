@@ -1,4 +1,4 @@
-import { MODULE_NAME } from './settings';
+import { TOKEN_FACTIONS_MODULE_NAME } from './settings';
 
 export const preloadTemplates = async function () {
 	const templatePaths = [

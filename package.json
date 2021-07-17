@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "token-factions",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Generate token bases based on token disposition or actor folder color.",
   "main": "module.js",
   "repository": {
@@ -16,29 +16,29 @@
     "build": "gulp build && gulp link",
     "build:watch": "gulp watch",
     "clean": "gulp clean && gulp link --clean",
-    "update": "npm install --save-dev @league-of-foundry-developers/foundry-vtt-types@fvtt-0.7.9"
+    "update": "npm install --save-dev @league-of-foundry-developers/foundry-vtt-types@fvtt-0.8.8"
   },
   "devDependencies": {
-    "@league-of-foundry-developers/foundry-vtt-types": "^0.7.9-6",
+    "@league-of-foundry-developers/foundry-vtt-types": "^0.8.8-7",
     "archiver": "^5.2.0",
-    "chalk": "^4.1.0",
+    "chalk": "^4.1.1",
     "fs-extra": "^9.0.1",
     "gulp": "^4.0.2",
     "gulp-git": "^2.10.1",
     "gulp-less": "^4.0.1",
-    "gulp-sass": "^4.1.0",
+    "gulp-sass": "^4.1.1",
     "gulp-typescript": "^6.0.0-alpha.1",
     "json-stringify-pretty-compact": "^2.0.0",
-    "sass": "^1.26.10",
-    "typescript": "^4.2.4",
+    "sass": "^1.35.2",
+    "typescript": "^4.3.5",
     "yargs": "^15.4.1"
   },
   "dependencies": {
-    "eslint": "^7.14.0",
+    "eslint": "^7.30.0",
     "eslint-config-airbnb": "^18.2.1",
-    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-import": "^2.23.4",
     "eslint-plugin-jsx-a11y": "^6.4.1",
-    "eslint-plugin-react": "^7.21.5",
+    "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^4.2.0"
   }
 }
