@@ -1,7 +1,7 @@
 import { warn, error, debug, i18n } from "../main";
 import { getGame, TOKEN_FACTIONS_MODULE_NAME } from "./settings";
 
-import { TokenFactions, TokenFactiosHelper } from "./tokenFactions";
+import { TokenFactions, TokenPrototypeRefreshHandler } from "./tokenFactions";
 
 export let readyHooks = async () => {
 
@@ -21,13 +21,7 @@ export let readyHooks = async () => {
 
   if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "tokenFactionsEnabled")){
     //@ts-ignore
-		libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype.refresh', TokenFactiosHelper.tokenRefreshHandler, 'MIXED');
-    //@ts-ignore
-    libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype._refreshBorder', BorderControl.newBorder, 'OVERRIDE')
-    //@ts-ignore
-    libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype._getBorderColor', BorderControl.newBorderColor, 'OVERRIDE')
-    //@ts-ignore
-    libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype._refreshTarget', BorderControl.newTarget, 'OVERRIDE')
+		libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype.refresh', TokenPrototypeRefreshHandler, 'MIXED');
 
 	}
 

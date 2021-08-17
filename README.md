@@ -3,7 +3,7 @@
 
 Artwork and assets kindly provided by and used with permission of Caeora. [www.caeora.com](http://www.caeora.com)
 
-# Faction Tokens
+# Faction Tokens [MAINTANCE MODE]
 
 This module will allow you to assign tokens to factions by using the token's disposition colors, the token actor's folder color, or defining your own custom replacement colors for token dispositions.
 
@@ -17,7 +17,7 @@ To install this module manually:
 1.  Inside the Foundry "Configuration and Setup" screen, click "Add-on Modules"
 2.  Click "Install Module"
 3.  In the "Manifest URL" field, paste the following url:
-`https://raw.githubusercontent.com/Voldemalort/token-factions/master/src/module.json`
+`https://raw.githubusercontent.com/p4535992/token-factions/master/src/module.json`
 4.  Click 'Install' and wait for installation to complete
 5.  Don't forget to enable the module in game using the "Manage Module" button
 

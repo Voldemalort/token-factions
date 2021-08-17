@@ -94,7 +94,7 @@ export const registerSettings = function () {
       //@ts-ignore
       range: {
         min: 0,
-        max: 10,  
+        max: 10,
         step: 0.5,
       },
     });
@@ -127,19 +127,3 @@ export const registerSettings = function () {
       },
     });
 }
-
-// function setup(templateSettings) {
-// 	templateSettings.settings().forEach(setting => {
-// 		let options = {
-// 			name: i18n(templateSettings.name()+"."+setting.name+'.Name'),
-// 			hint: i18n(`${templateSettings.name()}.${setting.name}.Hint`),
-// 			scope: setting.scope,
-// 			config: true,
-// 			default: setting.default,
-// 			type: setting.type,
-// 			choices: {}
-// 		};
-// 		if (setting.choices) options.choices = setting.choices;
-// 		getGame().settings.register(templateSettings.name(), setting.name, options);
-// 	});
-// }

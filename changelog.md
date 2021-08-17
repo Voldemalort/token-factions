@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v0.2.6 (ON DEVELOPING)
+
+- Some minor update
 ## v0.2.5 (ON DEVELOPING)
 
 - beta version for anyone fwnat to take on this project
