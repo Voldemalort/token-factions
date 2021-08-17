@@ -115,7 +115,13 @@ export const TokenFactions = ((canvas) => {
           </div>`);
         }
         static async updateTokens(tokenData) {
-            let tokens = getCanvas().tokens?.placeables;
+            let tokens;
+            try {
+                tokens = getCanvas().tokens?.placeables;
+            }
+            catch (e) {
+                return;
+            }
             if (!bevelGradient || !bevelGradient.baseTexture) {
                 bevelGradient = await loadTexture(`modules/${TOKEN_FACTIONS_MODULE_NAME}/assets/bevel-gradient.jpg`);
                 bevelTexture = await loadTexture(`modules/${TOKEN_FACTIONS_MODULE_NAME}/assets/bevel-texture.png`);
