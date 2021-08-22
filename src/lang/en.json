@@ -2,6 +2,34 @@
   "token-factions.setting.tokenFactionsEnabled.name": "Enable/Disable Token Factions Feature",
   "token-factions.setting.tokenFactionsEnabled.hint": "Generate token bases based on token disposition or actor folder color.",
 
+  "token-factions.setting.pixiFactionsEnabled.name": "Enable the sub feature with pixi texture",
+  "token-factions.setting.pixiFactionsEnabled.hint": "Standard use, customize the pixi texture of the token (there can be some module conflict), need reload",
+
+  "token-factions.setting.color-from.name": "Generate Token Faction Color From",
+  "token-factions.setting.color-from.hint": " ",
+
+  "token-factions.setting.color-from.opt.token-disposition": "Default: A Token's Disposition",
+  "token-factions.setting.color-from.opt.actor-folder-color": "An Actor's Folder Color",
+  "token-factions.setting.color-from.opt.custom-disposition": "A Custom Color Set For Token Disposition",
+
+  "token-factions.setting.draw-frames-by-default.name": "Draw Token Frames By Default?",
+  "token-factions.setting.draw-frames-by-default.hint": "Token frames (rings) are layered above token graphics. Enable this if you primarily use round tokens. Disable it if you primarily use irregularly-shaped tokens.",
+
+  "token-factions.setting.frame-style.name": "Frame Render Style",
+  "token-factions.setting.frame-style.hint": " ",
+
+  "token-factions.setting.frame-width.name": "Frame Width (Percent of Grid Unit)",
+  "token-factions.setting.frame-width.hint": " ",
+
+  "token-factions.setting.base-opacity.name": "Base Opacity",
+  "token-factions.setting.base-opacity.hint": " ",
+
+  "token-factions.setting.frame-opacity.name": "Frame Opacity",
+  "token-factions.setting.frame-opacity.hint": " ",
+
+  "token-factions.setting.borderFactionsEnabled.name": "Enable the sub feature with border",
+  "token-factions.setting.borderFactionsEnabled.hint": "Customize the border of the token (avoid many module conflict), need reload",
+
   "token-factions.setting.removeBorders.name": "Remove Borders",
   "token-factions.setting.removeBorders.hint": "Remove the border from specific tokens",
 

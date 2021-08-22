@@ -51,8 +51,8 @@ export const registerSettings = function () {
   });
 
   getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, "pixiFactionsEnabled", {
-    name: 'Enable the sub feature with pixi texture',
-    hint: 'Standard use, customize the pixi texture of the token (there can be some module conflict), need reload',
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.pixiFactionsEnabled.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.pixiFactionsEnabled.hint'),
     scope: 'world',
     type: Boolean,
     default: true,
@@ -60,21 +60,22 @@ export const registerSettings = function () {
   });
 
   getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'color-from', {
-    name: 'Generate Token Faction Color From',
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.color-from.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.color-from.hint'),
     scope: 'world',
     config: true,
     default: 'token-disposition',
     type: String,
     choices: {
-      'token-disposition': "Default: A Token's Disposition",
-      'actor-folder-color': "An Actor's Folder Color",
-      'custom-disposition': 'A Custom Color Set For Token Disposition',
+      'token-disposition': i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.color-from.opt.token-disposition'),
+      'actor-folder-color': i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.color-from.opt.actor-folder-color'),
+      'custom-disposition': i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.color-from.opt.custom-disposition')
     },
   });
 
   getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'draw-frames-by-default', {
-    name: 'Draw Token Frames By Default?',
-    hint: 'Token frames (rings) are layered above token graphics. Enable this if you primarily use round tokens. Disable it if you primarily use irregularly-shaped tokens.',
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.draw-frames-by-default.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.draw-frames-by-default.hint'),
     scope: 'world',
     config: true,
     default: true,
@@ -82,7 +83,8 @@ export const registerSettings = function () {
   });
 
   getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'frame-style', {
-    name: 'Frame Render Style',
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.frame-style.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.frame-style.hint'),
     scope: 'world',
     config: true,
     default: 'flat',
@@ -94,7 +96,8 @@ export const registerSettings = function () {
   });
 
   getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'frame-width', {
-    name: 'Frame Width (Percent of Grid Unit)',
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.frame-width.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.frame-width.hint'),
     scope: 'world',
     config: true,
     default: 7.5,
@@ -108,7 +111,8 @@ export const registerSettings = function () {
   });
 
   getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'base-opacity', {
-    name: 'Base Opacity',
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.base-opacity.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.base-opacity.hint'),
     scope: 'world',
     config: true,
     default: 1,
@@ -122,7 +126,8 @@ export const registerSettings = function () {
   });
 
   getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'frame-opacity', {
-    name: 'Frame Opacity',
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.frame-opacity.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.frame-opacity.hint'),
     scope: 'world',
     config: true,
     default: 1,
@@ -136,8 +141,8 @@ export const registerSettings = function () {
   });
 
   getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, "borderFactionsEnabled", {
-      name: 'Enable the sub feature with border',
-      hint: 'Customize the border of the token (avoid many module conflict), need reload',
+      name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.borderFactionsEnabled.name'),
+      hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.borderFactionsEnabled.hint'),
       scope: 'world',
       type: Boolean,
       default: false,

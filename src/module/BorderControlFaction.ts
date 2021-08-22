@@ -78,7 +78,7 @@ export class BorderFrame {
         if (!getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "enableHud")) return;
         const buttonPos = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "hudPos")
         const borderButton = `<div class="control-icon border ${app.object.data.flags[TOKEN_FACTIONS_MODULE_NAME]?.noBorder ? "active" : ""}" title="Toggle Border"> <i class="fas fa-helmet-battle"></i></div>`
-        let Pos = html.find(buttonPos)
+        const Pos = html.find(buttonPos)
         Pos.append(borderButton)
         html.find('.border').click(this.ToggleBorder.bind(app))
     }
@@ -96,7 +96,7 @@ export class BorderFrame {
         //@ts-ignore
         this.border.clear();
         //@ts-ignore
-        let borderColor = this._getBorderColor();
+        const borderColor = this._getBorderColor();
         if (!borderColor) return;
         switch (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "removeBorders")) {
             case "0": break;
@@ -193,12 +193,12 @@ export class BorderFrame {
         if (this._controlled) return overrides.CONTROLLED;
          //@ts-ignore
         else if (this._hover) {
-            let disPath = isNewerVersion(getGame().data.version, "0.8.0") ? CONST.TOKEN_DISPOSITIONS : TOKEN_DISPOSITIONS
-             //@ts-ignore
-            let d = parseInt(this.data.disposition);
-             //@ts-ignore
+            const disPath = isNewerVersion(getGame().data.version, "0.8.0") ? CONST.TOKEN_DISPOSITIONS : TOKEN_DISPOSITIONS
+            //@ts-ignore
+            const d = parseInt(this.data.disposition);
+            //@ts-ignore
             if (!getGame().user?.isGM && this.owner) return overrides.CONTROLLED;
-             //@ts-ignore
+            //@ts-ignore
             else if (this.actor?.hasPlayerOwner) return overrides.PARTY;
             else if (d === disPath.FRIENDLY) return overrides.FRIENDLY;
             else if (d === disPath.NEUTRAL) return overrides.NEUTRAL;
@@ -297,7 +297,7 @@ export class BorderFrame {
     // }
 
     static componentToHex(c) {
-        var hex = c.toString(16);
+        const hex = c.toString(16);
         return hex.length == 1 ? "0" + hex : hex;
     }
 
@@ -307,7 +307,7 @@ export class BorderFrame {
     }
 
     static hexToRgb(hex) {
-        var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
         return result ? {
             r: parseInt(result[1], 16),
             g: parseInt(result[2], 16),
@@ -320,8 +320,8 @@ export class BorderFrame {
         if (arguments.length < 3) {
             factor = 0.5;
         }
-        var result = color1.slice();
-        for (var i = 0; i < 3; i++) {
+        const result = color1.slice();
+        for (let i = 0; i < 3; i++) {
             result[i] = Math.round(result[i] + factor * (color2[i] - color1[i]));
         }
         return result;
@@ -329,13 +329,13 @@ export class BorderFrame {
 
     // My function to interpolate between two colors completely, returning an array
     static interpolateColors(color1, color2, steps) {
-        var stepFactor = 1 / (steps - 1),
+        const stepFactor = 1 / (steps - 1),
             interpolatedColorArray:number[][] = [];
 
         color1 = color1.match(/\d+/g).map(Number);
         color2 = color2.match(/\d+/g).map(Number);
 
-        for (var i = 0; i < steps; i++) {
+        for (let i = 0; i < steps; i++) {
             interpolatedColorArray.push(BorderFrame.interpolateColor(color1, color2, stepFactor * i));
         }
 
@@ -367,8 +367,8 @@ export class BorderFrame {
         const sizeMulti = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "sizeMultiplier")
 
         if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "circularNameplate")) {
-            let style = CONFIG.canvasTextStyle.clone()
-            let extraRad = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "circularNameplateRadius")
+            const style = CONFIG.canvasTextStyle.clone()
+            const extraRad = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "circularNameplateRadius")
             if (!getGame().modules.get("custom-nameplates")?.active) {
                 //@ts-ignore
                 style.fontFamily = replaceFont
@@ -377,23 +377,23 @@ export class BorderFrame {
                 //@ts-ignore
                 if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "plateConsistency")) style.fontSize *= <number>getCanvas().grid?.size / 100
             }
-            var text = new PreciseText(this.name, style);
+            const text = new PreciseText(this.name, style);
             text.resolution = 2;
             text.style.trim = true;
             //@ts-ignore
             text.updateText();
             //@ts-ignore
-            var radius = this.w / 2 + text.texture.height + bOff + extraRad;
-            var maxRopePoints = 100;
-            var step = Math.PI / maxRopePoints;
+            const radius = this.w / 2 + text.texture.height + bOff + extraRad;
+            const maxRopePoints = 100;
+            const step = Math.PI / maxRopePoints;
 
-            var ropePoints = maxRopePoints - Math.round((text.texture.width / (radius * Math.PI)) * maxRopePoints);
+            let ropePoints = maxRopePoints - Math.round((text.texture.width / (radius * Math.PI)) * maxRopePoints);
             ropePoints /= 2;
 
-            var points:PIXI.Point[] = [];
-            for (var i = maxRopePoints - ropePoints; i > ropePoints; i--) {
-                var x:number = radius * Math.cos(step * i);
-                var y:number = radius * Math.sin(step * i);
+            const points:PIXI.Point[] = [];
+            for (let i = maxRopePoints - ropePoints; i > ropePoints; i--) {
+                const x:number = radius * Math.cos(step * i);
+                const y:number = radius * Math.sin(step * i);
                 points.push(new PIXI.Point(-x, -y));
             }
             const name = new PIXI.SimpleRope(text.texture, points);

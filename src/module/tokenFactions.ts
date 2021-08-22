@@ -209,7 +209,7 @@ export const TokenFactions = ((canvas) => {
         const colorFrom = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'color-from');
         let color;
 
-        let child: number = 0;
+        let child = 0;
         try {
           child = token.getChildIndex(token['icon']);
         } catch (e) {
@@ -405,7 +405,7 @@ export const TokenFactions = ((canvas) => {
 //   });
 
 export const TokenPrototypeRefreshHandler = function (wrapped, ...args) {
-  const tokenData: TokenData = this;
+  const tokenData = this as TokenData;
   TokenFactions.updateTokens(tokenData);
   return wrapped(...args);
 };

@@ -6,7 +6,7 @@ import { TokenFactions, TokenPrototypeRefreshHandler } from './tokenFactions';
 
 export let BCC;
 
-export let readyHooks = async () => {
+export const readyHooks = async () => {
   // setup all the hooks
   if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'pixiFactionsEnabled')) {
     Hooks.on('closeSettingsConfig', (token) => {
@@ -56,21 +56,21 @@ export let readyHooks = async () => {
     BCC = new BCconfig();
 
     Hooks.on('renderSettingsConfig', (app, el, data) => {
-      let nC = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "neutralColor");
-      let fC = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "friendlyColor");
-      let hC = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "hostileColor");
-      let cC = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "controlledColor");
-      let pC = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "partyColor");
-      let nCE = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "neutralColorEx");
-      let fCE = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "friendlyColorEx");
-      let hCE = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "hostileColorEx");
-      let cCE = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "controlledColorEx");
-      let pCE = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "partyColorEx");
-      let tC = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "targetColor");
-      let tCE = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "targetColorEx");
-      let gS = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "healthGradientA");
-      let gE = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "healthGradientB");
-      let gT = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "healthGradientC");
+      const nC = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "neutralColor");
+      const fC = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "friendlyColor");
+      const hC = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "hostileColor");
+      const cC = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "controlledColor");
+      const pC = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "partyColor");
+      const nCE = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "neutralColorEx");
+      const fCE = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "friendlyColorEx");
+      const hCE = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "hostileColorEx");
+      const cCE = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "controlledColorEx");
+      const pCE = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "partyColorEx");
+      const tC = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "targetColor");
+      const tCE = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "targetColorEx");
+      const gS = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "healthGradientA");
+      const gE = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "healthGradientB");
+      const gT = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "healthGradientC");
       el.find('[name="token-factions.neutralColor"]').parent().append(`<input type="color" value="${nC}" data-edit="token-factions.neutralColor">`)
       el.find('[name="token-factions.friendlyColor"]').parent().append(`<input type="color" value="${fC}" data-edit="token-factions.friendlyColor">`)
       el.find('[name="token-factions.hostileColor"]').parent().append(`<input type="color" value="${hC}" data-edit="token-factions.hostileColor">`)
@@ -96,7 +96,7 @@ export let readyHooks = async () => {
     });
 
     Hooks.on("createToken", (data) => {
-      let token = <Token>getCanvas().tokens?.get(data._id)
+      const token = <Token>getCanvas().tokens?.get(data._id)
       if (!token.owner) token.cursor = "default"
     });
 
@@ -106,7 +106,7 @@ export let readyHooks = async () => {
   }
 };
 
-export let initHooks = () => {
+export const initHooks = () => {
   warn('Init Hooks processing');
 
   if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'tokenFactionsEnabled')) {
