@@ -17,74 +17,75 @@ import { preloadTemplates } from './module/preloadTemplates';
 import { TOKEN_FACTIONS_MODULE_NAME } from './module/settings';
 import { initHooks, readyHooks } from './module/Hooks';
 
-
 export let debugEnabled = 0;
 // 0 = none, warnings = 1, debug = 2, all = 3
-export let debug = (...args) => {if (debugEnabled > 1) console.log(`DEBUG:${TOKEN_FACTIONS_MODULE_NAME} | `, ...args)};
+export let debug = (...args) => {
+  if (debugEnabled > 1) console.log(`DEBUG:${TOKEN_FACTIONS_MODULE_NAME} | `, ...args);
+};
 export let log = (...args) => console.log(`${TOKEN_FACTIONS_MODULE_NAME} | `, ...args);
-export let warn = (...args) => {if (debugEnabled > 0) console.warn(`${TOKEN_FACTIONS_MODULE_NAME} | `, ...args)};
+export let warn = (...args) => {
+  if (debugEnabled > 0) console.warn(`${TOKEN_FACTIONS_MODULE_NAME} | `, ...args);
+};
 export let error = (...args) => console.error(`${TOKEN_FACTIONS_MODULE_NAME} | `, ...args);
 export let timelog = (...args) => warn(`${TOKEN_FACTIONS_MODULE_NAME} | `, Date.now(), ...args);
 
-export let i18n = key => {
+export let i18n = (key) => {
   return getGame().i18n.localize(key);
 };
 export let i18nFormat = (key, data = {}) => {
   return getGame().i18n.format(key, data);
-}
+};
 
 export let setDebugLevel = (debugText: string) => {
-  debugEnabled = {"none": 0, "warn": 1, "debug": 2, "all": 3}[debugText] || 0;
+  debugEnabled = { none: 0, warn: 1, debug: 2, all: 3 }[debugText] || 0;
   // 0 = none, warnings = 1, debug = 2, all = 3
   if (debugEnabled >= 3) CONFIG.debug.hooks = true;
-}
+};
 
 /* ------------------------------------ */
 /* Initialize module					*/
 /* ------------------------------------ */
 Hooks.once('init', async () => {
-	console.log(`${TOKEN_FACTIONS_MODULE_NAME} | Initializing ${TOKEN_FACTIONS_MODULE_NAME}`);
+  console.log(`${TOKEN_FACTIONS_MODULE_NAME} | Initializing ${TOKEN_FACTIONS_MODULE_NAME}`);
 
-	// Register custom module settings
-	registerSettings();
+  // Register custom module settings
+  registerSettings();
 
-	initHooks();
-	// Assign custom classes and constants here
+  initHooks();
+  // Assign custom classes and constants here
 
-	// Register custom module settings
-	//registerSettings();
-	//fetchParams();
+  // Register custom module settings
+  //registerSettings();
+  //fetchParams();
 
-	// Preload Handlebars templates
-	await preloadTemplates();
-	// Register custom sheets (if any)
-
+  // Preload Handlebars templates
+  await preloadTemplates();
+  // Register custom sheets (if any)
 });
 
 /* ------------------------------------ */
 /* Setup module							*/
 /* ------------------------------------ */
 Hooks.once('setup', function () {
-	// Do anything after initialization but before ready
-	// setupModules();
+  // Do anything after initialization but before ready
+  // setupModules();
 
-	registerSettings();
-
+  registerSettings();
 });
 
 /* ------------------------------------ */
 /* When ready							*/
 /* ------------------------------------ */
 Hooks.once('ready', () => {
+  // Do anything once the module is ready
+  if (!getGame().modules.get('lib-wrapper')?.active && getGame().user?.isGM) {
+    ui.notifications?.error(
+      `The '${TOKEN_FACTIONS_MODULE_NAME}' module requires to install and activate the 'libWrapper' module.`,
+    );
+    return;
+  }
 
-	// Do anything once the module is ready
-	if (!getGame().modules.get("lib-wrapper")?.active && getGame().user?.isGM){
-   		ui.notifications?.error(`The '${TOKEN_FACTIONS_MODULE_NAME}' module requires to install and activate the 'libWrapper' module.`);
-		return;
-	}
-
-	readyHooks();
+  readyHooks();
 });
 
 // Add any additional hooks if necessary
-

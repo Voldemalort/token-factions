@@ -32,7 +32,11 @@ export const TokenFactions = ((canvas) => {
             bevelTexture = await loadTexture(`modules/${TOKEN_FACTIONS_MODULE_NAME}/assets/bevel-texture.png`);
             dispositions.forEach((disposition) => {
                 getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, `custom-${disposition}-color`, {
-                    name: `Custom ${disposition.charAt(0).toUpperCase()}${disposition.slice(1).replace(/-/g, ' ').replace(/npc/g, 'NPC').replace(/member/g, 'Member')} Color`,
+                    name: `Custom ${disposition.charAt(0).toUpperCase()}${disposition
+                        .slice(1)
+                        .replace(/-/g, ' ')
+                        .replace(/npc/g, 'NPC')
+                        .replace(/member/g, 'Member')} Color`,
                     scope: 'world',
                     config: true,
                     type: String,
@@ -67,7 +71,7 @@ export const TokenFactions = ((canvas) => {
             };
             const update = () => {
                 const colorFrom = html.find(`select[name="${TOKEN_FACTIONS_MODULE_NAME}.color-from"]`).val();
-                const customColorsEnabled = (colorFrom === 'custom-disposition');
+                const customColorsEnabled = colorFrom === 'custom-disposition';
                 dispositions.forEach((disposition) => {
                     const $input = html.find(`input[name="${TOKEN_FACTIONS_MODULE_NAME}.custom-${disposition}-color"]`);
                     const $color = $input.next();
@@ -137,7 +141,7 @@ export const TokenFactions = ((canvas) => {
             });
         }
         static updateTokenBase(token) {
-            if ((token instanceof Token) && token['icon'] && bevelTexture && bevelTexture.baseTexture) {
+            if (token instanceof Token && token['icon'] && bevelTexture && bevelTexture.baseTexture) {
                 const flags = token.data.flags[TOKEN_FACTIONS_MODULE_NAME];
                 const skipDraw = flags ? flags['disable'] : undefined;
                 if (skipDraw) {
@@ -171,7 +175,8 @@ export const TokenFactions = ((canvas) => {
                 else if (colorFrom === 'actor-folder-color') {
                     color = TokenFactions.getFolderColor(token);
                 }
-                else { // colorFrom === 'custom-disposition'
+                else {
+                    // colorFrom === 'custom-disposition'
                     color = TokenFactions.getCustomDispositionColor(token);
                 }
                 if (color) {
@@ -187,18 +192,20 @@ export const TokenFactions = ((canvas) => {
         }
         static drawBase({ color, container, token }) {
             const base = container.addChild(new PIXI.Graphics());
-            const frameWidth = (getCanvas().grid?.grid?.w) * (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'frame-width') / 100);
+            const frameWidth = getCanvas().grid?.grid?.w *
+                (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'frame-width') / 100);
             const baseOpacity = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'base-opacity');
             base.alpha = baseOpacity;
             base
                 .lineStyle(0)
                 .beginFill(color, 1.0)
-                .drawCircle(token.w / 2, token.h / 2, (token.w / 2) - frameWidth)
+                .drawCircle(token.w / 2, token.h / 2, token.w / 2 - frameWidth)
                 .beginFill(0x000000, 0.25 * baseOpacity)
-                .drawCircle(token.w / 2, token.h / 2, (token.w / 2) - frameWidth);
+                .drawCircle(token.w / 2, token.h / 2, token.w / 2 - frameWidth);
         }
         static drawFrame({ color, container, token }) {
-            const frameWidth = (getCanvas().grid?.grid?.w) * (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'frame-width') / 100);
+            const frameWidth = getCanvas().grid?.grid?.w *
+                (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'frame-width') / 100);
             const frameStyle = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'frame-style');
             const frameOpacity = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'frame-opacity');
             function drawGradient() {
@@ -220,12 +227,11 @@ export const TokenFactions = ((canvas) => {
             if (frameWidth) {
                 if (frameStyle === 'flat') {
                     const frame = container.addChild(new PIXI.Graphics());
-                    frame
-                        .lineStyle(frameWidth, color, 1.0, 0)
-                        .drawCircle(token.w / 2, token.h / 2, token.w / 2);
+                    frame.lineStyle(frameWidth, color, 1.0, 0).drawCircle(token.w / 2, token.h / 2, token.w / 2);
                     frame.alpha = frameOpacity;
                 }
-                else { // frameStyle === 'bevelled'
+                else {
+                    // frameStyle === 'bevelled'
                     const outerRing = drawGradient();
                     const innerRing = drawGradient();
                     const ringTexture = drawTexture();
@@ -238,16 +244,16 @@ export const TokenFactions = ((canvas) => {
                     innerRing.pivot.set(1000.0, 1000.0);
                     innerRing.angle = 180;
                     outerRingMask
-                        .lineStyle(frameWidth / 2, 0xFFFFFF, 1.0, 0)
-                        .beginFill(0xFFFFFF, 0.0)
+                        .lineStyle(frameWidth / 2, 0xffffff, 1.0, 0)
+                        .beginFill(0xffffff, 0.0)
                         .drawCircle(token.w / 2, token.h / 2, token.w / 2);
                     innerRingMask
-                        .lineStyle(frameWidth / 2, 0xFFFFFF, 1.0, 0)
-                        .beginFill(0xFFFFFF, 0.0)
-                        .drawCircle(token.w / 2, token.h / 2, token.w / 2 - (frameWidth / 2));
+                        .lineStyle(frameWidth / 2, 0xffffff, 1.0, 0)
+                        .beginFill(0xffffff, 0.0)
+                        .drawCircle(token.w / 2, token.h / 2, token.w / 2 - frameWidth / 2);
                     ringTextureMask
-                        .lineStyle(frameWidth, 0xFFFFFF, 1.0, 0)
-                        .beginFill(0xFFFFFF, 0.0)
+                        .lineStyle(frameWidth, 0xffffff, 1.0, 0)
+                        .beginFill(0xffffff, 0.0)
                         .drawCircle(token.w / 2, token.h / 2, token.w / 2);
                     container.addChild(outerRing);
                     container.addChild(outerRingMask);
@@ -263,10 +269,7 @@ export const TokenFactions = ((canvas) => {
         }
         static getFolderColor(token) {
             let color;
-            if (token.actor
-                && token.actor.folder
-                && token.actor.folder.data
-                && token.actor.folder.data.color) {
+            if (token.actor && token.actor.folder && token.actor.folder.data && token.actor.folder.data.color) {
                 color = colorStringToHex(token.actor.folder.data.color);
             }
             return color;

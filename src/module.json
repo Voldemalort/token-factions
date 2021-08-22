@@ -46,13 +46,9 @@
       "path": "lang/en.json"
     }
   ],
-  "scripts": [
-  ],
-  "esmodules": [
-    "main.js"
-  ],
-  "styles": [
-  ],
+  "scripts": [],
+  "esmodules": ["main.js"],
+  "styles": [],
   "manifestPlusVersion": "1.2.0",
   "url": "https://github.com/p4535992/token-factions",
   "readme": "https://raw.githubusercontent.com/p4535992/token-factions/master/README.md",
@@ -69,4 +65,3 @@
     }
   ]
 }
-

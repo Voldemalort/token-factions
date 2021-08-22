@@ -11,7 +11,7 @@ export const TOKEN_FACTIONS_MODULE_NAME = 'token-factions';
  */
 export function getCanvas() {
     if (!(canvas instanceof Canvas) || !canvas.ready) {
-        throw new Error("Canvas Is Not Initialized");
+        throw new Error('Canvas Is Not Initialized');
     }
     return canvas;
 }
@@ -26,7 +26,7 @@ export function getCanvas() {
  */
 export function getGame() {
     if (!(game instanceof Game)) {
-        throw new Error("Game Is Not Initialized");
+        throw new Error('Game Is Not Initialized');
     }
     return game;
 }
@@ -34,13 +34,13 @@ export const registerSettings = function () {
     // ==========================
     // TOKEN FACTIONS
     // ==========================
-    getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, "tokenFactionsEnabled", {
-        name: i18n(TOKEN_FACTIONS_MODULE_NAME + ".tokenFactionsEnabled.name"),
-        hint: i18n(TOKEN_FACTIONS_MODULE_NAME + ".tokenFactionsEnabled.hint"),
+    getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'tokenFactionsEnabled', {
+        name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.tokenFactionsEnabled.name'),
+        hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.tokenFactionsEnabled.hint'),
         default: true,
         type: Boolean,
         scope: 'world',
-        config: true
+        config: true,
     });
     getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'color-from', {
         name: 'Generate Token Faction Color From',
@@ -49,8 +49,8 @@ export const registerSettings = function () {
         default: 'token-disposition',
         type: String,
         choices: {
-            'token-disposition': 'Default: A Token\'s Disposition',
-            'actor-folder-color': 'An Actor\'s Folder Color',
+            'token-disposition': "Default: A Token's Disposition",
+            'actor-folder-color': "An Actor's Folder Color",
             'custom-disposition': 'A Custom Color Set For Token Disposition',
         },
     });

@@ -1,4 +1,4 @@
 {
-    "token-factions.tokenFactionsEnabled.name": "Enable/Disable Token Factions Feature",
-    "token-factions.tokenFactionsEnabled.hint": "Generate token bases based on token disposition or actor folder color."
+  "token-factions.tokenFactionsEnabled.name": "Enable/Disable Token Factions Feature",
+  "token-factions.tokenFactionsEnabled.hint": "Generate token bases based on token disposition or actor folder color."
 }

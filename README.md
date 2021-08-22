@@ -7,7 +7,7 @@ Artwork and assets kindly provided by and used with permission of Caeora. [www.c
 
 This module will allow you to assign tokens to factions by using the token's disposition colors, the token actor's folder color, or defining your own custom replacement colors for token dispositions.
 
-## NOTE: If you are a javascript developer and not a typescript developer, you can just use the javascript files under the dist folder or rename the file from .ts to .js
+## NOTE: If you are a javascript developer and not a typescript developer, you can just use the javascript files under the dist folder
 
 ## Installation
 
@@ -90,6 +90,85 @@ Setting this value to anything lower than 1 will allow the map background to be 
 ### Frame Opacity
 
 Setting this value to anything lower than 1 will allow the map background or token to be seen through the frame. Setting this value to 0 will disable drawing the frame entirely.
+
+## License
+
+This module is licensed using the MIT License, any adaptations must provide both credit and indication of changes made.
+
+# Build
+
+## Install all packages
+
+```bash
+npm install
+```
+## npm build scripts
+
+### build
+
+will build the code and copy all necessary assets into the dist folder and make a symlink to install the result into your foundry data; create a
+`foundryconfig.json` file with your Foundry Data path.
+
+```json
+{
+  "dataPath": "~/.local/share/FoundryVTT/"
+}
+```
+
+`build` will build and set up a symlink between `dist` and your `dataPath`.
+
+```bash
+npm run-script build
+```
+
+### NOTE:
+
+You don't need to build the `foundryconfig.json` file you can just copy the content of the `dist` folder on the module folder under `modules` of Foundry
+
+### build:watch
+
+`build:watch` will build and watch for changes, rebuilding automatically.
+
+```bash
+npm run-script build:watch
+```
+
+### clean
+
+`clean` will remove all contents in the dist folder (but keeps the link from build:install).
+
+```bash
+npm run-script clean
+```
+### lint and lintfix
+
+`lint` launch the eslint process based on the configuration [here](./.eslintrc)
+
+```bash
+npm run-script lint
+```
+
+`lintfix` launch the eslint process with the fix argument
+
+```bash
+npm run-script lintfix
+```
+
+### prettier-format
+
+`prettier-format` launch the prettier plugin based on the configuration [here](./.prettierrc)
+
+```bash
+npm run-script prettier-format
+```
+
+### package
+
+`package` generates a zip file containing the contents of the dist folder generated previously with the `build` command. Useful for those who want to manually load the module or want to create their own release
+
+```bash
+npm run-script package
+```
 
 ## [Changelog](./changelog.md)
 
