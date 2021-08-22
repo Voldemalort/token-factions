@@ -1,17 +1,31 @@
 import { getCanvas, getGame, TOKEN_FACTIONS_MODULE_NAME } from "./settings.js";
+export let defaultColors;
 export const TokenFactions = ((canvas) => {
-    const defaultColors = {
-        'party-member': '#33bc4e',
-        'friendly-npc': '#43dfdf',
-        'neutral-npc': '#f1d836',
-        'hostile-npc': '#e72124',
-    };
-    const dispositions = Object.keys(defaultColors);
+    // const defaultColors = {
+    //   'party-member': getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "partyColor"), //'#33bc4e',
+    //   'party-npc': getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "partyColor"), //'#33bc4e',
+    //   'friendly-npc': getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "friendlyColor"), //'#43dfdf',
+    //   'neutral-npc': getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "neutralColor"), //'#f1d836',
+    //   'hostile-npc': getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "hostileColor"), //'#e72124',
+    //   'controlled-npc' : getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "controlledColor"),
+    //   'neutral-external-npc' : getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "neutralColorEx"),
+    //   'friendly-external-npc' :  getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "friendlyColorEx"),
+    //   'hostile-external-npc' :  getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "hostileColorEx"),
+    //   'controlled-external-npc' :  getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "controlledColorEx"),
+    //   'party-external-member' :  getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "partyColorEx"),
+    //   'party-external-npc' :  getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "partyColorEx"),
+    //   'target-npc' :  getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "targetColor"),
+    //   'target-external-npc' :  getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "targetColorEx"),
+    // };
+    let dispositions; // = Object.keys(defaultColors);
     const dispositionKey = (token) => {
-        const dispositionValue = parseInt(token.data.disposition, 10);
+        const dispositionValue = parseInt(String(token.data.disposition), 10);
         let disposition;
-        if (token.actor && token.actor.hasPlayerOwner) {
+        if (token.actor && token.actor.hasPlayerOwner && token.actor.type === 'character') {
             disposition = 'party-member';
+        }
+        else if (token.actor && token.actor.hasPlayerOwner) {
+            disposition = 'party-npc';
         }
         else if (dispositionValue === 1) {
             disposition = 'friendly-npc';
@@ -28,6 +42,23 @@ export const TokenFactions = ((canvas) => {
     let bevelTexture;
     class TokenFactions {
         static async onInit() {
+            defaultColors = {
+                'party-member': getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "partyColor"),
+                'party-npc': getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "partyColor"),
+                'friendly-npc': getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "friendlyColor"),
+                'neutral-npc': getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "neutralColor"),
+                'hostile-npc': getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "hostileColor"),
+                'controlled-npc': getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "controlledColor"),
+                'neutral-external-npc': getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "neutralColorEx"),
+                'friendly-external-npc': getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "friendlyColorEx"),
+                'hostile-external-npc': getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "hostileColorEx"),
+                'controlled-external-npc': getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "controlledColorEx"),
+                'party-external-member': getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "partyColorEx"),
+                'party-external-npc': getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "partyColorEx"),
+                //'target-npc' :  getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "targetColor"),
+                //'target-external-npc' :  getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "targetColorEx"),
+            };
+            dispositions = Object.keys(defaultColors);
             bevelGradient = await loadTexture(`modules/${TOKEN_FACTIONS_MODULE_NAME}/assets/bevel-gradient.jpg`);
             bevelTexture = await loadTexture(`modules/${TOKEN_FACTIONS_MODULE_NAME}/assets/bevel-texture.png`);
             dispositions.forEach((disposition) => {
