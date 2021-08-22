@@ -1,4 +1,5 @@
 import { getCanvas, getGame, TOKEN_FACTIONS_MODULE_NAME } from "./settings.js";
+import { TokenFactions } from "./tokenFactions.js";
 /*
 * The allowed Token disposition types
 * HOSTILE - Displayed as an enemy with a red border
@@ -71,7 +72,7 @@ export class BorderFrame {
             return;
         const buttonPos = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "hudPos");
         const borderButton = `<div class="control-icon border ${app.object.data.flags[TOKEN_FACTIONS_MODULE_NAME]?.noBorder ? "active" : ""}" title="Toggle Border"> <i class="fas fa-helmet-battle"></i></div>`;
-        let Pos = html.find(buttonPos);
+        const Pos = html.find(buttonPos);
         Pos.append(borderButton);
         html.find('.border').click(this.ToggleBorder.bind(app));
     }
@@ -87,7 +88,7 @@ export class BorderFrame {
         //@ts-ignore
         this.border.clear();
         //@ts-ignore
-        let borderColor = this._getBorderColor();
+        const borderColor = this._getBorderColor();
         if (!borderColor)
             return;
         switch (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "removeBorders")) {
@@ -100,8 +101,12 @@ export class BorderFrame {
             case "2": return;
         }
         //@ts-ignore
-        if (this.data.flags[TOKEN_FACTIONS_MODULE_NAME]?.noBorder)
+        if (this.data.flags[TOKEN_FACTIONS_MODULE_NAME]?.noBorder) {
             return;
+        }
+        if (!borderColor.INT || Number.isNaN(borderColor.INT)) {
+            return;
+        }
         const t = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "borderWidth") || CONFIG.Canvas.objectBorderThickness;
         // if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "healthGradient")) {
         //     const systemPath = BCC.currentSystem
@@ -158,6 +163,18 @@ export class BorderFrame {
         return Math.min(Math.max(value, min), max);
     }
     static newBorderColor() {
+        const colorFrom = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'color-from');
+        let color;
+        if (colorFrom === 'token-disposition') {
+            color = TokenFactions.getDispositionColor(this);
+        }
+        else if (colorFrom === 'actor-folder-color') {
+            color = TokenFactions.getFolderColor(this);
+        }
+        else {
+            // colorFrom === 'custom-disposition'
+            color = TokenFactions.getCustomDispositionColor(this);
+        }
         const overrides = {
             CONTROLLED: {
                 INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "controlledColor")).substr(1), 16),
@@ -179,15 +196,23 @@ export class BorderFrame {
                 INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "partyColor")).substr(1), 16),
                 EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "partyColorEx")).substr(1), 16),
             },
+            ACTOR_FOLDER_COLOR: {
+                INT: parseInt(String(color).substr(1), 16),
+                EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "actorFolderColorEx")).substr(1), 16)
+            },
+            CUSTOM_DISPOSITION: {
+                INT: parseInt(String(color).substr(1), 16),
+                EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "actorFolderColorEx")).substr(1), 16),
+            }
         };
-        //@ts-ignore
-        if (this._controlled)
-            return overrides.CONTROLLED;
-        //@ts-ignore
-        else if (this._hover) {
-            let disPath = isNewerVersion(getGame().data.version, "0.8.0") ? CONST.TOKEN_DISPOSITIONS : TOKEN_DISPOSITIONS;
+        if (colorFrom === 'token-disposition') {
             //@ts-ignore
-            let d = parseInt(this.data.disposition);
+            //if (this._controlled) return overrides.CONTROLLED;
+            //@ts-ignore
+            //else if (this._hover) {
+            const disPath = isNewerVersion(getGame().data.version, "0.8.0") ? CONST.TOKEN_DISPOSITIONS : TOKEN_DISPOSITIONS;
+            //@ts-ignore
+            const d = parseInt(this.data.disposition);
             //@ts-ignore
             if (!getGame().user?.isGM && this.owner)
                 return overrides.CONTROLLED;
@@ -200,9 +225,16 @@ export class BorderFrame {
                 return overrides.NEUTRAL;
             else
                 return overrides.HOSTILE;
+            //}
+            //else return null;
         }
-        else
-            return null;
+        else if (colorFrom === 'actor-folder-color') {
+            return overrides.ACTOR_FOLDER_COLOR;
+        }
+        else {
+            // colorFrom === 'custom-disposition'
+            return overrides.CUSTOM_DISPOSITION;
+        }
     }
     // static newTarget() {
     //     const multiplier = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "targetSize");
@@ -289,7 +321,7 @@ export class BorderFrame {
     //     }
     // }
     static componentToHex(c) {
-        var hex = c.toString(16);
+        const hex = c.toString(16);
         return hex.length == 1 ? "0" + hex : hex;
     }
     static rgbToHex(A) {
@@ -298,7 +330,7 @@ export class BorderFrame {
         return "#" + BorderFrame.componentToHex(A[0]) + BorderFrame.componentToHex(A[1]) + BorderFrame.componentToHex(A[2]);
     }
     static hexToRgb(hex) {
-        var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
         return result ? {
             r: parseInt(result[1], 16),
             g: parseInt(result[2], 16),
@@ -309,8 +341,8 @@ export class BorderFrame {
         if (arguments.length < 3) {
             factor = 0.5;
         }
-        var result = color1.slice();
-        for (var i = 0; i < 3; i++) {
+        const result = color1.slice();
+        for (let i = 0; i < 3; i++) {
             result[i] = Math.round(result[i] + factor * (color2[i] - color1[i]));
         }
         return result;
@@ -318,10 +350,10 @@ export class BorderFrame {
     ;
     // My function to interpolate between two colors completely, returning an array
     static interpolateColors(color1, color2, steps) {
-        var stepFactor = 1 / (steps - 1), interpolatedColorArray = [];
+        const stepFactor = 1 / (steps - 1), interpolatedColorArray = [];
         color1 = color1.match(/\d+/g).map(Number);
         color2 = color2.match(/\d+/g).map(Number);
-        for (var i = 0; i < steps; i++) {
+        for (let i = 0; i < steps; i++) {
             interpolatedColorArray.push(BorderFrame.interpolateColor(color1, color2, stepFactor * i));
         }
         return interpolatedColorArray;
@@ -349,8 +381,8 @@ export class BorderFrame {
         const replaceFont = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "plateFont");
         const sizeMulti = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "sizeMultiplier");
         if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "circularNameplate")) {
-            let style = CONFIG.canvasTextStyle.clone();
-            let extraRad = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "circularNameplateRadius");
+            const style = CONFIG.canvasTextStyle.clone();
+            const extraRad = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "circularNameplateRadius");
             if (!getGame().modules.get("custom-nameplates")?.active) {
                 //@ts-ignore
                 style.fontFamily = replaceFont;
@@ -360,21 +392,21 @@ export class BorderFrame {
                 if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "plateConsistency"))
                     style.fontSize *= getCanvas().grid?.size / 100;
             }
-            var text = new PreciseText(this.name, style);
+            const text = new PreciseText(this.name, style);
             text.resolution = 2;
             text.style.trim = true;
             //@ts-ignore
             text.updateText();
             //@ts-ignore
-            var radius = this.w / 2 + text.texture.height + bOff + extraRad;
-            var maxRopePoints = 100;
-            var step = Math.PI / maxRopePoints;
-            var ropePoints = maxRopePoints - Math.round((text.texture.width / (radius * Math.PI)) * maxRopePoints);
+            const radius = this.w / 2 + text.texture.height + bOff + extraRad;
+            const maxRopePoints = 100;
+            const step = Math.PI / maxRopePoints;
+            let ropePoints = maxRopePoints - Math.round((text.texture.width / (radius * Math.PI)) * maxRopePoints);
             ropePoints /= 2;
-            var points = [];
-            for (var i = maxRopePoints - ropePoints; i > ropePoints; i--) {
-                var x = radius * Math.cos(step * i);
-                var y = radius * Math.sin(step * i);
+            const points = [];
+            for (let i = maxRopePoints - ropePoints; i > ropePoints; i--) {
+                const x = radius * Math.cos(step * i);
+                const y = radius * Math.sin(step * i);
                 points.push(new PIXI.Point(-x, -y));
             }
             const name = new PIXI.SimpleRope(text.texture, points);

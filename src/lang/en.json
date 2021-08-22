@@ -51,7 +51,7 @@
   "token-factions.setting.stepLevel.name": "Gradient Step Level",
   "token-factions.setting.stepLevel.hint": "How many individual colors are part of the gradient",
 
-  "token-factions.setting.borderWidthname": "Border Width",
+  "token-factions.setting.borderWidth.name": "Border Width",
   "token-factions.setting.borderWidth.hint": "Override border width",
 
   "token-factions.setting.borderOffset.name": "Border Offset",
@@ -84,8 +84,8 @@
   "token-factions.setting.plateFont.name": "Nameplate Font",
   "token-factions.setting.plateFont.hint": "Requires a refresh",
 
-  "token-factions.setting.sizeMultiplie.name": "Nameplate Font Size",
-  "token-factions.setting.sizeMultiplie.hint": "Requires a refresh",
+  "token-factions.setting.sizeMultiplier.name": "Nameplate Font Size",
+  "token-factions.setting.sizeMultiplier.hint": "Requires a refresh",
 
   "token-factions.setting.plateConsistency.name": "Nameplate Consistency",
   "token-factions.setting.plateConsistency.hint": "Attempts to keep nameplates the same size across different grid sizes",
@@ -125,6 +125,9 @@
 
   "token-factions.setting.targetColorEx.name": "Color: Target External",
   "token-factions.setting.targetColorEx.hint": " ",
+
+  "token-factions.setting.actorFolderColorEx.name": "Color: Actor Folder External",
+  "token-factions.setting.actorFolderColorEx.hint": " ",
 
   "token-factions.setting.disableRefreshTarget.name": "Disable the refresh target feature",
   "token-factions.setting.disableRefreshTarget.hint": "Use other module like Better Target, Smart Target, ecc. for apply design to target"

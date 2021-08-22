@@ -1,5 +1,6 @@
 import { BCC } from "./Hooks";
 import { getCanvas, getGame, TOKEN_FACTIONS_MODULE_NAME } from "./settings";
+import { TokenFactions } from "./tokenFactions";
 
 /*
 * The allowed Token disposition types
@@ -106,7 +107,12 @@ export class BorderFrame {
             case "2": return;
         }
         //@ts-ignore
-        if (this.data.flags[TOKEN_FACTIONS_MODULE_NAME]?.noBorder) return;
+        if (this.data.flags[TOKEN_FACTIONS_MODULE_NAME]?.noBorder){
+            return;
+        }
+        if (!borderColor.INT || Number.isNaN(borderColor.INT)){
+            return;
+        }
         const t = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "borderWidth") || CONFIG.Canvas.objectBorderThickness;
         // if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "healthGradient")) {
         //     const systemPath = BCC.currentSystem
@@ -167,6 +173,17 @@ export class BorderFrame {
     }
     static newBorderColor() {
 
+        const colorFrom = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'color-from');
+        let color;
+        if (colorFrom === 'token-disposition') {
+          color = TokenFactions.getDispositionColor(this);
+        } else if (colorFrom === 'actor-folder-color') {
+          color = TokenFactions.getFolderColor(this);
+        } else {
+          // colorFrom === 'custom-disposition'
+          color = TokenFactions.getCustomDispositionColor(this);
+        }
+
         const overrides = {
             CONTROLLED: {
                 INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "controlledColor")).substr(1), 16),
@@ -188,11 +205,20 @@ export class BorderFrame {
                 INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "partyColor")).substr(1), 16),
                 EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "partyColorEx")).substr(1), 16),
             },
+            ACTOR_FOLDER_COLOR: {
+                INT: parseInt(String(color).substr(1), 16),
+                EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "actorFolderColorEx")).substr(1), 16)
+            },
+            CUSTOM_DISPOSITION: {
+                INT: parseInt(String(color).substr(1), 16),
+                EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "actorFolderColorEx")).substr(1), 16),
+            }
         }
+        if (colorFrom === 'token-disposition') {
         //@ts-ignore
-        if (this._controlled) return overrides.CONTROLLED;
+        //if (this._controlled) return overrides.CONTROLLED;
          //@ts-ignore
-        else if (this._hover) {
+        //else if (this._hover) {
             const disPath = isNewerVersion(getGame().data.version, "0.8.0") ? CONST.TOKEN_DISPOSITIONS : TOKEN_DISPOSITIONS
             //@ts-ignore
             const d = parseInt(this.data.disposition);
@@ -203,8 +229,15 @@ export class BorderFrame {
             else if (d === disPath.FRIENDLY) return overrides.FRIENDLY;
             else if (d === disPath.NEUTRAL) return overrides.NEUTRAL;
             else return overrides.HOSTILE;
+        //}
+        //else return null;
+        }else if (colorFrom === 'actor-folder-color') {
+            return overrides.ACTOR_FOLDER_COLOR;
+        } else {
+            // colorFrom === 'custom-disposition'
+            return overrides.CUSTOM_DISPOSITION;
         }
-        else return null;
+        
     }
 
     // static newTarget() {

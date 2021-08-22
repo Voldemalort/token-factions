@@ -470,6 +470,17 @@ export const registerSettings = function () {
     },
   });
   //@ts-ignore
+  new window.Ardittristan.ColorSetting(TOKEN_FACTIONS_MODULE_NAME+'', 'actorFolderColorEx', {
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.actorFolderColorEx.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.actorFolderColorEx.hint'),
+    label: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.actorFolderColorEx.name'),
+    restricted: false,
+    defaultColor: '#000000',
+    onChange: function () {
+      // TODO UPDATE COLOR OF THE BORDER ON CANVAS
+    },
+  });
+  //@ts-ignore
   getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME+'', 'disableRefreshTarget', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.disableRefreshTarget.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.disableRefreshTarget.hint'),
