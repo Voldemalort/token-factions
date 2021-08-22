@@ -129,6 +129,9 @@
   "token-factions.setting.actorFolderColorEx.name": "Color: Actor Folder External",
   "token-factions.setting.actorFolderColorEx.hint": " ",
 
+  "token-factions.setting.customDispositionColorEx.name": "Color: Custom Disposition External",
+  "token-factions.setting.customDispositionColorEx.hint": " ",
+
   "token-factions.setting.disableRefreshTarget.name": "Disable the refresh target feature",
   "token-factions.setting.disableRefreshTarget.hint": "Use other module like Better Target, Smart Target, ecc. for apply design to target"
 

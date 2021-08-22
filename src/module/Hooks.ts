@@ -1,4 +1,4 @@
-import { BCconfig, BorderFrame } from './BorderControlFaction';
+import { BCconfig, BorderFrameFaction, TokenPrototypeRefreshBorderHandler } from './BorderControlFaction';
 import { warn, error, debug, i18n } from '../main';
 import { getCanvas, getGame, TOKEN_FACTIONS_MODULE_NAME } from './settings';
 
@@ -83,6 +83,47 @@ export const readyHooks = async () => {
 
     if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderFactionsEnabled')) {
 
+      Hooks.on('closeSettingsConfig', (token) => {
+        if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'tokenFactionsEnabled')) {
+          BorderFrameFaction.updateTokensBorder(token.data);
+        }
+      });
+
+      Hooks.on('renderTokenConfig', (config, html) => {
+        if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'tokenFactionsEnabled')) {
+          TokenFactions.renderTokenConfig(config, html);
+        }
+      });
+
+      if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'tokenFactionsEnabled')) {
+        //@ts-ignore
+        libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype.refresh', TokenPrototypeRefreshBorderHandler, 'MIXED');
+      }
+
+      Hooks.on('renderSettingsConfig', (sheet, html) => {
+        if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'tokenFactionsEnabled')) {
+          // TokenFactions.renderSettingsConfig(sheet, html);
+        }
+      });
+
+      Hooks.on('updateActor', (tokenData) => {
+        if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'tokenFactionsEnabled')) {
+          BorderFrameFaction.updateTokensBorder(tokenData);
+        }
+      });
+
+      Hooks.on('updateToken', (tokenData) => {
+        if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'tokenFactionsEnabled')) {
+          BorderFrameFaction.updateTokensBorder(tokenData);
+        }
+      });
+
+      Hooks.on('updateFolder', (tokenData) => {
+        if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'tokenFactionsEnabled')) {
+          BorderFrameFaction.updateTokensBorder(tokenData);
+        }
+      });
+
       if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderFactionsEnabled')) {
         //@ts-ignore
         libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype._refreshBorder', BorderFrame.newBorder, 'MIXED') // OVERRRIDE
@@ -131,7 +172,7 @@ export const readyHooks = async () => {
       });    
 
       Hooks.on('renderTokenHUD', (app, html, data) => {
-          BorderFrame.AddBorderToggle(app, html, data)
+          BorderFrameFaction.AddBorderToggle(app, html, data)
       });
 
       Hooks.on("createToken", (data) => {

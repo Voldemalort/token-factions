@@ -1,5 +1,25 @@
 import { defaultColors, dispositions } from "./Hooks.js";
 import { getCanvas, getGame, TOKEN_FACTIONS_MODULE_NAME } from "./settings.js";
+export const dispositionKey = (token) => {
+    const dispositionValue = parseInt(String(token.data.disposition), 10);
+    let disposition;
+    if (token.actor && token.actor.hasPlayerOwner && token.actor.type === 'character') {
+        disposition = 'party-member';
+    }
+    else if (token.actor && token.actor.hasPlayerOwner) {
+        disposition = 'party-npc';
+    }
+    else if (dispositionValue === 1) {
+        disposition = 'friendly-npc';
+    }
+    else if (dispositionValue === 0) {
+        disposition = 'neutral-npc';
+    }
+    else if (dispositionValue === -1) {
+        disposition = 'hostile-npc';
+    }
+    return disposition;
+};
 export const TokenFactions = ((canvas) => {
     // const defaultColors = {
     //   'party-member': getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "partyColor"), //'#33bc4e',
@@ -18,26 +38,6 @@ export const TokenFactions = ((canvas) => {
     //   'target-external-npc' :  getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "targetColorEx"),
     // };
     // let dispositions = Object.keys(defaultColors);
-    const dispositionKey = (token) => {
-        const dispositionValue = parseInt(String(token.data.disposition), 10);
-        let disposition;
-        if (token.actor && token.actor.hasPlayerOwner && token.actor.type === 'character') {
-            disposition = 'party-member';
-        }
-        else if (token.actor && token.actor.hasPlayerOwner) {
-            disposition = 'party-npc';
-        }
-        else if (dispositionValue === 1) {
-            disposition = 'friendly-npc';
-        }
-        else if (dispositionValue === 0) {
-            disposition = 'neutral-npc';
-        }
-        else if (dispositionValue === -1) {
-            disposition = 'hostile-npc';
-        }
-        return disposition;
-    };
     let bevelGradient;
     let bevelTexture;
     class TokenFactions {
