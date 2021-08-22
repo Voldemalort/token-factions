@@ -1,4 +1,4 @@
-import { BCconfig, BorderFrameFaction, TokenPrototypeRefreshBorderHandler } from "./BorderControlFaction.js";
+import { BCconfig, BorderFrameFaction } from "./BorderControlFaction.js";
 import { warn } from "../main.js";
 import { getCanvas, getGame, TOKEN_FACTIONS_MODULE_NAME } from "./settings.js";
 import { TokenFactions, TokenPrototypeRefreshHandler } from "./tokenFactions.js";
@@ -25,8 +25,8 @@ export const readyHooks = async () => {
             //'target-external-npc' :  getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "targetColorEx"),
         };
         dispositions = Object.keys(defaultColors);
-        TokenFactions.onInit(dispositions, defaultColors);
         if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'pixiFactionsEnabled')) {
+            TokenFactions.onInit(defaultColors, dispositions);
             Hooks.on('closeSettingsConfig', (token) => {
                 if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'tokenFactionsEnabled')) {
                     TokenFactions.updateTokens(token);
@@ -63,47 +63,47 @@ export const readyHooks = async () => {
             });
         }
         if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderFactionsEnabled')) {
-            Hooks.on('closeSettingsConfig', (token) => {
-                if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'tokenFactionsEnabled')) {
-                    BorderFrameFaction.updateTokensBorder(token.data);
-                }
-            });
-            Hooks.on('renderTokenConfig', (config, html) => {
-                if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'tokenFactionsEnabled')) {
-                    TokenFactions.renderTokenConfig(config, html);
-                }
-            });
-            if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'tokenFactionsEnabled')) {
-                //@ts-ignore
-                libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype.refresh', TokenPrototypeRefreshBorderHandler, 'MIXED');
-            }
-            Hooks.on('renderSettingsConfig', (sheet, html) => {
-                if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'tokenFactionsEnabled')) {
-                    // TokenFactions.renderSettingsConfig(sheet, html);
-                }
-            });
-            Hooks.on('updateActor', (tokenData) => {
-                if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'tokenFactionsEnabled')) {
-                    BorderFrameFaction.updateTokensBorder(tokenData);
-                }
-            });
-            Hooks.on('updateToken', (tokenData) => {
-                if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'tokenFactionsEnabled')) {
-                    BorderFrameFaction.updateTokensBorder(tokenData);
-                }
-            });
-            Hooks.on('updateFolder', (tokenData) => {
-                if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'tokenFactionsEnabled')) {
-                    BorderFrameFaction.updateTokensBorder(tokenData);
-                }
-            });
+            // Hooks.on('closeSettingsConfig', (token) => {
+            //   if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'tokenFactionsEnabled')) {
+            //     BorderFrameFaction.updateTokensBorder(token.data);
+            //   }
+            // });
+            // Hooks.on('renderTokenConfig', (config, html) => {
+            //   if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'tokenFactionsEnabled')) {
+            //     TokenFactions.renderTokenConfig(config, html);
+            //   }
+            // });
+            // if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'tokenFactionsEnabled')) {
+            //   //@ts-ignore
+            //   libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype.refresh', TokenPrototypeRefreshBorderHandler, 'MIXED');
+            // }
+            // Hooks.on('renderSettingsConfig', (sheet, html) => {
+            //   if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'tokenFactionsEnabled')) {
+            //     // TokenFactions.renderSettingsConfig(sheet, html);
+            //   }
+            // });
+            // Hooks.on('updateActor', (tokenData) => {
+            //   if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'tokenFactionsEnabled')) {
+            //     BorderFrameFaction.updateTokensBorder(tokenData);
+            //   }
+            // });
+            // Hooks.on('updateToken', (tokenData) => {
+            //   if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'tokenFactionsEnabled')) {
+            //     BorderFrameFaction.updateTokensBorder(tokenData);
+            //   }
+            // });
+            // Hooks.on('updateFolder', (tokenData) => {
+            //   if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'tokenFactionsEnabled')) {
+            //     BorderFrameFaction.updateTokensBorder(tokenData);
+            //   }
+            // });
             if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderFactionsEnabled')) {
                 //@ts-ignore
-                libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype._refreshBorder', BorderFrame.newBorder, 'MIXED'); // OVERRRIDE
+                libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype._refreshBorder', BorderFrameFaction.newBorder, 'MIXED'); // OVERRRIDE
                 //@ts-ignore
-                libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype._getBorderColor', BorderFrame.newBorderColor, 'MIXED'); // OVERRRIDE
+                libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype._getBorderColor', BorderFrameFaction.newBorderColor, 'MIXED'); // OVERRRIDE
                 //@ts-ignore
-                // libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype._drawNameplate', BorderFrame.drawNameplate, 'MIXED') // OVERRRIDE
+                // libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype._drawNameplate', BorderFrameFaction.drawNameplate, 'MIXED') // OVERRRIDE
             }
             BCC = new BCconfig();
             Hooks.on('renderSettingsConfig', (app, el, data) => {

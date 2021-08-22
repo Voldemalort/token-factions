@@ -444,7 +444,41 @@ export class BorderFrameFaction {
     }
     // ADDED
     static async updateTokensBorder(tokenData) {
-        const token = getCanvas().tokens?.placeables.find((tokenPlaceable) => tokenPlaceable.id === tokenData._id);
+        const currentTokenID = tokenData.id ? tokenData.id : tokenData._id;
+        let tokenDoc = getCanvas().tokens?.get(tokenData.id)?.document;
+        if (tokenDoc) {
+            const tokenID = tokenDoc.id;
+            const sceneID = getCanvas().tokens?.get(tokenDoc.id).scene.id;
+            const specifiedScene = getGame().scenes?.get(sceneID);
+            if (specifiedScene) {
+                if (!specifiedScene) {
+                    return;
+                }
+                tokenDoc = specifiedScene.data.tokens.find((tokenTmp) => {
+                    return (tokenTmp.id === tokenID);
+                });
+            }
+            let foundToken = null;
+            getGame().scenes?.find((sceneTmp) => {
+                //foundToken = ChatPortrait.getTokenForScene(scene, tokenID);
+                if (!sceneTmp) {
+                    foundToken = null;
+                }
+                foundToken = sceneTmp.data.tokens.find((token) => {
+                    return token.id === tokenID;
+                });
+                return !!foundToken;
+            });
+            //@ts-ignore
+            tokenDoc = foundToken;
+        }
+        if (!tokenDoc) {
+            // Is not in the current canvas
+            return;
+        }
+        // TokenDocument to Token
+        //@ts-ignore
+        const token = tokeDoc._object;
         const colorFrom = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'color-from');
         let color;
         if (colorFrom === 'token-disposition') {

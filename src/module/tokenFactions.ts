@@ -1,10 +1,9 @@
 import { TokenData } from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs';
-import { BorderFrameFaction } from './BorderControlFaction';
 import { defaultColors, dispositions } from './Hooks';
 import { getCanvas, getGame, TOKEN_FACTIONS_MODULE_NAME } from './settings';
 
 
-export const dispositionKey = (token:Token) => {
+export const dispositionKey = (token) => {
   const dispositionValue = parseInt(String(token.data.disposition), 10);
   let disposition;
   if (token.actor && token.actor.hasPlayerOwner && token.actor.type === 'character') {
