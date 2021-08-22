@@ -23,11 +23,11 @@ export class BCconfig {
     pf1 = {};
     swade = {};
     stepLevel = "";
-    endColor:[r: number, g: number, b: number];
-    startColor:[r: number, g: number, b: number];
-    tempColor:[r: number, g: number, b: number];
-    colorArray:number[][] = [];
-    tempArray:number[][] = [];
+    // endColor:[r: number, g: number, b: number];
+    // startColor:[r: number, g: number, b: number];
+    // tempColor:[r: number, g: number, b: number];
+    // colorArray:number[][] = [];
+    // tempArray:number[][] = [];
 
     currentSystem = ""
 
@@ -63,11 +63,11 @@ export class BCconfig {
             temp: undefined
         }
         this.stepLevel = <string>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "stepLevel")
-        this.endColor = hexToRGB(<number>colorStringToHex(<string>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "healthGradientA")))
-        this.startColor = hexToRGB(<number>colorStringToHex(<string>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "healthGradientB")))
-        this.tempColor = hexToRGB(<number>colorStringToHex(<string>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "healthGradientC")))
-        this.colorArray = BorderFrameFaction.interpolateColors(`rgb(${this.startColor[0] * 255}, ${this.startColor[1] * 255}, ${this.startColor[2] * 255})`, `rgb(${this.endColor[0] * 255}, ${this.endColor[1] * 255}, ${this.endColor[2] * 255})`, this.stepLevel)
-        this.tempArray = BorderFrameFaction.interpolateColors(`rgb(${this.endColor[0] * 255}, ${this.endColor[1] * 255}, ${this.endColor[2] * 255})`, `rgb(${this.tempColor[0] * 255}, ${this.tempColor[1] * 255}, ${this.tempColor[2] * 255})`, this.stepLevel)
+        // this.endColor = hexToRGB(<number>colorStringToHex(<string>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "healthGradientA")))
+        // this.startColor = hexToRGB(<number>colorStringToHex(<string>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "healthGradientB")))
+        // this.tempColor = hexToRGB(<number>colorStringToHex(<string>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "healthGradientC")))
+        // this.colorArray = BorderFrameFaction.interpolateColors(`rgb(${this.startColor[0] * 255}, ${this.startColor[1] * 255}, ${this.startColor[2] * 255})`, `rgb(${this.endColor[0] * 255}, ${this.endColor[1] * 255}, ${this.endColor[2] * 255})`, this.stepLevel)
+        // this.tempArray = BorderFrameFaction.interpolateColors(`rgb(${this.endColor[0] * 255}, ${this.endColor[1] * 255}, ${this.endColor[2] * 255})`, `rgb(${this.tempColor[0] * 255}, ${this.tempColor[1] * 255}, ${this.tempColor[2] * 255})`, this.stepLevel)
 
         this.currentSystem = this[getGame().system.id]
     }
@@ -471,193 +471,210 @@ export class BorderFrameFaction {
     // ADDED
 
     static async updateTokensBorder(tokenData) {
-        const currentTokenID = tokenData.id ? tokenData.id : tokenData._id;
-        let tokenDoc:TokenDocument = <TokenDocument>getCanvas().tokens?.get(tokenData.id)?.document;
-        if (tokenDoc) {
-            const tokenID = tokenDoc.id;
-            const sceneID = <string>(<Token>getCanvas().tokens?.get(<string>tokenDoc.id)).scene.id;
-            const specifiedScene = getGame().scenes?.get(sceneID);
-            if (specifiedScene) {
-                if (!specifiedScene) {
-                    return;
-                }
-                tokenDoc = <TokenDocument>specifiedScene.data.tokens.find((tokenTmp) => {
-                    return <boolean>(tokenTmp.id === tokenID);
-                });               
-            }
-            let foundToken: TokenDocument|null = null;
-            getGame().scenes?.find((sceneTmp) => {
-                //foundToken = ChatPortrait.getTokenForScene(scene, tokenID);
-                if (!sceneTmp) {
-                    foundToken = null;
-                }
-                foundToken = <TokenDocument>sceneTmp.data.tokens.find((token) => {
-                    return token.id === tokenID;
-                });
-                return !!foundToken;
-            });
-            //@ts-ignore
-            tokenDoc = <TokenDocument>foundToken;
-        }
-
+        const currentTokenID = tokenData?.id ? tokenData?.id : tokenData?._id;
+        const tokens:TokenDocument[] = [];
+        const tokenDoc:TokenDocument = <TokenDocument>getCanvas().tokens?.get(currentTokenID)?.document;
         if(!tokenDoc){
-            // Is not in the current canvas
-            return;
-        }
-        // TokenDocument to Token
-        //@ts-ignore
-        const token:Token = tokeDoc._object;
-
-        const colorFrom = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'color-from');
-        let color;
-        if (colorFrom === 'token-disposition') {
-            const disposition = dispositionKey(token);
-            if (disposition) {
-                color = defaultColors[disposition];
+            const actorID = currentTokenID; // getGame().actors?.get(currentTokenID)?.id;
+            const scene = getGame().scenes?.get(<string>getGame().user?.viewedScene);
+            if (scene) {
+                scene.data.tokens.forEach((tokenTmp) => {
+                    if(<boolean>(tokenTmp.actor && tokenTmp.actor.id === actorID)){
+                        tokens.push(tokenTmp);
+                    }
+                });
             }
-        } else if (colorFrom === 'actor-folder-color') {
-            if (token.actor && token.actor.folder && token.actor.folder.data && token.actor.folder.data.color) {
-                color = token.actor.folder.data.color;
+        }else{
+            tokens.push(tokenDoc);
+        }
+
+        tokens.forEach((tokenDoc) => {
+            if (tokenDoc) {
+                const tokenID = tokenDoc.id;
+                const sceneID = <string>(<Token>getCanvas().tokens?.get(<string>tokenDoc.id)).scene.id;
+                const specifiedScene = getGame().scenes?.get(sceneID);
+                if (specifiedScene) {
+                    if (!specifiedScene) {
+                        return;
+                    }
+                    tokenDoc = <TokenDocument>specifiedScene.data.tokens.find((tokenTmp) => {
+                        return <boolean>(tokenTmp.id === tokenID);
+                    });               
+                }
+                if(!tokenDoc){
+                    let foundToken: TokenDocument|null = null;
+                    getGame().scenes?.find((sceneTmp) => {
+                        // getTokenForScene(scene, tokenID);
+                        if (!sceneTmp) {
+                            foundToken = null;
+                        }
+                        foundToken = <TokenDocument>sceneTmp.data.tokens.find((token) => {
+                            return token.id === tokenID;
+                        });
+                        return !!foundToken;
+                    });
+                    //@ts-ignore
+                    tokenDoc = <TokenDocument>foundToken;
+                }
             }
-        } else {
-            // colorFrom === 'custom-disposition'
-            const disposition = dispositionKey(token);
-            if (disposition) {
-                color = <string>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, `custom-${disposition}-color`)
+
+            if(!tokenDoc){
+                // Is not in the current canvas
+                return;
             }
-        }
+            // TokenDocument to Token
+            //@ts-ignore
+            const token:Token = tokenDoc._object;
 
-        const overrides = {
-            CONTROLLED: {
-                INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "controlledColor")).substr(1), 16),
-                EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "controlledColorEx")).substr(1), 16),
-            },
-            FRIENDLY: {
-                INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "friendlyColor")).substr(1), 16),
-                EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "friendlyColorEx")).substr(1), 16),
-            },
-            NEUTRAL: {
-                INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "neutralColor")).substr(1), 16),
-                EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "neutralColorEx")).substr(1), 16),
-            },
-            HOSTILE: {
-                INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "hostileColor")).substr(1), 16),
-                EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "hostileColorEx")).substr(1), 16),
-            },
-            PARTY: {
-                INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "partyColor")).substr(1), 16),
-                EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "partyColorEx")).substr(1), 16),
-            },
-            ACTOR_FOLDER_COLOR: {
-                INT: parseInt(String(color).substr(1), 16),
-                EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "actorFolderColorEx")).substr(1), 16)
-            },
-            CUSTOM_DISPOSITION: {
-                INT: parseInt(String(color).substr(1), 16),
-                EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "customDispositionColorEx")).substr(1), 16),
+            const colorFrom = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'color-from');
+            let color;
+            if (colorFrom === 'token-disposition') {
+                const disposition = dispositionKey(token);
+                if (disposition) {
+                    color = defaultColors[disposition];
+                }
+            } else if (colorFrom === 'actor-folder-color') {
+                if (token.actor && token.actor.folder && token.actor.folder.data && token.actor.folder.data.color) {
+                    color = token.actor.folder.data.color;
+                }
+            } else {
+                // colorFrom === 'custom-disposition'
+                const disposition = dispositionKey(token);
+                if (disposition) {
+                    color = <string>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, `custom-${disposition}-color`)
+                }
             }
-        }
 
-        let borderColor = {INT: {}, EX: {}}
-        if (colorFrom === 'token-disposition') {
-        //@ts-ignore
-        //if (token._controlled) return overrides.CONTROLLED;
-            //@ts-ignore
-        //else if (token._hover) {
-            const disPath = isNewerVersion(getGame().data.version, "0.8.0") ? CONST.TOKEN_DISPOSITIONS : TOKEN_DISPOSITIONS
-            //@ts-ignore
-            const d = parseInt(token.data.disposition);
-            //@ts-ignore
-            if (!getGame().user?.isGM && token.owner) borderColor = overrides.CONTROLLED;
-            //@ts-ignore
-            else if (token.actor?.hasPlayerOwner) borderColor = overrides.PARTY;
-            else if (d === disPath.FRIENDLY) borderColor = overrides.FRIENDLY;
-            else if (d === disPath.NEUTRAL) borderColor = overrides.NEUTRAL;
-            else borderColor = overrides.HOSTILE;
-        //}
-        //else return null;
-        }else if (colorFrom === 'actor-folder-color') {
-            borderColor = overrides.ACTOR_FOLDER_COLOR;
-        } else {
-            // colorFrom === 'custom-disposition'
-            borderColor = overrides.CUSTOM_DISPOSITION;
-        }
-        
-        // SECOND PART 
-        // if(!BCC) BCC = new BCconfig()
-        //@ts-ignore
-        token.border.clear();
-        if (!borderColor) return;
-        switch (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "removeBorders")) {
-            case "0": break;
-            //@ts-ignore
-            case "1": if (!token.owner) return;
-                break;
-            case "2": return;
-        }
-        //@ts-ignore
-        if (token.data.flags[TOKEN_FACTIONS_MODULE_NAME]?.noBorder){
-            return;
-        }
-        if (!borderColor.INT || Number.isNaN(borderColor.INT)){
-            return;
-        }
-        const t = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "borderWidth") || CONFIG.Canvas.objectBorderThickness;
-        // DISABLED
-        // if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "healthGradient")) {
-        //     const systemPath = BCC.currentSystem
-        //     const stepLevel = BCC.stepLevel
-        //     const hpMax = getProperty(token, systemPath.max) + (getProperty(token, systemPath.tempMax) ?? 0)
-        //     const hpValue = getProperty(token, systemPath.value)
-        //     const hpDecimal = parseInt(String(BorderFrame.clamp((hpValue / hpMax) * stepLevel, stepLevel, 1))) || 1
-        //     const color = BorderFrame.rgbToHex(BCC.colorArray[hpDecimal - 1])
-        //     borderColor.INT = parseInt(color.substr(1), 16)
-        //     if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "tempHPgradient") && getProperty(token, systemPath.temp) > 0) {
-        //         const tempValue = getProperty(token, systemPath.temp)
-        //         const tempDecimal = parseInt(String(BorderFrame.clamp(tempValue / (hpMax / 2) * stepLevel, stepLevel, 1)))
-        //         const tempEx = BorderFrame.rgbToHex(BCC.tempArray[tempDecimal - 1])
-        //         borderColor.EX = parseInt(tempEx.substr(1), 16)
-        //     }
+            const overrides = {
+                CONTROLLED: {
+                    INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "controlledColor")).substr(1), 16),
+                    EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "controlledColorEx")).substr(1), 16),
+                },
+                FRIENDLY: {
+                    INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "friendlyColor")).substr(1), 16),
+                    EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "friendlyColorEx")).substr(1), 16),
+                },
+                NEUTRAL: {
+                    INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "neutralColor")).substr(1), 16),
+                    EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "neutralColorEx")).substr(1), 16),
+                },
+                HOSTILE: {
+                    INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "hostileColor")).substr(1), 16),
+                    EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "hostileColorEx")).substr(1), 16),
+                },
+                PARTY: {
+                    INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "partyColor")).substr(1), 16),
+                    EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "partyColorEx")).substr(1), 16),
+                },
+                ACTOR_FOLDER_COLOR: {
+                    INT: parseInt(String(color).substr(1), 16),
+                    EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "actorFolderColorEx")).substr(1), 16)
+                },
+                CUSTOM_DISPOSITION: {
+                    INT: parseInt(String(color).substr(1), 16),
+                    EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "customDispositionColorEx")).substr(1), 16),
+                }
+            }
 
-        // }
-        // Draw Hex border for size 1 tokens on a hex grid
-        const gt = CONST.GRID_TYPES;
-        const hexTypes = [gt.HEXEVENQ, gt.HEXEVENR, gt.HEXODDQ, gt.HEXODDR];
-        if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "circleBorders")) {
-            const p = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "borderOffset")
-            const h = Math.round(t / 2);
-            const o = Math.round(h / 2);
+            let borderColor = {INT: {}, EX: {}}
+            if (colorFrom === 'token-disposition') {
             //@ts-ignore
-            token.border.lineStyle(t, borderColor.EX, 0.8).drawCircle(token.w / 2, token.h / 2, token.w / 2 + t + p);
+            //if (token._controlled) return overrides.CONTROLLED;
+                //@ts-ignore
+            //else if (token._hover) {
+                const disPath = isNewerVersion(getGame().data.version, "0.8.0") ? CONST.TOKEN_DISPOSITIONS : TOKEN_DISPOSITIONS
+                //@ts-ignore
+                const d = parseInt(token.data.disposition);
+                //@ts-ignore
+                if (!getGame().user?.isGM && token.owner) borderColor = overrides.CONTROLLED;
+                //@ts-ignore
+                else if (token.actor?.hasPlayerOwner) borderColor = overrides.PARTY;
+                else if (d === disPath.FRIENDLY) borderColor = overrides.FRIENDLY;
+                else if (d === disPath.NEUTRAL) borderColor = overrides.NEUTRAL;
+                else borderColor = overrides.HOSTILE;
+            //}
+            //else return null;
+            }else if (colorFrom === 'actor-folder-color') {
+                borderColor = overrides.ACTOR_FOLDER_COLOR;
+            } else {
+                // colorFrom === 'custom-disposition'
+                borderColor = overrides.CUSTOM_DISPOSITION;
+            }
+            
+            // SECOND PART 
+            // if(!BCC) BCC = new BCconfig()
             //@ts-ignore
-            token.border.lineStyle(h, borderColor.INT, 1.0).drawCircle(token.w / 2, token.h / 2, token.w / 2 + h + t / 2 + p);
-        }
-        //@ts-ignore
-        else if (hexTypes.includes(getCanvas().grid?.type) && (token.data.width === 1) && (token.data.height === 1)) {
-            const p = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "borderOffset")
-            const q = Math.round(p / 2)
+            token.border.clear();
+            if (!borderColor) return;
+            switch (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "removeBorders")) {
+                case "0": break;
+                //@ts-ignore
+                case "1": if (!token.owner) return;
+                    break;
+                case "2": return;
+            }
             //@ts-ignore
-            const polygon = getCanvas().grid?.grid?.getPolygon(-1.5 - q, -1.5 - q, token.w + 2 + p, token.h + 2 + p);
-            //@ts-ignore
-            token.border.lineStyle(t, borderColor.EX, 0.8).drawPolygon(polygon);
-            //@ts-ignore
-            token.border.lineStyle(t / 2, borderColor.INT, 1.0).drawPolygon(polygon);
-        }
+            if (token.data.flags[TOKEN_FACTIONS_MODULE_NAME]?.noBorder){
+                return;
+            }
+            if (!borderColor.INT || Number.isNaN(borderColor.INT)){
+                return;
+            }
+            const t = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "borderWidth") || CONFIG.Canvas.objectBorderThickness;
+            // DISABLED
+            // if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "healthGradient")) {
+            //     const systemPath = BCC.currentSystem
+            //     const stepLevel = BCC.stepLevel
+            //     const hpMax = getProperty(token, systemPath.max) + (getProperty(token, systemPath.tempMax) ?? 0)
+            //     const hpValue = getProperty(token, systemPath.value)
+            //     const hpDecimal = parseInt(String(BorderFrame.clamp((hpValue / hpMax) * stepLevel, stepLevel, 1))) || 1
+            //     const color = BorderFrame.rgbToHex(BCC.colorArray[hpDecimal - 1])
+            //     borderColor.INT = parseInt(color.substr(1), 16)
+            //     if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "tempHPgradient") && getProperty(token, systemPath.temp) > 0) {
+            //         const tempValue = getProperty(token, systemPath.temp)
+            //         const tempDecimal = parseInt(String(BorderFrame.clamp(tempValue / (hpMax / 2) * stepLevel, stepLevel, 1)))
+            //         const tempEx = BorderFrame.rgbToHex(BCC.tempArray[tempDecimal - 1])
+            //         borderColor.EX = parseInt(tempEx.substr(1), 16)
+            //     }
 
-        // Otherwise Draw Square border
-        else {
-            const p = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "borderOffset")
-            const q = Math.round(p / 2)
-            const h = Math.round(t / 2);
-            const o = Math.round(h / 2);
+            // }
+            // Draw Hex border for size 1 tokens on a hex grid
+            const gt = CONST.GRID_TYPES;
+            const hexTypes = [gt.HEXEVENQ, gt.HEXEVENR, gt.HEXODDQ, gt.HEXODDR];
+            if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "circleBorders")) {
+                const p = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "borderOffset")
+                const h = Math.round(t / 2);
+                const o = Math.round(h / 2);
+                //@ts-ignore
+                token.border.lineStyle(t, borderColor.EX, 0.8).drawCircle(token.w / 2, token.h / 2, token.w / 2 + t + p);
+                //@ts-ignore
+                token.border.lineStyle(h, borderColor.INT, 1.0).drawCircle(token.w / 2, token.h / 2, token.w / 2 + h + t / 2 + p);
+            }
             //@ts-ignore
-            token.border.lineStyle(t, borderColor.EX, 0.8).drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3);
-            //@ts-ignore
-            token.border.lineStyle(h, borderColor.INT, 1.0).drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3);
-        }
+            else if (hexTypes.includes(getCanvas().grid?.type) && (token.data.width === 1) && (token.data.height === 1)) {
+                const p = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "borderOffset")
+                const q = Math.round(p / 2)
+                //@ts-ignore
+                const polygon = getCanvas().grid?.grid?.getPolygon(-1.5 - q, -1.5 - q, token.w + 2 + p, token.h + 2 + p);
+                //@ts-ignore
+                token.border.lineStyle(t, borderColor.EX, 0.8).drawPolygon(polygon);
+                //@ts-ignore
+                token.border.lineStyle(t / 2, borderColor.INT, 1.0).drawPolygon(polygon);
+            }
+
+            // Otherwise Draw Square border
+            else {
+                const p = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "borderOffset")
+                const q = Math.round(p / 2)
+                const h = Math.round(t / 2);
+                const o = Math.round(h / 2);
+                //@ts-ignore
+                token.border.lineStyle(t, borderColor.EX, 0.8).drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3);
+                //@ts-ignore
+                token.border.lineStyle(h, borderColor.INT, 1.0).drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3);
+            }
+        });
         return;
-
-
     }
 }
 

@@ -146,46 +146,46 @@ export const registerSettings = function () {
         default: '0',
         config: true,
     });
-    getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME + '', 'healthGradient', {
-        name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.healthGradient.name'),
-        hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.healthGradient.hint'),
-        scope: 'world',
-        type: Boolean,
-        default: false,
-        config: true,
-    });
-    getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME + '', 'tempHPgradient', {
-        name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.tempHPgradient.name'),
-        hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.tempHPgradient.hint'),
-        scope: 'world',
-        type: Boolean,
-        default: false,
-        config: true,
-    });
-    getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME + '', 'healthGradientA', {
-        name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.healthGradientA.name'),
-        hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.healthGradientA.hint'),
-        scope: 'world',
-        type: String,
-        default: '#1b9421',
-        config: true,
-    });
-    getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME + '', 'healthGradientB', {
-        name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.healthGradientB.name'),
-        hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.healthGradientB.hint'),
-        scope: 'world',
-        type: String,
-        default: '#c9240a',
-        config: true,
-    });
-    getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME + '', 'healthGradientC', {
-        name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.healthGradientC.name'),
-        hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.healthGradientC.hint'),
-        scope: 'world',
-        type: String,
-        default: '#22e3dd',
-        config: true,
-    });
+    // getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME+'', 'healthGradient', {
+    //   name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.healthGradient.name'),
+    //   hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.healthGradient.hint'),
+    //   scope: 'world',
+    //   type: Boolean,
+    //   default: false,
+    //   config: true,
+    // });
+    // getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME+'', 'tempHPgradient', {
+    //   name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.tempHPgradient.name'),
+    //   hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.tempHPgradient.hint'),
+    //   scope: 'world',
+    //   type: Boolean,
+    //   default: false,
+    //   config: true,
+    // });
+    // getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME+'', 'healthGradientA', {
+    //   name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.healthGradientA.name'),
+    //   hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.healthGradientA.hint'),
+    //   scope: 'world',
+    //   type: String,
+    //   default: '#1b9421',
+    //   config: true,
+    // });
+    // getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME+'', 'healthGradientB', {
+    //   name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.healthGradientB.name'),
+    //   hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.healthGradientB.hint'),
+    //   scope: 'world',
+    //   type: String,
+    //   default: '#c9240a',
+    //   config: true,
+    // });
+    // getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME+'', 'healthGradientC', {
+    //   name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.healthGradientC.name'),
+    //   hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.healthGradientC.hint'),
+    //   scope: 'world',
+    //   type: String,
+    //   default: '#22e3dd',
+    //   config: true,
+    // });
     getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME + '', 'stepLevel', {
         name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.stepLevel.name'),
         hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.stepLevel.hint'),
