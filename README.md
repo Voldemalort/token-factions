@@ -25,16 +25,17 @@ To install this module manually:
 
 This module uses the [libWrapper](https://github.com/ruipin/fvtt-lib-wrapper) library for wrapping core methods. It is a hard dependency and it is recommended for the best experience and compatibility with other modules.
 
-### libWrapper
+### colorsettings
 
-This module uses the [libWrapper](https://github.com/ruipin/fvtt-lib-wrapper) library for wrapping core methods. It is a hard dependency and it is recommended for the best experience and compatibility with other modules.
+This module uses the [colorsettings](https://github.com/ardittristan/VTTColorSettings) library for wrapping settings module. It is a hard dependency and it is recommended for the best experience and compatibility with other modules.
 
 ## Known issue
 
 - There is a incompatibility with the module [Foundry VTT Mount Up](https://github.com/p4535992/MountUp ) when i "Mount Up" a faction token the PIXI Graphic go in conlict and launch a exception is not a grave exception but is annoying
-- There is a incompatibility with the module [Perfect vision](https://github.com/dev7355608/perfect-vision ) when both module are active everything is broken, a simple soution on my side is disable the subfeature with pixy texture in favore of the solution with the border on the token (note if you use [Border-Control](https://github.com/kandashi/Border-Control) module this last one win on mine because is a ovveride )
 
-## Configuration
+- There is a incompatibility with the module [Perfect vision](https://github.com/dev7355608/perfect-vision ) when both module are active everything is broken, a simple soution on my side is disable the subfeature with pixy texture in favor of the solution with the border drawing on the token (note if you use [Border-Control](https://github.com/kandashi/Border-Control) module that module win on mine because use a ovveride wrapper method)
+
+## Configuration with Pixi Texture
 
 ![alt text](./docs/default-settings.png?raw=true)
 
@@ -95,6 +96,15 @@ Setting this value to anything lower than 1 will allow the map background to be 
 ### Frame Opacity
 
 Setting this value to anything lower than 1 will allow the map background or token to be seen through the frame. Setting this value to 0 will disable drawing the frame entirely.
+
+## Configuration with Border drawing (still in developing)
+
+You can set many details of the border , checkout the module settings.
+
+![img1](./docs/border_faction_feature.png)
+
+![img2](./docs/border_faction_feature_round.png)
+
 
 ## License
 
