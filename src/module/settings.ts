@@ -42,8 +42,8 @@ export const registerSettings = function () {
   // ==========================
 
   getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'tokenFactionsEnabled', {
-    name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.tokenFactionsEnabled.name'),
-    hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.tokenFactionsEnabled.hint'),
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.tokenFactionsEnabled.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.tokenFactionsEnabled.hint'),
     default: true,
     type: Boolean,
     scope: 'world',
@@ -144,234 +144,333 @@ export const registerSettings = function () {
       config: true,
   });
 
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, "removeBorders", {
-    name: 'Remove Borders',
-    hint: 'Remove the border from specific tokens',
+  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME+'', 'removeBorders', {
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.removeBorders.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.removeBorders.hint'),
     scope: 'world',
     type: String,
     choices: {
-        "0": "None",
-        "1": "Non Owned",
-        "2": "All",
+      0: 'None',
+      1: 'Non Owned',
+      2: 'All',
     },
-    default: "0",
+    default: '0',
     config: true,
   });
 
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, "stepLevel", {
-    name: 'Gradient Step Level',
-    hint: 'How many individual colors are part of the gradient',
+  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME+'', 'healthGradient', {
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.healthGradient.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.healthGradient.hint'),
+    scope: 'world',
+    type: Boolean,
+    default: false,
+    config: true,
+  });
+  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME+'', 'tempHPgradient', {
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.tempHPgradient.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.tempHPgradient.hint'),
+    scope: 'world',
+    type: Boolean,
+    default: false,
+    config: true,
+  });
+  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME+'', 'healthGradientA', {
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.healthGradientA.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.healthGradientA.hint'),
+    scope: 'world',
+    type: String,
+    default: '#1b9421',
+    config: true,
+  });
+  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME+'', 'healthGradientB', {
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.healthGradientB.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.healthGradientB.hint'),
+    scope: 'world',
+    type: String,
+    default: '#c9240a',
+    config: true,
+  });
+
+  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME+'', 'healthGradientC', {
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.healthGradientC.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.healthGradientC.hint'),
+    scope: 'world',
+    type: String,
+    default: '#22e3dd',
+    config: true,
+  });
+
+  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME+'', 'stepLevel', {
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.stepLevel.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.stepLevel.hint'),
     scope: 'world',
     type: Number,
     default: 10,
     config: true,
   });
 
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, "borderWidth", {
-      name: 'Border Width',
-      hint: 'Override border width',
-      scope: 'client',
-      type: Number,
-      default: 4,
-      config: true,
+  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME+'', 'borderWidth', {
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.borderWidth.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.borderWidth.hint'),
+    scope: 'client',
+    type: Number,
+    default: 4,
+    config: true,
+  });
+  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME+'', 'borderOffset', {
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.borderOffset.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.borderOffset.hint'),
+    scope: 'client',
+    type: Number,
+    default: 0,
+    config: true,
+  });
+  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME+'', 'targetSize', {
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.targetSize.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.targetSize.hint'),
+    scope: 'client',
+    type: Number,
+    default: 1,
+    config: true,
+  });
+  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME+'', 'internatTarget', {
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.internatTarget.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.internatTarget.hint'),
+    scope: 'client',
+    type: Boolean,
+    default: false,
+    config: true,
+  });
+  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME+'', 'circleBorders', {
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.circleBorders.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.circleBorders.hint'),
+    scope: 'client',
+    type: Boolean,
+    default: false,
+    config: true,
+  });
+  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME+'', 'enableHud', {
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.enableHud.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.enableHud.hint'),
+    scope: 'world',
+    type: Boolean,
+    default: true,
+    config: true,
+  });
+  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME+'', 'hudPos', {
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.hudPos.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.hudPos.hint'),
+    scope: 'world',
+    type: String,
+    default: '.right',
+    choices: {
+      '.right': 'Right',
+      '.left': 'Left',
+    },
+    config: true,
   });
 
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, "borderOffset", {
-      name: 'Border Offset',
-      hint: 'Customize border offset',
-      scope: 'client',
-      type: Number,
-      default: 0,
-      config: true,
+  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME+'', 'circularNameplate', {
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.circularNameplate.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.circularNameplate.hint'),
+    scope: 'world',
+    type: Boolean,
+    default: false,
+    config: true,
+  });
+  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME+'', 'circularNameplateRadius', {
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.circularNameplateRadius.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.circularNameplateRadius.hint'),
+    scope: 'world',
+    type: Number,
+    default: 0,
+    config: true,
+  });
+  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME+'', 'nameplateOffset', {
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.nameplateOffset.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.nameplateOffset.hint'),
+    scope: 'world',
+    type: Number,
+    default: 0,
+    config: true,
   });
 
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, "circleBorders", {
-      name: 'Circular Borders',
-      scope: 'client',
-      type: Boolean,
-      default: false,
-      config: true,
+  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME+'', 'plateFont', {
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.plateFont.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.plateFont.hint'),
+    scope: 'world',
+    type: String,
+    choices: {
+      arial: 'Arial',
+      'arial black': 'Arial Black',
+      'comic sans ms': 'Comic Sans MS',
+      'courier new': 'Courier New',
+      georgia: 'Georgia',
+      helvetica: 'Helvetica',
+      impact: 'Impact',
+      signika: 'Signika',
+      tahoma: 'Tahoma',
+      'times new roman': 'Times New Roman',
+      verdana: 'Verdana',
+    },
+    default: 'signika',
+    config: true,
   });
-
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, "enableHud", {
-      name: 'Border HUD element',
-      hint: 'Add Token HUD element to disable/enable borders',
-      scope: 'world',
-      type: Boolean,
-      default: true,
-      config: true,
+  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME+'', 'sizeMultiplier', {
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.sizeMultiplier.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.sizeMultiplier.hint'),
+    scope: 'world',
+    type: Number,
+    default: 1,
+    config: true,
   });
-
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, "hudPos", {
-      name: 'Border Control HUD Position',
-      scope: 'world',
-      type: String,
-      default: ".right",
-      choices: {
-          ".right": "Right",
-          ".left": "Left",
-      },
-      config: true,
+  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME+'', 'plateConsistency', {
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.plateConsistency.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.plateConsistency.hint'),
+    scope: 'world',
+    type: Boolean,
+    default: false,
+    config: true,
   });
-
-  // getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, "circularNameplate", {
-  //     name: 'Circular Nameplates',
-  //     hint: "Requires a refresh",
-  //     scope: 'world',
-  //     type: Boolean,
-  //     default: false,
-  //     config: true,
-  // });
-
-  // getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, "circularNameplateRadius", {
-  //     name: 'Circular Nameplates Radius',
-  //     hint: "Requires a refresh",
-  //     scope: 'world',
-  //     type: Number,
-  //     default: 0,
-  //     config: true,
-  // });
-
-  // getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, "nameplateOffset", {
-  //     name: 'Nameplate Y Offset',
-  //     hint: "Requires a refresh",
-  //     scope: 'world',
-  //     type: Number,
-  //     default: 0,
-  //     config: true,
-  // });
-
-  // getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, "plateFont", {
-  //     name: 'Nameplate Font',
-  //     hint: "Requires a refresh",
-  //     scope: 'world',
-  //     type: String,
-  //     choices: {
-  //         "arial": "Arial",
-  //         "arial black": "Arial Black",
-  //         "comic sans ms": "Comic Sans MS",
-  //         "courier new": "Courier New",
-  //         "georgia": "Georgia",
-  //         "helvetica": "Helvetica",
-  //         "impact": "Impact",
-  //         "signika": "Signika",
-  //         "tahoma": "Tahoma",
-  //         "times new roman": "Times New Roman",
-  //         "verdana": "Verdana"
-  //     },
-  //     default: "signika",
-  //     config: true,
-  // });
-
-  // getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, "sizeMultiplier", {
-  //     name: 'Nameplate Font Size',
-  //     hint: "Requires a refresh",
-  //     scope: 'world',
-  //     type: Number,
-  //     default: 1,
-  //     config: true,
-  // });
-  
-  // getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, "plateConsistency", {
-  //     name: 'Nameplate Consistency',
-  //     hint: "Attempts to keep nameplates the same size across different grid sizes",
-  //     scope: 'world',
-  //     type: Boolean,
-  //     default: false,
-  //     config: true,
-  // });
-
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, "controlledColor", {
-      name: 'Color: Controlled',
-      scope: 'client',
-      type: String,
-      default: "#FF9829",
-      config: true,
-  });
-
-  new window.Ardittristan.ColorSetting(TOKEN_FACTIONS_MODULE_NAME, "controlledColor", {
-    name: i18n("splatter.settings.bloodColor.text"),
-    hint: i18n("splatter.settings.bloodColor.hint"),
-    label: i18n("splatter.settings.bloodColor.label"),
-    restricted: true,
-    defaultColor: "#a51414d8",
-    scope: "world",
+  //@ts-ignore
+  new window.Ardittristan.ColorSetting(TOKEN_FACTIONS_MODULE_NAME+'', 'controlledColor', {
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.controlledColor.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.controlledColor.hint'),
+    label: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.controlledColor.name'),
+    restricted: false,
+    defaultColor: '#FF9829',
     onChange: function () {
-      if (canvas.background.Bloodsplatter) {
-        canvas.background.Bloodsplatter.Update();
-      }
+      // TODO UPDATE COLOR OF THE BORDER ON CANVAS
     },
   });
-
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, "controlledColorEx", {
-      name: 'Color: Controlled External',
-      scope: 'client',
-      type: String,
-      default: "#000000",
-      config: true,
+  //@ts-ignore
+  new window.Ardittristan.ColorSetting(TOKEN_FACTIONS_MODULE_NAME+'', 'controlledColorEx', {
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.controlledColorEx.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.controlledColorEx.hint'),
+    label: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.controlledColorEx.name'),
+    restricted: false,
+    defaultColor: '#000000',
+    onChange: function () {
+      // TODO UPDATE COLOR OF THE BORDER ON CANVAS
+    },
   });
-
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, "hostileColor", {
-      name: 'Color: Hostile',
-      scope: 'client',
-      type: String,
-      default: "#E72124",
-      config: true,
+  //@ts-ignore
+  new window.Ardittristan.ColorSetting(TOKEN_FACTIONS_MODULE_NAME+'', 'hostileColor', {
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.hostileColor.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.hostileColor.hint'),
+    label: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.hostileColor.name'),
+    restricted: false,
+    defaultColor: '#E72124',
+    onChange: function () {
+      // TODO UPDATE COLOR OF THE BORDER ON CANVAS
+    },
   });
-
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, "hostileColorEx", {
-      name: 'Color: Hostile External',
-      scope: 'client',
-      type: String,
-      default: "#000000",
-      config: true,
+  //@ts-ignore
+  new window.Ardittristan.ColorSetting(TOKEN_FACTIONS_MODULE_NAME+'', 'hostileColorEx', {
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.hostileColorEx.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.hostileColorEx.hint'),
+    label: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.hostileColorEx.name'),
+    restricted: false,
+    defaultColor: '#000000',
+    onChange: function () {
+      // TODO UPDATE COLOR OF THE BORDER ON CANVAS
+    },
   });
-
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, "friendlyColor", {
-      name: 'Color: Friendly',
-      scope: 'client',
-      type: String,
-      default: "#43DFDF",
-      config: true,
+  //@ts-ignore
+  new window.Ardittristan.ColorSetting(TOKEN_FACTIONS_MODULE_NAME+'', 'friendlyColor', {
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.friendlyColor.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.friendlyColor.hint'),
+    label: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.friendlyColor.name'),
+    restricted: false,
+    defaultColor: '#43DFDF',
+    onChange: function () {
+      // TODO UPDATE COLOR OF THE BORDER ON CANVAS
+    },
   });
-
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, "friendlyColorEx", {
-      name: 'Color: Friendly External',
-      scope: 'client',
-      type: String,
-      default: "#000000",
-      config: true,
+  //@ts-ignore
+  new window.Ardittristan.ColorSetting(TOKEN_FACTIONS_MODULE_NAME+'', 'friendlyColorEx', {
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.friendlyColorEx.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.friendlyColorEx.hint'),
+    label: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.friendlyColorEx.name'),
+    restricted: false,
+    defaultColor: '#000000',
+    onChange: function () {
+      // TODO UPDATE COLOR OF THE BORDER ON CANVAS
+    },
   });
-
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, "neutralColor", {
-      name: 'Color: Neutral',
-      scope: 'client',
-      type: String,
-      default: "#F1D836",
-      config: true,
+  //@ts-ignore
+  new window.Ardittristan.ColorSetting(TOKEN_FACTIONS_MODULE_NAME+'', 'neutralColor', {
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.neutralColor.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.neutralColor.hint'),
+    label: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.neutralColor.name'),
+    restricted: false,
+    defaultColor: '#F1D836',
+    onChange: function () {
+      // TODO UPDATE COLOR OF THE BORDER ON CANVAS
+    },
   });
-
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, "neutralColorEx", {
-      name: 'Color: Neutral External',
-      scope: 'client',
-      type: String,
-      default: "#000000",
-      config: true,
+  //@ts-ignore
+  new window.Ardittristan.ColorSetting(TOKEN_FACTIONS_MODULE_NAME+'', 'neutralColorEx', {
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.neutralColorEx.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.neutralColorEx.hint'),
+    label: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.neutralColorEx.name'),
+    restricted: false,
+    defaultColor: '#000000',
+    onChange: function () {
+      // TODO UPDATE COLOR OF THE BORDER ON CANVAS
+    },
   });
-
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, "partyColor", {
-      name: 'Color: Party',
-      scope: 'client',
-      type: String,
-      default: "#33BC4E",
-      config: true,
+  //@ts-ignore
+  new window.Ardittristan.ColorSetting(TOKEN_FACTIONS_MODULE_NAME+'', 'partyColor', {
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.partyColor.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.partyColor.hint'),
+    label: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.partyColor.name'),
+    restricted: false,
+    defaultColor: '#33BC4E',
+    onChange: function () {
+      // TODO UPDATE COLOR OF THE BORDER ON CANVAS
+    },
   });
-
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, "partyColorEx", {
-      name: 'Color: Party External',
-      scope: 'client',
-      type: String,
-      default: "#000000",
-      config: true,
+  //@ts-ignore
+  new window.Ardittristan.ColorSetting(TOKEN_FACTIONS_MODULE_NAME+'', 'partyColorEx', {
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.partyColorEx.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.partyColorEx.hint'),
+    label: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.partyColorEx.name'),
+    restricted: false,
+    defaultColor: '#000000',
+    onChange: function () {
+      // TODO UPDATE COLOR OF THE BORDER ON CANVAS
+    },
   });
+  //@ts-ignore
+  new window.Ardittristan.ColorSetting(TOKEN_FACTIONS_MODULE_NAME+'', 'targetColor', {
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.targetColor.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.targetColor.hint'),
+    label: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.targetColor.name'),
+    restricted: false,
+    defaultColor: '#FF9829',
+    onChange: function () {
+      // TODO UPDATE COLOR OF THE BORDER ON CANVAS
+    },
+  });
+  //@ts-ignore
+  new window.Ardittristan.ColorSetting(TOKEN_FACTIONS_MODULE_NAME+'', 'targetColorEx', {
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.targetColorEx.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.targetColorEx.hint'),
+    label: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.targetColorEx.name'),
+    restricted: false,
+    defaultColor: '#000000',
+    onChange: function () {
+      // TODO UPDATE COLOR OF THE BORDER ON CANVAS
+    },
+  });
+  //@ts-ignore
+  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME+'', 'disableRefreshTarget', {
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.disableRefreshTarget.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.disableRefreshTarget.hint'),
+    scope: 'world',
+    type: Boolean,
+    default: false,
+    config: true,
+  }); 
 };
