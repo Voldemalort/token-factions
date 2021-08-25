@@ -25,10 +25,6 @@ To install this module manually:
 
 This module uses the [libWrapper](https://github.com/ruipin/fvtt-lib-wrapper) library for wrapping core methods. It is a hard dependency and it is recommended for the best experience and compatibility with other modules.
 
-### colorsettings
-
-This module uses the [colorsettings](https://github.com/ardittristan/VTTColorSettings) library for wrapping settings module. It is a hard dependency and it is recommended for the best experience and compatibility with other modules.
-
 ## Known issue
 
 - There is a incompatibility with the module [Foundry VTT Mount Up](https://github.com/p4535992/MountUp ) when i "Mount Up" a faction token the PIXI Graphic go in conlict and launch a exception is not a grave exception but is annoying

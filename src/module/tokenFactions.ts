@@ -2,7 +2,6 @@ import { TokenData } from '@league-of-foundry-developers/foundry-vtt-types/src/f
 import { defaultColors, dispositions } from './Hooks';
 import { getCanvas, getGame, TOKEN_FACTIONS_MODULE_NAME } from './settings';
 
-
 export const dispositionKey = (token) => {
   const dispositionValue = parseInt(String(token.data.disposition), 10);
   let disposition;
@@ -45,8 +44,7 @@ export const TokenFactions = ((canvas) => {
   let bevelTexture;
 
   class TokenFactions {
-    static async onInit(defaultColors,dispositions) {
- 
+    static async onInit(defaultColors, dispositions) {
       bevelGradient = await loadTexture(`modules/${TOKEN_FACTIONS_MODULE_NAME}/assets/bevel-gradient.jpg`);
       bevelTexture = await loadTexture(`modules/${TOKEN_FACTIONS_MODULE_NAME}/assets/bevel-texture.png`);
 

@@ -2,15 +2,15 @@ import { defaultColors } from "./Hooks.js";
 import { getCanvas, getGame, TOKEN_FACTIONS_MODULE_NAME } from "./settings.js";
 import { dispositionKey } from "./tokenFactions.js";
 /*
-* The allowed Token disposition types
-* HOSTILE - Displayed as an enemy with a red border
-* NEUTRAL - Displayed as neutral with a yellow border
-* FRIENDLY - Displayed as an ally with a cyan border
-*/
+ * The allowed Token disposition types
+ * HOSTILE - Displayed as an enemy with a red border
+ * NEUTRAL - Displayed as neutral with a yellow border
+ * FRIENDLY - Displayed as an ally with a cyan border
+ */
 const TOKEN_DISPOSITIONS = {
     HOSTILE: -1,
     NEUTRAL: 0,
-    FRIENDLY: 1
+    FRIENDLY: 1,
 };
 export class BCconfig {
     constructor() {
@@ -19,44 +19,44 @@ export class BCconfig {
         this.pf2e = {};
         this.pf1 = {};
         this.swade = {};
-        this.stepLevel = "";
+        this.stepLevel = '';
         // endColor:[r: number, g: number, b: number];
         // startColor:[r: number, g: number, b: number];
         // tempColor:[r: number, g: number, b: number];
         // colorArray:number[][] = [];
         // tempArray:number[][] = [];
-        this.currentSystem = "";
+        this.currentSystem = '';
         this.symbaroum = {
-            value: "actor.data.data.health.toughness.value",
-            max: "actor.data.data.health.toughness.max",
+            value: 'actor.data.data.health.toughness.value',
+            max: 'actor.data.data.health.toughness.max',
             tempMax: undefined,
-            temp: undefined
+            temp: undefined,
         };
         this.dnd5e = {
-            value: "actor.data.data.attributes.hp.value",
-            max: "actor.data.data.attributes.hp.max",
+            value: 'actor.data.data.attributes.hp.value',
+            max: 'actor.data.data.attributes.hp.max',
             tempMax: undefined,
-            temp: "actor.data.data.attributes.hp.temp"
+            temp: 'actor.data.data.attributes.hp.temp',
         };
         this.pf2e = {
-            value: "actor.data.data.attributes.hp.value",
-            max: "actor.data.data.attributes.hp.max",
-            tempMax: "actor.data.data.attributes.hp.tempmax",
-            temp: "actor.data.data.attributes.hp.temp"
+            value: 'actor.data.data.attributes.hp.value',
+            max: 'actor.data.data.attributes.hp.max',
+            tempMax: 'actor.data.data.attributes.hp.tempmax',
+            temp: 'actor.data.data.attributes.hp.temp',
         };
         this.pf1 = {
-            value: "actor.data.data.attributes.hp.value",
-            max: "actor.data.data.attributes.hp.max",
+            value: 'actor.data.data.attributes.hp.value',
+            max: 'actor.data.data.attributes.hp.max',
             tempMax: undefined,
-            temp: "actor.data.data.attributes.hp.temp"
+            temp: 'actor.data.data.attributes.hp.temp',
         };
         this.swade = {
-            value: "actor.data.data.wounds.value",
-            max: "actor.data.data.wounds.max",
+            value: 'actor.data.data.wounds.value',
+            max: 'actor.data.data.wounds.max',
             tempMax: undefined,
-            temp: undefined
+            temp: undefined,
         };
-        this.stepLevel = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "stepLevel");
+        this.stepLevel = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'stepLevel');
         // this.endColor = hexToRGB(<number>colorStringToHex(<string>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "healthGradientA")))
         // this.startColor = hexToRGB(<number>colorStringToHex(<string>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "healthGradientB")))
         // this.tempColor = hexToRGB(<number>colorStringToHex(<string>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "healthGradientC")))
@@ -69,20 +69,20 @@ export class BorderFrameFaction {
     static AddBorderToggle(app, html, data) {
         if (!getGame().user?.isGM)
             return;
-        if (!getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "enableHud"))
+        if (!getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'enableHud'))
             return;
-        const buttonPos = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "hudPos");
-        const borderButton = `<div class="control-icon border ${app.object.data.flags[TOKEN_FACTIONS_MODULE_NAME]?.noBorder ? "active" : ""}" title="Toggle Border"> <i class="fas fa-helmet-battle"></i></div>`;
+        const buttonPos = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'hudPos');
+        const borderButton = `<div class="control-icon border ${app.object.data.flags[TOKEN_FACTIONS_MODULE_NAME]?.noBorder ? 'active' : ''}" title="Toggle Border"> <i class="fas fa-helmet-battle"></i></div>`;
         const Pos = html.find(buttonPos);
         Pos.append(borderButton);
         html.find('.border').click(this.ToggleBorder.bind(app));
     }
     static async ToggleBorder(event) {
         //@ts-ignore
-        const border = this.object.document.getFlag(TOKEN_FACTIONS_MODULE_NAME, "noBorder");
+        const border = this.object.document.getFlag(TOKEN_FACTIONS_MODULE_NAME, 'noBorder');
         //@ts-ignore
-        await this.object.document.setFlag(TOKEN_FACTIONS_MODULE_NAME, "noBorder", !border);
-        event.currentTarget.classList.toggle("active", !border);
+        await this.object.document.setFlag(TOKEN_FACTIONS_MODULE_NAME, 'noBorder', !border);
+        event.currentTarget.classList.toggle('active', !border);
     }
     static newBorder() {
         // if(!BCC) BCC = new BCconfig()
@@ -92,14 +92,17 @@ export class BorderFrameFaction {
         const borderColor = this._getBorderColor();
         if (!borderColor)
             return;
-        switch (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "removeBorders")) {
-            case "0": break;
-            //@ts-ignore
-            case "1":
-                if (!this.owner)
-                    return;
+        switch (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'removeBorders')) {
+            case '0':
                 break;
-            case "2": return;
+            case '1':
+                //@ts-ignore
+                if (!this.owner) {
+                    return;
+                }
+                break;
+            case '2':
+                return;
         }
         //@ts-ignore
         if (this.data.flags[TOKEN_FACTIONS_MODULE_NAME]?.noBorder) {
@@ -108,7 +111,7 @@ export class BorderFrameFaction {
         if (!borderColor.INT || Number.isNaN(borderColor.INT)) {
             return;
         }
-        const t = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "borderWidth") || CONFIG.Canvas.objectBorderThickness;
+        const t = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderWidth') || CONFIG.Canvas.objectBorderThickness;
         // DISABLED
         // if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "healthGradient")) {
         //     const systemPath = BCC.currentSystem
@@ -128,8 +131,8 @@ export class BorderFrameFaction {
         // Draw Hex border for size 1 tokens on a hex grid
         const gt = CONST.GRID_TYPES;
         const hexTypes = [gt.HEXEVENQ, gt.HEXEVENR, gt.HEXODDQ, gt.HEXODDR];
-        if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "circleBorders")) {
-            const p = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "borderOffset");
+        if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'circleBorders')) {
+            const p = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderOffset');
             const h = Math.round(t / 2);
             const o = Math.round(h / 2);
             //@ts-ignore
@@ -138,8 +141,8 @@ export class BorderFrameFaction {
             this.border.lineStyle(h, borderColor.INT, 1.0).drawCircle(this.w / 2, this.h / 2, this.w / 2 + h + t / 2 + p);
         }
         //@ts-ignore
-        else if (hexTypes.includes(getCanvas().grid?.type) && (this.data.width === 1) && (this.data.height === 1)) {
-            const p = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "borderOffset");
+        else if (hexTypes.includes(getCanvas().grid?.type) && this.data.width === 1 && this.data.height === 1) {
+            const p = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderOffset');
             const q = Math.round(p / 2);
             //@ts-ignore
             const polygon = getCanvas().grid?.grid?.getPolygon(-1.5 - q, -1.5 - q, this.w + 2 + p, this.h + 2 + p);
@@ -150,7 +153,7 @@ export class BorderFrameFaction {
         }
         // Otherwise Draw Square border
         else {
-            const p = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "borderOffset");
+            const p = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderOffset');
             const q = Math.round(p / 2);
             const h = Math.round(t / 2);
             const o = Math.round(h / 2);
@@ -189,40 +192,40 @@ export class BorderFrameFaction {
         }
         const overrides = {
             CONTROLLED: {
-                INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "controlledColor")).substr(1), 16),
-                EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "controlledColorEx")).substr(1), 16),
+                INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'controlledColor')).substr(1), 16),
+                EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'controlledColorEx')).substr(1), 16),
             },
             FRIENDLY: {
-                INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "friendlyColor")).substr(1), 16),
-                EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "friendlyColorEx")).substr(1), 16),
+                INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'friendlyColor')).substr(1), 16),
+                EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'friendlyColorEx')).substr(1), 16),
             },
             NEUTRAL: {
-                INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "neutralColor")).substr(1), 16),
-                EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "neutralColorEx")).substr(1), 16),
+                INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'neutralColor')).substr(1), 16),
+                EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'neutralColorEx')).substr(1), 16),
             },
             HOSTILE: {
-                INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "hostileColor")).substr(1), 16),
-                EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "hostileColorEx")).substr(1), 16),
+                INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'hostileColor')).substr(1), 16),
+                EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'hostileColorEx')).substr(1), 16),
             },
             PARTY: {
-                INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "partyColor")).substr(1), 16),
-                EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "partyColorEx")).substr(1), 16),
+                INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'partyColor')).substr(1), 16),
+                EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'partyColorEx')).substr(1), 16),
             },
             ACTOR_FOLDER_COLOR: {
                 INT: parseInt(String(color).substr(1), 16),
-                EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "actorFolderColorEx")).substr(1), 16)
+                EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'actorFolderColorEx')).substr(1), 16),
             },
             CUSTOM_DISPOSITION: {
                 INT: parseInt(String(color).substr(1), 16),
-                EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "customDispositionColorEx")).substr(1), 16),
-            }
+                EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'customDispositionColorEx')).substr(1), 16),
+            },
         };
         if (colorFrom === 'token-disposition') {
             //@ts-ignore
             //if (token._controlled) return overrides.CONTROLLED;
             //@ts-ignore
             //else if (token._hover) {
-            const disPath = isNewerVersion(getGame().data.version, "0.8.0") ? CONST.TOKEN_DISPOSITIONS : TOKEN_DISPOSITIONS;
+            const disPath = isNewerVersion(getGame().data.version, '0.8.0') ? CONST.TOKEN_DISPOSITIONS : TOKEN_DISPOSITIONS;
             //@ts-ignore
             const d = parseInt(token.data.disposition);
             //@ts-ignore
@@ -334,20 +337,25 @@ export class BorderFrameFaction {
     // }
     static componentToHex(c) {
         const hex = c.toString(16);
-        return hex.length == 1 ? "0" + hex : hex;
+        return hex.length == 1 ? '0' + hex : hex;
     }
     static rgbToHex(A) {
         if (A[0] === undefined || A[1] === undefined || A[2] === undefined)
-            console.error("RGB color invalid");
-        return "#" + BorderFrameFaction.componentToHex(A[0]) + BorderFrameFaction.componentToHex(A[1]) + BorderFrameFaction.componentToHex(A[2]);
+            console.error('RGB color invalid');
+        return ('#' +
+            BorderFrameFaction.componentToHex(A[0]) +
+            BorderFrameFaction.componentToHex(A[1]) +
+            BorderFrameFaction.componentToHex(A[2]));
     }
     static hexToRgb(hex) {
         const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-        return result ? {
-            r: parseInt(result[1], 16),
-            g: parseInt(result[2], 16),
-            b: parseInt(result[3], 16)
-        } : null;
+        return result
+            ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16),
+            }
+            : null;
     }
     static interpolateColor(color1, color2, factor) {
         if (arguments.length < 3) {
@@ -359,7 +367,6 @@ export class BorderFrameFaction {
         }
         return result;
     }
-    ;
     // My function to interpolate between two colors completely, returning an array
     static interpolateColors(color1, color2, steps) {
         const stepFactor = 1 / (steps - 1), interpolatedColorArray = [];
@@ -372,78 +379,79 @@ export class BorderFrameFaction {
     }
     static getActorHpPath() {
         switch (getGame().system.id) {
-            case "symbaroum": return {
-                value: "actor.data.data.health.toughness.value",
-                max: "actor.data.data.health.toughness.max",
-                tempMax: undefined,
-                temp: undefined
-            };
-            case "dnd5e": return {
-                value: "actor.data.data.attributes.hp.value",
-                max: "actor.data.data.attributes.hp.max",
-                tempMax: "actor.data.data.attributes.hp.tempmax",
-                temp: "actor.data.data.attributes.hp.temp"
-            };
+            case 'symbaroum':
+                return {
+                    value: 'actor.data.data.health.toughness.value',
+                    max: 'actor.data.data.health.toughness.max',
+                    tempMax: undefined,
+                    temp: undefined,
+                };
+            case 'dnd5e':
+                return {
+                    value: 'actor.data.data.attributes.hp.value',
+                    max: 'actor.data.data.attributes.hp.max',
+                    tempMax: 'actor.data.data.attributes.hp.tempmax',
+                    temp: 'actor.data.data.attributes.hp.temp',
+                };
         }
     }
-    static drawNameplate() {
-        const offSet = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "borderOffset");
-        const yOff = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "nameplateOffset");
-        const bOff = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "borderWidth") / 2;
-        const replaceFont = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "plateFont");
-        const sizeMulti = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "sizeMultiplier");
-        if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "circularNameplate")) {
-            const style = CONFIG.canvasTextStyle.clone();
-            const extraRad = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "circularNameplateRadius");
-            if (!getGame().modules.get("custom-nameplates")?.active) {
-                //@ts-ignore
-                style.fontFamily = replaceFont;
-                //@ts-ignore
-                style.fontSize *= sizeMulti;
-                //@ts-ignore
-                if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "plateConsistency"))
-                    style.fontSize *= getCanvas().grid?.size / 100;
-            }
-            const text = new PreciseText(this.name, style);
-            text.resolution = 2;
-            text.style.trim = true;
-            //@ts-ignore
-            text.updateText();
-            //@ts-ignore
-            const radius = this.w / 2 + text.texture.height + bOff + extraRad;
-            const maxRopePoints = 100;
-            const step = Math.PI / maxRopePoints;
-            let ropePoints = maxRopePoints - Math.round((text.texture.width / (radius * Math.PI)) * maxRopePoints);
-            ropePoints /= 2;
-            const points = [];
-            for (let i = maxRopePoints - ropePoints; i > ropePoints; i--) {
-                const x = radius * Math.cos(step * i);
-                const y = radius * Math.sin(step * i);
-                points.push(new PIXI.Point(-x, -y));
-            }
-            const name = new PIXI.SimpleRope(text.texture, points);
-            name.rotation = Math.PI;
-            //@ts-ignore
-            name.position.set(this.w / 2, this.h / 2 + yOff);
-            return name;
-        }
-        else {
-            //@ts-ignore
-            const style = this._getTextStyle();
-            if (!getGame().modules.get("custom-nameplates")?.active) {
-                style.fontFamily = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "plateFont");
-                style.fontSize *= sizeMulti;
-            }
-            //@ts-ignore
-            const name = new PreciseText(this.data.name, style);
-            name.anchor.set(0.5, 0);
-            //@ts-ignore
-            name.position.set(this.w / 2, this.h + bOff + yOff + offSet);
-            return name;
-        }
-    }
+    // static drawNameplate() {
+    //   const offSet = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderOffset');
+    //   const yOff = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'nameplateOffset');
+    //   const bOff = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderWidth') / 2;
+    //   const replaceFont = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'plateFont');
+    //   const sizeMulti = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'sizeMultiplier');
+    //   if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'circularNameplate')) {
+    //     const style = CONFIG.canvasTextStyle.clone();
+    //     const extraRad = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'circularNameplateRadius');
+    //     if (!getGame().modules.get('custom-nameplates')?.active) {
+    //       //@ts-ignore
+    //       style.fontFamily = replaceFont;
+    //       //@ts-ignore
+    //       style.fontSize *= sizeMulti;
+    //       //@ts-ignore
+    //       if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'plateConsistency'))
+    //         style.fontSize *= <number>getCanvas().grid?.size / 100;
+    //     }
+    //     const text = new PreciseText(this.name, style);
+    //     text.resolution = 2;
+    //     text.style.trim = true;
+    //     //@ts-ignore
+    //     text.updateText();
+    //     //@ts-ignore
+    //     const radius = this.w / 2 + text.texture.height + bOff + extraRad;
+    //     const maxRopePoints = 100;
+    //     const step = Math.PI / maxRopePoints;
+    //     let ropePoints = maxRopePoints - Math.round((text.texture.width / (radius * Math.PI)) * maxRopePoints);
+    //     ropePoints /= 2;
+    //     const points: PIXI.Point[] = [];
+    //     for (let i = maxRopePoints - ropePoints; i > ropePoints; i--) {
+    //       const x: number = radius * Math.cos(step * i);
+    //       const y: number = radius * Math.sin(step * i);
+    //       points.push(new PIXI.Point(-x, -y));
+    //     }
+    //     const name = new PIXI.SimpleRope(text.texture, points);
+    //     name.rotation = Math.PI;
+    //     //@ts-ignore
+    //     name.position.set(this.w / 2, this.h / 2 + yOff);
+    //     return name;
+    //   } else {
+    //     //@ts-ignore
+    //     const style = this._getTextStyle();
+    //     if (!getGame().modules.get('custom-nameplates')?.active) {
+    //       style.fontFamily = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'plateFont');
+    //       style.fontSize *= sizeMulti;
+    //     }
+    //     //@ts-ignore
+    //     const name = new PreciseText(this.data.name, style);
+    //     name.anchor.set(0.5, 0);
+    //     //@ts-ignore
+    //     name.position.set(this.w / 2, this.h + bOff + yOff + offSet);
+    //     return name;
+    //   }
+    // }
     static refreshAll() {
-        getCanvas().tokens?.placeables.forEach(t => t.draw());
+        getCanvas().tokens?.placeables.forEach((t) => t.draw());
     }
     // ADDED
     static async updateTokensBorder(tokenData) {
@@ -522,33 +530,33 @@ export class BorderFrameFaction {
             }
             const overrides = {
                 CONTROLLED: {
-                    INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "controlledColor")).substr(1), 16),
-                    EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "controlledColorEx")).substr(1), 16),
+                    INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'controlledColor')).substr(1), 16),
+                    EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'controlledColorEx')).substr(1), 16),
                 },
                 FRIENDLY: {
-                    INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "friendlyColor")).substr(1), 16),
-                    EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "friendlyColorEx")).substr(1), 16),
+                    INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'friendlyColor')).substr(1), 16),
+                    EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'friendlyColorEx')).substr(1), 16),
                 },
                 NEUTRAL: {
-                    INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "neutralColor")).substr(1), 16),
-                    EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "neutralColorEx")).substr(1), 16),
+                    INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'neutralColor')).substr(1), 16),
+                    EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'neutralColorEx')).substr(1), 16),
                 },
                 HOSTILE: {
-                    INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "hostileColor")).substr(1), 16),
-                    EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "hostileColorEx")).substr(1), 16),
+                    INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'hostileColor')).substr(1), 16),
+                    EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'hostileColorEx')).substr(1), 16),
                 },
                 PARTY: {
-                    INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "partyColor")).substr(1), 16),
-                    EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "partyColorEx")).substr(1), 16),
+                    INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'partyColor')).substr(1), 16),
+                    EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'partyColorEx')).substr(1), 16),
                 },
                 ACTOR_FOLDER_COLOR: {
                     INT: parseInt(String(color).substr(1), 16),
-                    EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "actorFolderColorEx")).substr(1), 16)
+                    EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'actorFolderColorEx')).substr(1), 16),
                 },
                 CUSTOM_DISPOSITION: {
                     INT: parseInt(String(color).substr(1), 16),
-                    EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "customDispositionColorEx")).substr(1), 16),
-                }
+                    EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'customDispositionColorEx')).substr(1), 16),
+                },
             };
             let borderColor = { INT: {}, EX: {} };
             if (colorFrom === 'token-disposition') {
@@ -556,7 +564,7 @@ export class BorderFrameFaction {
                 //if (token._controlled) return overrides.CONTROLLED;
                 //@ts-ignore
                 //else if (token._hover) {
-                const disPath = isNewerVersion(getGame().data.version, "0.8.0") ? CONST.TOKEN_DISPOSITIONS : TOKEN_DISPOSITIONS;
+                const disPath = isNewerVersion(getGame().data.version, '0.8.0') ? CONST.TOKEN_DISPOSITIONS : TOKEN_DISPOSITIONS;
                 //@ts-ignore
                 const d = parseInt(token.data.disposition);
                 //@ts-ignore
@@ -581,20 +589,22 @@ export class BorderFrameFaction {
                 // colorFrom === 'custom-disposition'
                 borderColor = overrides.CUSTOM_DISPOSITION;
             }
-            // SECOND PART 
+            // SECOND PART
             // if(!BCC) BCC = new BCconfig()
             //@ts-ignore
             token.border.clear();
             if (!borderColor)
                 return;
-            switch (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "removeBorders")) {
-                case "0": break;
+            switch (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'removeBorders')) {
+                case '0':
+                    break;
                 //@ts-ignore
-                case "1":
+                case '1':
                     if (!token.owner)
                         return;
                     break;
-                case "2": return;
+                case '2':
+                    return;
             }
             //@ts-ignore
             if (token.data.flags[TOKEN_FACTIONS_MODULE_NAME]?.noBorder) {
@@ -603,7 +613,8 @@ export class BorderFrameFaction {
             if (!borderColor.INT || Number.isNaN(borderColor.INT)) {
                 return;
             }
-            const t = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "borderWidth") || CONFIG.Canvas.objectBorderThickness;
+            const t = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderWidth') ||
+                CONFIG.Canvas.objectBorderThickness;
             // DISABLED
             // if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "healthGradient")) {
             //     const systemPath = BCC.currentSystem
@@ -623,18 +634,20 @@ export class BorderFrameFaction {
             // Draw Hex border for size 1 tokens on a hex grid
             const gt = CONST.GRID_TYPES;
             const hexTypes = [gt.HEXEVENQ, gt.HEXEVENR, gt.HEXODDQ, gt.HEXODDR];
-            if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "circleBorders")) {
-                const p = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "borderOffset");
+            if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'circleBorders')) {
+                const p = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderOffset');
                 const h = Math.round(t / 2);
                 const o = Math.round(h / 2);
                 //@ts-ignore
                 token.border.lineStyle(t, borderColor.EX, 0.8).drawCircle(token.w / 2, token.h / 2, token.w / 2 + t + p);
                 //@ts-ignore
-                token.border.lineStyle(h, borderColor.INT, 1.0).drawCircle(token.w / 2, token.h / 2, token.w / 2 + h + t / 2 + p);
+                token.border
+                    .lineStyle(h, borderColor.INT, 1.0)
+                    .drawCircle(token.w / 2, token.h / 2, token.w / 2 + h + t / 2 + p);
             }
             //@ts-ignore
-            else if (hexTypes.includes(getCanvas().grid?.type) && (token.data.width === 1) && (token.data.height === 1)) {
-                const p = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "borderOffset");
+            else if (hexTypes.includes(getCanvas().grid?.type) && token.data.width === 1 && token.data.height === 1) {
+                const p = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderOffset');
                 const q = Math.round(p / 2);
                 //@ts-ignore
                 const polygon = getCanvas().grid?.grid?.getPolygon(-1.5 - q, -1.5 - q, token.w + 2 + p, token.h + 2 + p);
@@ -645,14 +658,18 @@ export class BorderFrameFaction {
             }
             // Otherwise Draw Square border
             else {
-                const p = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "borderOffset");
+                const p = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderOffset');
                 const q = Math.round(p / 2);
                 const h = Math.round(t / 2);
                 const o = Math.round(h / 2);
                 //@ts-ignore
-                token.border.lineStyle(t, borderColor.EX, 0.8).drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3);
+                token.border
+                    .lineStyle(t, borderColor.EX, 0.8)
+                    .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3);
                 //@ts-ignore
-                token.border.lineStyle(h, borderColor.INT, 1.0).drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3);
+                token.border
+                    .lineStyle(h, borderColor.INT, 1.0)
+                    .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3);
             }
         });
         return;

@@ -134,5 +134,4 @@
 
   "token-factions.setting.disableRefreshTarget.name": "Disable the refresh target feature",
   "token-factions.setting.disableRefreshTarget.hint": "Use other module like Better Target, Smart Target, ecc. for apply design to target"
-
 }
