@@ -79,7 +79,7 @@ export class BorderFrameFaction {
     const buttonPos = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'hudPos');
     const borderButton = `<div class="control-icon border ${
       app.object.data.flags[TOKEN_FACTIONS_MODULE_NAME]?.noBorder ? 'active' : ''
-    }" title="Toggle Border"> <i class="fas fa-helmet-battle"></i></div>`;
+    }" title="Toggle Faction Border"> <i class="fas fa-helmet-battle"></i></div>`;
     const Pos = html.find(buttonPos);
     Pos.append(borderButton);
     html.find('.border').click(this.ToggleBorder.bind(app));
@@ -399,24 +399,24 @@ export class BorderFrameFaction {
     return interpolatedColorArray;
   }
 
-  static getActorHpPath() {
-    switch (getGame().system.id) {
-      case 'symbaroum':
-        return {
-          value: 'actor.data.data.health.toughness.value',
-          max: 'actor.data.data.health.toughness.max',
-          tempMax: undefined,
-          temp: undefined,
-        };
-      case 'dnd5e':
-        return {
-          value: 'actor.data.data.attributes.hp.value',
-          max: 'actor.data.data.attributes.hp.max',
-          tempMax: 'actor.data.data.attributes.hp.tempmax',
-          temp: 'actor.data.data.attributes.hp.temp',
-        };
-    }
-  }
+  // static getActorHpPath() {
+  //   switch (getGame().system.id) {
+  //     case 'symbaroum':
+  //       return {
+  //         value: 'actor.data.data.health.toughness.value',
+  //         max: 'actor.data.data.health.toughness.max',
+  //         tempMax: undefined,
+  //         temp: undefined,
+  //       };
+  //     case 'dnd5e':
+  //       return {
+  //         value: 'actor.data.data.attributes.hp.value',
+  //         max: 'actor.data.data.attributes.hp.max',
+  //         tempMax: 'actor.data.data.attributes.hp.tempmax',
+  //         temp: 'actor.data.data.attributes.hp.temp',
+  //       };
+  //   }
+  // }
 
   // static drawNameplate() {
   //   const offSet = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderOffset');
@@ -541,14 +541,17 @@ export class BorderFrameFaction {
 
       const colorFrom = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'color-from');
       let color;
+      let icon;
       if (colorFrom === 'token-disposition') {
         const disposition = dispositionKey(token);
         if (disposition) {
           color = defaultColors[disposition];
         }
       } else if (colorFrom === 'actor-folder-color') {
-        if (token.actor && token.actor.folder && token.actor.folder.data && token.actor.folder.data.color) {
+        if (token.actor && token.actor.folder && token.actor.folder.data) {
           color = token.actor.folder.data.color;
+          //@ts-ignore
+          icon = token.actor.folder.data.icon;
         }
       } else {
         // colorFrom === 'custom-disposition'
@@ -562,37 +565,41 @@ export class BorderFrameFaction {
         CONTROLLED: {
           INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'controlledColor')).substr(1), 16),
           EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'controlledColorEx')).substr(1), 16),
+          ICON: ""
         },
         FRIENDLY: {
           INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'friendlyColor')).substr(1), 16),
           EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'friendlyColorEx')).substr(1), 16),
+          ICON: ""
         },
         NEUTRAL: {
           INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'neutralColor')).substr(1), 16),
           EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'neutralColorEx')).substr(1), 16),
+          ICON: ""
         },
         HOSTILE: {
           INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'hostileColor')).substr(1), 16),
           EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'hostileColorEx')).substr(1), 16),
+          ICON: ""
         },
         PARTY: {
           INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'partyColor')).substr(1), 16),
           EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'partyColorEx')).substr(1), 16),
+          ICON: ""
         },
         ACTOR_FOLDER_COLOR: {
           INT: parseInt(String(color).substr(1), 16),
           EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'actorFolderColorEx')).substr(1), 16),
+          ICON: String(icon),
         },
         CUSTOM_DISPOSITION: {
           INT: parseInt(String(color).substr(1), 16),
-          EX: parseInt(
-            String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'customDispositionColorEx')).substr(1),
-            16,
-          ),
+          EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'customDispositionColorEx')).substr(1),16),
+          ICON: ""
         },
       };
 
-      let borderColor = { INT: {}, EX: {} };
+      let borderColor = { INT: 0, EX: 0, ICON: "" };
       if (colorFrom === 'token-disposition') {
         //@ts-ignore
         //if (token._controlled) return overrides.CONTROLLED;
@@ -621,7 +628,9 @@ export class BorderFrameFaction {
       // if(!BCC) BCC = new BCconfig()
       //@ts-ignore
       token.border.clear();
-      if (!borderColor) return;
+      if (!borderColor){
+        return;
+      }
       switch (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'removeBorders')) {
         case '0':
           break;
@@ -659,15 +668,28 @@ export class BorderFrameFaction {
       //     }
 
       // }
+
+      // Prepare texture for faction symbol
+      if(borderColor.ICON) {
+
+      }
+
+
       // Draw Hex border for size 1 tokens on a hex grid
       const gt = CONST.GRID_TYPES;
       const hexTypes = [gt.HEXEVENQ, gt.HEXEVENR, gt.HEXODDQ, gt.HEXODDR];
+
       if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'circleBorders')) {
+
         const p = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderOffset');
         const h = Math.round(t / 2);
         const o = Math.round(h / 2);
+
         //@ts-ignore
-        token.border.lineStyle(t, borderColor.EX, 0.8).drawCircle(token.w / 2, token.h / 2, token.w / 2 + t + p);
+        token.border
+          .lineStyle(t, borderColor.EX, 0.8)
+          .drawCircle(token.w / 2, token.h / 2, token.w / 2 + t + p);
+
         //@ts-ignore
         token.border
           .lineStyle(h, borderColor.INT, 1.0)
@@ -675,18 +697,26 @@ export class BorderFrameFaction {
       }
       //@ts-ignore
       else if (hexTypes.includes(getCanvas().grid?.type) && token.data.width === 1 && token.data.height === 1) {
+
         const p = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderOffset');
         const q = Math.round(p / 2);
         //@ts-ignore
         const polygon = getCanvas().grid?.grid?.getPolygon(-1.5 - q, -1.5 - q, token.w + 2 + p, token.h + 2 + p);
+
         //@ts-ignore
-        token.border.lineStyle(t, borderColor.EX, 0.8).drawPolygon(polygon);
+        token.border
+          .lineStyle(t, borderColor.EX, 0.8)
+          .drawPolygon(polygon);
+
         //@ts-ignore
-        token.border.lineStyle(t / 2, borderColor.INT, 1.0).drawPolygon(polygon);
+        token.border
+          .lineStyle(t / 2, borderColor.INT, 1.0)
+          .drawPolygon(polygon);
       }
 
       // Otherwise Draw Square border
       else {
+
         const p = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderOffset');
         const q = Math.round(p / 2);
         const h = Math.round(t / 2);
@@ -695,6 +725,7 @@ export class BorderFrameFaction {
         token.border
           .lineStyle(t, borderColor.EX, 0.8)
           .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3);
+
         //@ts-ignore
         token.border
           .lineStyle(h, borderColor.INT, 1.0)
@@ -703,6 +734,50 @@ export class BorderFrameFaction {
     });
     return;
   }
+
+  /**
+   * Creates a sprite from the selected factions icon and positions around the container
+   * @param {string} color -- the user to get
+   * @param {string} pTex  -- the url path to the texture image
+   * @param {token} target -- PIXI.js container for height & width (the token)
+   */
+   static async buildFactionPortrait(color:string, pTex:string, token:Token) {
+    const i = 0; // TODO Multiple factions ?????
+    const circleR = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "pipScale") || 12;
+    const circleOffsetMult = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "pipOffset") || 16;
+    const scaleMulti = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "pipImgScale") || 1;
+    const insidePip = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "insidePips") ? circleR : 0;
+    const texture = await PIXI.Texture.fromURL(pTex);
+    const newTexW = scaleMulti * (2 * circleR);
+    const newTexH = scaleMulti * (2 * circleR);
+    const borderThic = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "borderThicc");
+    let portraitCenterOffset = scaleMulti >= 1 ? (16 + circleR / 12) * Math.log2(scaleMulti) : 0;
+    portraitCenterOffset += <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "pipOffsetManualY") || 0;
+    const portraitXoffset = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "pipOffsetManualX") || 0;
+    const matrix = new PIXI.Matrix(
+      (scaleMulti * (2 * circleR + 2)) / texture.width,
+      0,
+      0,
+      (scaleMulti * (2 * circleR + 2)) / texture.height,
+      newTexW / 2 + 4 + i * circleOffsetMult + portraitXoffset + insidePip,
+      newTexH / 2 + portraitCenterOffset + insidePip
+    );
+    //@ts-ignore
+    token.factionSymbol
+      .beginFill(color)
+      .drawCircle(2 + i * circleOffsetMult + insidePip, 0 + insidePip, circleR)
+      .beginTextureFill({
+        texture: texture,
+        alpha: 1,
+        matrix: matrix,
+      })
+      .lineStyle(borderThic, 0x0000000)
+      .drawCircle(2 + i * circleOffsetMult + insidePip, 0 + insidePip, circleR)
+      .endFill()
+      .lineStyle(borderThic / 2, color)
+      .drawCircle(2 + i * circleOffsetMult + insidePip, 0 + insidePip, circleR);
+  }
+
 }
 
 export const TokenPrototypeRefreshBorderHandler = function (wrapped, ...args) {

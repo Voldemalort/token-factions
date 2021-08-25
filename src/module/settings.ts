@@ -35,6 +35,7 @@ export function getGame(): Game {
 }
 
 export const registerSettings = function () {
+
   // ==========================
   // TOKEN FACTIONS
   // ==========================
@@ -53,7 +54,7 @@ export const registerSettings = function () {
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.pixiFactionsEnabled.hint'),
     scope: 'world',
     type: Boolean,
-    default: true,
+    default: false,
     config: true,
   });
 
@@ -143,7 +144,7 @@ export const registerSettings = function () {
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.borderFactionsEnabled.hint'),
     scope: 'world',
     type: Boolean,
-    default: false,
+    default: true,
     config: true,
   });
 
