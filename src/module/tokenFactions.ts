@@ -162,7 +162,7 @@ export const TokenFactions = ((canvas) => {
         bevelTexture = await loadTexture(`modules/${TOKEN_FACTIONS_MODULE_NAME}/assets/bevel-texture.png`);
       }
 
-      if (tokenData && tokenData._id) {
+      if (tokenData?._id) {
         const token = getCanvas().tokens?.placeables.find((tokenPlaceable) => tokenPlaceable.id === tokenData._id);
         if (token) {
           tokens = [token];
@@ -188,28 +188,50 @@ export const TokenFactions = ((canvas) => {
         const colorFrom = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'color-from');
         let color;
 
-        let child = 0;
-        try {
-          //@ts-ignore
-          child = token.getChildIndex(token.icon); // token['icon']
-        } catch (e) {
-          // WHY THIS ???????????????
+        // let child = 0;
+        // try {
+        //   //@ts-ignore
+        //   child = token.getChildIndex(token.icon); // token['icon']
+        // } catch (e) {
+        //   // WHY THIS ???????????????
+        // }
+        // if (child) {
+
+        //   //@ts-ignore
+        //   token.factionBase.clear();
+        //   // if (token.factionBase) {
+        //   //   //@ts-ignore
+        //   //   token.factionBase.destroy({ children: true });
+        //   // }
+        //   //@ts-ignore
+        //   token.factionBase = token.addChildAt(new PIXI.Container(), child - 1);
+        //   //@ts-ignore
+        //   token.factionFrame.clear();
+        //   // if (token.factionFrame) {
+        //   //   //@ts-ignore
+        //   //   token.factionFrame.destroy({ children: true });
+        //   // }
+        //   //@ts-ignore
+        //   token.factionFrame = token.addChildAt(new PIXI.Container(), child + (drawFrame ? 1 : -1));
+        // }
+
+        //@ts-ignore
+        if (!token.factionBase) {
+            //@ts-ignore
+            token.factionBase = token.addChildAt(new PIXI.Container(), token.getChildIndex(token.icon) - 1);
+        } else {
+            //token.factionBase.removeChildren().forEach(c => c.destroy());
+            //@ts-ignore
+            token.factionBase.clear();
         }
-        if (child) {
-          //@ts-ignore
-          if (token.factionBase) {
+        //@ts-ignore
+        if (!token.factionFrame) {
             //@ts-ignore
-            token.factionBase.destroy({ children: true });
-          }
-          //@ts-ignore
-          token.factionBase = token.addChildAt(new PIXI.Container(), child - 1);
-          //@ts-ignore
-          if (token.factionFrame) {
+            token.factionFrame = token.addChildAt(new PIXI.Container(), token.getChildIndex(token.icon) + 1);
+        } else {
+            //token.factionFrame.removeChildren().forEach(c => c.destroy());
             //@ts-ignore
-            token.factionFrame.destroy({ children: true });
-          }
-          //@ts-ignore
-          token.factionFrame = token.addChildAt(new PIXI.Container(), child + (drawFrame ? 1 : -1));
+            token.factionFrame.clear();
         }
 
         if (colorFrom === 'token-disposition') {
