@@ -1,7 +1,7 @@
-import { BCconfig, BorderFrameFaction, TokenPrototypeRefreshBorderHandler } from "./BorderControlFaction.js";
+import { BCconfig, BorderFrameFaction } from "./BorderControlFaction.js";
 import { warn } from "../main.js";
 import { getCanvas, getGame, TOKEN_FACTIONS_MODULE_NAME } from "./settings.js";
-import { TokenFactions, TokenPrototypeRefreshHandler } from "./tokenFactions.js";
+import { TokenFactions } from "./tokenFactions.js";
 export var TOKEN_FACTIONS_FLAGS;
 (function (TOKEN_FACTIONS_FLAGS) {
     TOKEN_FACTIONS_FLAGS["FACTION_DRAW_FRAME"] = "factionDrawFrame";
@@ -96,7 +96,7 @@ export const readyHooks = async () => {
                 }
             });
             //@ts-ignore
-            libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype.refresh', TokenPrototypeRefreshBorderHandler, 'MIXED');
+            libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype.refresh', TokenPrototypeRefreshHandler, 'MIXED');
             //@ts-ignore
             libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype._refreshBorder', BorderFrameFaction.newBorder, 'MIXED'); // OVERRRIDE
             //@ts-ignore
@@ -179,4 +179,14 @@ export const readyHooks = async () => {
 // };
 export const initHooks = async () => {
     warn('Init Hooks processing');
+};
+export const TokenPrototypeRefreshHandler = function (wrapped, ...args) {
+    const tokenData = this;
+    if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'pixiFactionsEnabled')) {
+        TokenFactions.updateTokens(tokenData);
+    }
+    if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderFactionsEnabled')) {
+        BorderFrameFaction.updateTokensBorder(tokenData);
+    }
+    return wrapped(...args);
 };

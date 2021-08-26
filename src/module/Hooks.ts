@@ -2,7 +2,8 @@ import { BCconfig, BorderFrameFaction, TokenPrototypeRefreshBorderHandler } from
 import { warn, error, debug, i18n } from '../main';
 import { getCanvas, getGame, TOKEN_FACTIONS_MODULE_NAME } from './settings';
 
-import { TokenFactions, TokenPrototypeRefreshHandler } from './tokenFactions';
+import { TokenFactions } from './tokenFactions';
+import { TokenData } from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs';
 
 export enum TOKEN_FACTIONS_FLAGS {
   FACTION_DRAW_FRAME = 'factionDrawFrame', //'draw-frame',
@@ -122,7 +123,7 @@ export const readyHooks = async () => {
       libWrapper.register(
         TOKEN_FACTIONS_MODULE_NAME,
         'Token.prototype.refresh',
-        TokenPrototypeRefreshBorderHandler,
+        TokenPrototypeRefreshHandler,
         'MIXED',
       );
       //@ts-ignore
@@ -225,4 +226,16 @@ export const readyHooks = async () => {
 
 export const initHooks = async () => {
   warn('Init Hooks processing');
+};
+
+
+export const TokenPrototypeRefreshHandler = function (wrapped, ...args) {
+  const tokenData = this as TokenData;
+  if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'pixiFactionsEnabled')) {
+    TokenFactions.updateTokens(tokenData);
+  }
+  if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderFactionsEnabled')) {
+    BorderFrameFaction.updateTokensBorder(tokenData);
+  }
+  return wrapped(...args);
 };
