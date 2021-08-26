@@ -49,15 +49,6 @@ export const registerSettings = function () {
     config: true,
   });
 
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'pixiFactionsEnabled', {
-    name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.pixiFactionsEnabled.name'),
-    hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.pixiFactionsEnabled.hint'),
-    scope: 'world',
-    type: Boolean,
-    default: false,
-    config: true,
-  });
-
   getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'color-from', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.color-from.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.color-from.hint'),
@@ -70,6 +61,30 @@ export const registerSettings = function () {
       'actor-folder-color': i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.color-from.opt.actor-folder-color'),
       'custom-disposition': i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.color-from.opt.custom-disposition'),
     },
+  });
+
+  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'base-opacity', {
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.base-opacity.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.base-opacity.hint'),
+    scope: 'world',
+    config: true,
+    default: 1,
+    type: Number,
+    //@ts-ignore
+    range: {
+      min: 0,
+      max: 1,
+      step: 0.05,
+    },
+  });
+
+  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'pixiFactionsEnabled', {
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.pixiFactionsEnabled.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.pixiFactionsEnabled.hint'),
+    scope: 'world',
+    type: Boolean,
+    default: false,
+    config: true,
   });
 
   getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'draw-frames-by-default', {
@@ -106,21 +121,6 @@ export const registerSettings = function () {
       min: 0,
       max: 10,
       step: 0.5,
-    },
-  });
-
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'base-opacity', {
-    name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.base-opacity.name'),
-    hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.base-opacity.hint'),
-    scope: 'world',
-    config: true,
-    default: 1,
-    type: Number,
-    //@ts-ignore
-    range: {
-      min: 0,
-      max: 1,
-      step: 0.05,
     },
   });
 
@@ -162,48 +162,6 @@ export const registerSettings = function () {
     config: true,
   });
 
-  // getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME+'', 'healthGradient', {
-  //   name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.healthGradient.name'),
-  //   hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.healthGradient.hint'),
-  //   scope: 'world',
-  //   type: Boolean,
-  //   default: false,
-  //   config: true,
-  // });
-  // getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME+'', 'tempHPgradient', {
-  //   name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.tempHPgradient.name'),
-  //   hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.tempHPgradient.hint'),
-  //   scope: 'world',
-  //   type: Boolean,
-  //   default: false,
-  //   config: true,
-  // });
-  // getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME+'', 'healthGradientA', {
-  //   name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.healthGradientA.name'),
-  //   hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.healthGradientA.hint'),
-  //   scope: 'world',
-  //   type: String,
-  //   default: '#1b9421',
-  //   config: true,
-  // });
-  // getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME+'', 'healthGradientB', {
-  //   name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.healthGradientB.name'),
-  //   hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.healthGradientB.hint'),
-  //   scope: 'world',
-  //   type: String,
-  //   default: '#c9240a',
-  //   config: true,
-  // });
-
-  // getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME+'', 'healthGradientC', {
-  //   name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.healthGradientC.name'),
-  //   hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.healthGradientC.hint'),
-  //   scope: 'world',
-  //   type: String,
-  //   default: '#22e3dd',
-  //   config: true,
-  // });
-
   getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME + '', 'stepLevel', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.stepLevel.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.stepLevel.hint'),
@@ -229,22 +187,7 @@ export const registerSettings = function () {
     default: 0,
     config: true,
   });
-  // getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME+'', 'targetSize', {
-  //   name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.targetSize.name'),
-  //   hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.targetSize.hint'),
-  //   scope: 'client',
-  //   type: Number,
-  //   default: 1,
-  //   config: true,
-  // });
-  // getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME+'', 'internatTarget', {
-  //   name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.internatTarget.name'),
-  //   hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.internatTarget.hint'),
-  //   scope: 'client',
-  //   type: Boolean,
-  //   default: false,
-  //   config: true,
-  // });
+
   getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME + '', 'circleBorders', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.circleBorders.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.circleBorders.hint'),
@@ -273,69 +216,6 @@ export const registerSettings = function () {
     },
     config: true,
   });
-
-  // getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME+'', 'circularNameplate', {
-  //   name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.circularNameplate.name'),
-  //   hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.circularNameplate.hint'),
-  //   scope: 'world',
-  //   type: Boolean,
-  //   default: false,
-  //   config: true,
-  // });
-  // getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME+'', 'circularNameplateRadius', {
-  //   name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.circularNameplateRadius.name'),
-  //   hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.circularNameplateRadius.hint'),
-  //   scope: 'world',
-  //   type: Number,
-  //   default: 0,
-  //   config: true,
-  // });
-  // getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME+'', 'nameplateOffset', {
-  //   name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.nameplateOffset.name'),
-  //   hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.nameplateOffset.hint'),
-  //   scope: 'world',
-  //   type: Number,
-  //   default: 0,
-  //   config: true,
-  // });
-
-  // getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME+'', 'plateFont', {
-  //   name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.plateFont.name'),
-  //   hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.plateFont.hint'),
-  //   scope: 'world',
-  //   type: String,
-  //   choices: {
-  //     arial: 'Arial',
-  //     'arial black': 'Arial Black',
-  //     'comic sans ms': 'Comic Sans MS',
-  //     'courier new': 'Courier New',
-  //     georgia: 'Georgia',
-  //     helvetica: 'Helvetica',
-  //     impact: 'Impact',
-  //     signika: 'Signika',
-  //     tahoma: 'Tahoma',
-  //     'times new roman': 'Times New Roman',
-  //     verdana: 'Verdana',
-  //   },
-  //   default: 'signika',
-  //   config: true,
-  // });
-  // getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME+'', 'sizeMultiplier', {
-  //   name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.sizeMultiplier.name'),
-  //   hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.sizeMultiplier.hint'),
-  //   scope: 'world',
-  //   type: Number,
-  //   default: 1,
-  //   config: true,
-  // });
-  // getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME+'', 'plateConsistency', {
-  //   name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.plateConsistency.name'),
-  //   hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.plateConsistency.hint'),
-  //   scope: 'world',
-  //   type: Boolean,
-  //   default: false,
-  //   config: true,
-  // });
 
   getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'controlledColor', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.controlledColor.name'),
@@ -462,13 +342,5 @@ export const registerSettings = function () {
     default: '#000000',
     config: true,
   });
-
-  // getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME+'', 'disableRefreshTarget', {
-  //   name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.disableRefreshTarget.name'),
-  //   hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.disableRefreshTarget.hint'),
-  //   scope: 'world',
-  //   type: Boolean,
-  //   default: false,
-  //   config: true,
-  // });
+  
 };

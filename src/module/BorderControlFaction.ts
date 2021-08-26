@@ -507,6 +507,8 @@ export class BorderFrameFaction {
         <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderWidth') ||
         CONFIG.Canvas.objectBorderThickness;
 
+      const baseOpacity = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'base-opacity');
+
       // TODO
       // Prepare texture for faction symbol
       // if(borderColor.ICON) {
@@ -570,20 +572,24 @@ export class BorderFrameFaction {
         const o = Math.round(h / 2);
         //@ts-ignore
         token.border
-          .beginFill(borderColor.EX)
+          .beginFill(borderColor.EX, baseOpacity)
           .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3)
           .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.EX, alpha: 1 })
           .lineStyle(t, borderColor.EX, 0.8)
           .endFill()
+          .lineStyle(t, borderColor.EX, 0.8)
+          .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3)
           ;
 
         //@ts-ignore
         token.border
-          .beginFill(borderColor.INT)
+          .beginFill(borderColor.INT, baseOpacity)
           .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3)
           .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.INT, alpha: 1 })
           .lineStyle(h, borderColor.INT, 1.0)
           .endFill()
+          .lineStyle(h, borderColor.INT, 1.0)
+          .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3)
           ;
       }
     });
