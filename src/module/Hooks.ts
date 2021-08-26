@@ -4,6 +4,12 @@ import { getCanvas, getGame, TOKEN_FACTIONS_MODULE_NAME } from './settings';
 
 import { TokenFactions, TokenPrototypeRefreshHandler } from './tokenFactions';
 
+export enum TOKEN_FACTIONS_FLAGS {
+  DRAW_FRAME = 'factionDrawFrame', //'draw-frame',
+  FACTION_DISABLE = 'factionDisable', // 'disable'
+  FACTION_NO_BORDER = 'factionNoBorder' // noBorder
+}
+
 export let BCC;
 
 export let defaultColors;
@@ -34,6 +40,10 @@ export const readyHooks = async () => {
 
     dispositions = Object.keys(defaultColors);
 
+    Hooks.on('renderSettingsConfig', (sheet, html) => {
+      TokenFactions.renderSettingsConfig(sheet, html);
+    });
+
     if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'pixiFactionsEnabled')) {
       TokenFactions.onInit(defaultColors, dispositions);
 
@@ -46,12 +56,6 @@ export const readyHooks = async () => {
       Hooks.on('renderTokenConfig', (config, html) => {
         if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'pixiFactionsEnabled')) {
           TokenFactions.renderTokenConfig(config, html);
-        }
-      });
-
-      Hooks.on('renderSettingsConfig', (sheet, html) => {
-        if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'pixiFactionsEnabled')) {
-          TokenFactions.renderSettingsConfig(sheet, html);
         }
       });
 

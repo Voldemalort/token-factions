@@ -1,5 +1,5 @@
 import { TokenData } from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs';
-import { defaultColors, dispositions } from './Hooks';
+import { defaultColors, dispositions, TOKEN_FACTIONS_FLAGS } from './Hooks';
 import { getCanvas, getGame, TOKEN_FACTIONS_MODULE_NAME } from './settings';
 
 export const dispositionKey = (token) => {
@@ -132,21 +132,21 @@ export const TokenFactions = ((canvas) => {
 
     static renderTokenConfig(sheet, html) {
       const token = sheet.object;
-      const flags = token.data.flags[TOKEN_FACTIONS_MODULE_NAME];
+      //const flags = token.data.flags[TOKEN_FACTIONS_MODULE_NAME];
       const drawFramesByDefault = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'draw-frames-by-default');
-      const drawFrameOverride = flags ? flags['draw-frame'] : undefined;
+      const drawFrameOverride = token.document.getFlag(TOKEN_FACTIONS_MODULE_NAME,TOKEN_FACTIONS_FLAGS.DRAW_FRAME); // flags ? flags[TOKEN_FACTIONS_FLAGS.DRAW_FRAME] : undefined;
       const drawFrame = drawFrameOverride === undefined ? drawFramesByDefault : drawFrameOverride;
       const checked = drawFrame ? ' checked="checked"' : '';
-      const skipDraw = flags ? flags['disable'] : undefined;
+      const skipDraw = token.document.getFlag(TOKEN_FACTIONS_MODULE_NAME,TOKEN_FACTIONS_FLAGS.FACTION_DISABLE); // flags ? flags[TOKEN_FACTIONS_FLAGS.FACTION_DISABLE] : undefined;
       const isDisabled = skipDraw ? ' checked="checked"' : '';
       html.find('input[name="mirrorY"]').parent().after(`\
         <div class="form-group">
           <label>Disable Faction Disposition Visualization</label>
-          <input type="checkbox" name="flags.${TOKEN_FACTIONS_MODULE_NAME}.disable" data-dtype="Boolean"${isDisabled}>
+          <input type="checkbox" name="flags.${TOKEN_FACTIONS_MODULE_NAME}.${TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}" data-dtype="Boolean"${isDisabled}>
         </div>
           <div class="form-group">
             <label>Overlay A Faction-Based Frame</label>
-            <input type="checkbox" name="flags.${TOKEN_FACTIONS_MODULE_NAME}.draw-frame" data-dtype="Boolean"${checked}>
+            <input type="checkbox" name="flags.${TOKEN_FACTIONS_MODULE_NAME}.${TOKEN_FACTIONS_FLAGS.DRAW_FRAME}" data-dtype="Boolean"${checked}>
           </div>`);
     }
 
@@ -174,37 +174,42 @@ export const TokenFactions = ((canvas) => {
       });
     }
 
-    static updateTokenBase(token) {
-      if (token instanceof Token && token['icon'] && bevelTexture && bevelTexture.baseTexture) {
-        const flags = <Record<string, unknown>>token.data.flags[TOKEN_FACTIONS_MODULE_NAME];
-        const skipDraw = flags ? flags['disable'] : undefined;
+    static updateTokenBase(token:Token) {
+      //@ts-ignore
+      if (token instanceof Token && token.icon && bevelTexture && bevelTexture.baseTexture) {
+        // const flags = <Record<string, unknown>>token.data.flags[TOKEN_FACTIONS_MODULE_NAME];
+        const skipDraw = token.document.getFlag(TOKEN_FACTIONS_MODULE_NAME,TOKEN_FACTIONS_FLAGS.FACTION_DISABLE); // flags ? flags[TOKEN_FACTIONS_FLAGS.FACTION_DISABLE] : undefined;
         if (skipDraw) {
           return;
         }
         const drawFramesByDefault = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'draw-frames-by-default');
-        const drawFrameOverride = flags ? flags['draw-frame'] : undefined;
+        const drawFrameOverride = token.document.getFlag(TOKEN_FACTIONS_MODULE_NAME,TOKEN_FACTIONS_FLAGS.DRAW_FRAME); // flags ? flags[TOKEN_FACTIONS_FLAGS.DRAW_FRAME] : undefined;
         const drawFrame = drawFrameOverride === undefined ? drawFramesByDefault : drawFrameOverride;
         const colorFrom = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'color-from');
         let color;
 
         let child = 0;
         try {
-          child = token.getChildIndex(token['icon']);
+          //@ts-ignore
+          child = token.getChildIndex(token.icon); // token['icon']
         } catch (e) {
           // WHY THIS ???????????????
         }
         if (child) {
-          if (token['factionBase']) {
-            token['factionBase'].destroy({ children: true });
+          //@ts-ignore
+          if (token.factionBase) {
+            //@ts-ignore
+            token.factionBase.destroy({ children: true });
           }
-
-          token['factionBase'] = token.addChildAt(new PIXI.Container(), child - 1);
-
-          if (token['factionFrame']) {
-            token['factionFrame'].destroy({ children: true });
+          //@ts-ignore
+          token.factionBase = token.addChildAt(new PIXI.Container(), child - 1);
+          //@ts-ignore
+          if (token.factionFrame) {
+            //@ts-ignore
+            token.factionFrame.destroy({ children: true });
           }
-
-          token['factionFrame'] = token.addChildAt(new PIXI.Container(), child + (drawFrame ? 1 : -1));
+          //@ts-ignore
+          token.factionFrame = token.addChildAt(new PIXI.Container(), child + (drawFrame ? 1 : -1));
         }
 
         if (colorFrom === 'token-disposition') {
@@ -217,17 +222,20 @@ export const TokenFactions = ((canvas) => {
         }
 
         if (color) {
-          TokenFactions.drawBase({ color, container: token['factionBase'], token });
+          //@ts-ignore
+          TokenFactions.drawBase(color, token.factionBase, token );
           if (drawFrame) {
-            TokenFactions.drawFrame({ color, container: token['factionFrame'], token });
+            //@ts-ignore
+            TokenFactions.drawFrame( color, token.factionFrame, token );
           } else {
-            TokenFactions.drawFrame({ color, container: token['factionBase'], token });
+            //@ts-ignore
+            TokenFactions.drawFrame( color, token.factionBase, token );
           }
         }
       }
     }
 
-    static drawBase({ color, container, token }) {
+    static drawBase(color:number, container, token:Token) {
       const base = container.addChild(new PIXI.Graphics());
       const frameWidth =
         <number>getCanvas().grid?.grid?.w *
@@ -244,7 +252,7 @@ export const TokenFactions = ((canvas) => {
         .drawCircle(token.w / 2, token.h / 2, token.w / 2 - frameWidth);
     }
 
-    static drawFrame({ color, container, token }) {
+    static drawFrame(color:number, container, token:Token ) {
       const frameWidth =
         <number>getCanvas().grid?.grid?.w *
         (<number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'frame-width') / 100);
@@ -346,7 +354,7 @@ export const TokenFactions = ((canvas) => {
       return color;
     }
 
-    static getCustomDispositionColor(token) {
+    static getCustomDispositionColor(token:Token) {
       const disposition = dispositionKey(token);
       let color;
 
