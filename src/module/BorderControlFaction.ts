@@ -815,8 +815,8 @@ export class BorderFrameFaction {
 
 }
 
-export const TokenPrototypeRefreshBorderHandler = function (wrapped, ...args) {
-  const tokenData = this as TokenData;
-  BorderFrameFaction.updateTokensBorder(tokenData);
-  return wrapped(...args);
-};
+// export const TokenPrototypeRefreshBorderHandler = function (wrapped, ...args) {
+//   const tokenData = this as TokenData;
+//   BorderFrameFaction.updateTokensBorder(tokenData);
+//   return wrapped(...args);
+// };

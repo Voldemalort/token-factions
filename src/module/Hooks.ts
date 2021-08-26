@@ -1,4 +1,4 @@
-import { BCconfig, BorderFrameFaction, TokenPrototypeRefreshBorderHandler } from './BorderControlFaction';
+import { BCconfig, BorderFrameFaction } from './BorderControlFaction';
 import { warn, error, debug, i18n } from '../main';
 import { getCanvas, getGame, TOKEN_FACTIONS_MODULE_NAME } from './settings';
 
@@ -45,6 +45,9 @@ export const readyHooks = async () => {
       TokenFactions.renderSettingsConfig(sheet, html);
     });
 
+    //@ts-ignore
+    libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype.refresh', TokenPrototypeRefreshHandler, 'MIXED');
+
     if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'pixiFactionsEnabled')) {
       TokenFactions.onInit(defaultColors, dispositions);
 
@@ -78,8 +81,7 @@ export const readyHooks = async () => {
         }
       });
 
-      //@ts-ignore
-      libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype.refresh', TokenPrototypeRefreshHandler, 'MIXED');
+      
     }
 
     if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderFactionsEnabled')) {
@@ -119,13 +121,6 @@ export const readyHooks = async () => {
         }
       });
 
-      //@ts-ignore
-      libWrapper.register(
-        TOKEN_FACTIONS_MODULE_NAME,
-        'Token.prototype.refresh',
-        TokenPrototypeRefreshHandler,
-        'MIXED',
-      );
       //@ts-ignore
       libWrapper.register(
         TOKEN_FACTIONS_MODULE_NAME,

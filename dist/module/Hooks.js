@@ -34,6 +34,8 @@ export const readyHooks = async () => {
         Hooks.on('renderSettingsConfig', (sheet, html) => {
             TokenFactions.renderSettingsConfig(sheet, html);
         });
+        //@ts-ignore
+        libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype.refresh', TokenPrototypeRefreshHandler, 'MIXED');
         if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'pixiFactionsEnabled')) {
             TokenFactions.onInit(defaultColors, dispositions);
             Hooks.on('closeSettingsConfig', (token, data) => {
@@ -61,8 +63,6 @@ export const readyHooks = async () => {
                     TokenFactions.updateTokens(tokenData);
                 }
             });
-            //@ts-ignore
-            libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype.refresh', TokenPrototypeRefreshHandler, 'MIXED');
         }
         if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderFactionsEnabled')) {
             Hooks.on('closeSettingsConfig', (token, data) => {
@@ -95,8 +95,6 @@ export const readyHooks = async () => {
                     BorderFrameFaction.updateTokensBorder(tokenData);
                 }
             });
-            //@ts-ignore
-            libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype.refresh', TokenPrototypeRefreshHandler, 'MIXED');
             //@ts-ignore
             libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype._refreshBorder', BorderFrameFaction.newBorder, 'MIXED'); // OVERRRIDE
             //@ts-ignore

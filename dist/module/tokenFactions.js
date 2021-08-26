@@ -353,8 +353,8 @@ export const TokenFactions = ((canvas) => {
 //   Hooks.on('ready', () => {
 //     Hooks.on('closeSettingsConfig', TokenFactions.updateTokens);
 //   });
-export const TokenPrototypeRefreshHandler = function (wrapped, ...args) {
-    const tokenData = this;
-    TokenFactions.updateTokens(tokenData);
-    return wrapped(...args);
-};
+// export const TokenPrototypeRefreshHandler = function (wrapped, ...args) {
+//   const tokenData = this as TokenData;
+//   TokenFactions.updateTokens(tokenData);
+//   return wrapped(...args);
+// };
