@@ -115,6 +115,7 @@ export class BorderFrameFaction {
             return;
         }
         const t = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderWidth') || CONFIG.Canvas.objectBorderThickness;
+        const baseOpacity = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'base-opacity');
         // DISABLED
         // if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "healthGradient")) {
         //     const systemPath = BCC.currentSystem
@@ -138,16 +139,42 @@ export class BorderFrameFaction {
             const p = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderOffset');
             const h = Math.round(t / 2);
             const o = Math.round(h / 2);
-            //@ts-ignore
-            this.border
-                .lineStyle(t, borderColor.EX, 0.8)
+            if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'fillTexture')) {
                 //@ts-ignore
-                .drawCircle(this.w / 2, this.h / 2, this.w / 2 + t + p);
-            //@ts-ignore
-            this.border
-                .lineStyle(h, borderColor.INT, 1.0)
+                this.border
+                    .beginFill(borderColor.EX, baseOpacity)
+                    //@ts-ignore
+                    .drawCircle(this.w / 2, this.h / 2, this.w / 2 + t + p)
+                    .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.EX, alpha: 1 })
+                    .lineStyle(t, borderColor.EX, 0.8)
+                    .endFill()
+                    .lineStyle(t, borderColor.EX, 0.8)
+                    //@ts-ignore
+                    .drawCircle(this.w / 2, this.h / 2, this.w / 2 + t + p);
                 //@ts-ignore
-                .drawCircle(this.w / 2, this.h / 2, this.w / 2 + h + t / 2 + p);
+                this.border
+                    .beginFill(borderColor.INT, baseOpacity)
+                    //@ts-ignore
+                    .drawCircle(this.w / 2, this.h / 2, this.w / 2 + h + t / 2 + p)
+                    .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.INT, alpha: 1 })
+                    .lineStyle(h, borderColor.INT, 1.0)
+                    .endFill()
+                    .lineStyle(h, borderColor.INT, 1.0)
+                    //@ts-ignore
+                    .drawCircle(this.w / 2, this.h / 2, this.w / 2 + h + t / 2 + p);
+            }
+            else {
+                //@ts-ignore
+                this.border
+                    .lineStyle(t, borderColor.EX, 0.8)
+                    //@ts-ignore
+                    .drawCircle(this.w / 2, this.h / 2, this.w / 2 + t + p);
+                //@ts-ignore
+                this.border
+                    .lineStyle(h, borderColor.INT, 1.0)
+                    //@ts-ignore
+                    .drawCircle(this.w / 2, this.h / 2, this.w / 2 + h + t / 2 + p);
+            }
         }
         //@ts-ignore
         else if (hexTypes.includes(getCanvas().grid?.type) && this.data.width === 1 && this.data.height === 1) {
@@ -155,12 +182,36 @@ export class BorderFrameFaction {
             const q = Math.round(p / 2);
             //@ts-ignore
             const polygon = getCanvas().grid?.grid?.getPolygon(-1.5 - q, -1.5 - q, this.w + 2 + p, this.h + 2 + p);
-            //@ts-ignore
-            this.border
-                .lineStyle(t, borderColor.EX, 0.8).drawPolygon(polygon);
-            //@ts-ignore
-            this.border
-                .lineStyle(t / 2, borderColor.INT, 1.0).drawPolygon(polygon);
+            if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'fillTexture')) {
+                //@ts-ignore
+                this.border
+                    .beginFill(borderColor.EX, baseOpacity)
+                    .drawPolygon(polygon)
+                    .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.EX, alpha: 1 })
+                    .lineStyle(t, borderColor.EX, 0.8)
+                    .endFill()
+                    .lineStyle(t, borderColor.EX, 0.8)
+                    .drawPolygon(polygon);
+                //@ts-ignore
+                this.border
+                    .beginFill(borderColor.INT, baseOpacity)
+                    .drawPolygon(polygon)
+                    .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.INT, alpha: 1 })
+                    .lineStyle(t / 2, borderColor.INT, 1.0)
+                    .endFill()
+                    .lineStyle(t / 2, borderColor.INT, 1.0)
+                    .drawPolygon(polygon);
+            }
+            else {
+                //@ts-ignore
+                this.border
+                    .lineStyle(t, borderColor.EX, 0.8)
+                    .drawPolygon(polygon);
+                //@ts-ignore
+                this.border
+                    .lineStyle(t / 2, borderColor.INT, 1.0)
+                    .drawPolygon(polygon);
+            }
         }
         // Otherwise Draw Square border
         else {
@@ -168,16 +219,43 @@ export class BorderFrameFaction {
             const q = Math.round(p / 2);
             const h = Math.round(t / 2);
             const o = Math.round(h / 2);
-            //@ts-ignore
-            this.border
-                .lineStyle(t, borderColor.EX, 0.8)
+            if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'fillTexture')) {
                 //@ts-ignore
-                .drawRoundedRect(-o - q, -o - q, this.w + h + p, this.h + h + p, 3);
-            //@ts-ignore
-            this.border
-                .lineStyle(h, borderColor.INT, 1.0)
+                this.border
+                    .beginFill(borderColor.EX, baseOpacity)
+                    //@ts-ignore
+                    .drawRoundedRect(-o - q, -o - q, this.w + h + p, this.h + h + p, 3)
+                    .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.EX, alpha: 1 })
+                    .lineStyle(t, borderColor.EX, 0.8)
+                    .endFill()
+                    .lineStyle(t, borderColor.EX, 0.8)
+                    //@ts-ignore
+                    .drawRoundedRect(-o - q, -o - q, this.w + h + p, this.h + h + p, 3);
                 //@ts-ignore
-                .drawRoundedRect(-o - q, -o - q, this.w + h + p, this.h + h + p, 3);
+                this.border
+                    .beginFill(borderColor.INT, baseOpacity)
+                    //@ts-ignore
+                    .drawRoundedRect(-o - q, -o - q, this.w + h + p, this.h + h + p, 3)
+                    .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.INT, alpha: 1 })
+                    .lineStyle(h, borderColor.INT, 1.0)
+                    .endFill()
+                    .lineStyle(h, borderColor.INT, 1.0)
+                    //@ts-ignore
+                    .drawRoundedRect(-o - q, -o - q, this.w + h + p, this.h + h + p, 3);
+                ;
+            }
+            else {
+                //@ts-ignore
+                this.border
+                    .lineStyle(t, borderColor.EX, 0.8)
+                    //@ts-ignore
+                    .drawRoundedRect(-o - q, -o - q, this.w + h + p, this.h + h + p, 3);
+                //@ts-ignore
+                this.border
+                    .lineStyle(h, borderColor.INT, 1.0)
+                    //@ts-ignore
+                    .drawRoundedRect(-o - q, -o - q, this.w + h + p, this.h + h + p, 3);
+            }
         }
         return;
     }
@@ -502,6 +580,7 @@ export class BorderFrameFaction {
                     //@ts-ignore
                     token.border
                         .beginFill(borderColor.EX, baseOpacity)
+                        .drawCircle(token.w / 2, token.h / 2, token.w / 2 + t + p)
                         .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.EX, alpha: 1 })
                         .lineStyle(t, borderColor.EX, 0.8)
                         .endFill()
@@ -513,6 +592,7 @@ export class BorderFrameFaction {
                     //@ts-ignore
                     token.border
                         .beginFill(borderColor.INT, baseOpacity)
+                        .drawCircle(token.w / 2, token.h / 2, token.w / 2 + h + t / 2 + p)
                         .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.INT, alpha: 1 })
                         .lineStyle(t / 2, borderColor.INT, 1.0)
                         .endFill()
@@ -547,6 +627,7 @@ export class BorderFrameFaction {
                     //@ts-ignore
                     token.border
                         .beginFill(borderColor.EX, baseOpacity)
+                        .drawPolygon(polygon)
                         .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.EX, alpha: 1 })
                         .lineStyle(t, borderColor.EX, 0.8)
                         .endFill()
@@ -558,6 +639,7 @@ export class BorderFrameFaction {
                     //@ts-ignore
                     token.border
                         .beginFill(borderColor.INT, baseOpacity)
+                        .drawPolygon(polygon)
                         .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.INT, alpha: 1 })
                         .lineStyle(t / 2, borderColor.INT, 1.0)
                         .endFill()

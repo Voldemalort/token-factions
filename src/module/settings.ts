@@ -68,7 +68,7 @@ export const registerSettings = function () {
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.base-opacity.hint'),
     scope: 'world',
     config: true,
-    default: 1,
+    default: 0.5,
     type: Number,
     //@ts-ignore
     range: {
