@@ -220,18 +220,16 @@ export const TokenFactions = ((canvas) => {
             //@ts-ignore
             token.factionBase = token.addChildAt(new PIXI.Container(), token.getChildIndex(token.icon) - 1);
         } else {
-            //token.factionBase.removeChildren().forEach(c => c.destroy());
             //@ts-ignore
-            token.factionBase.clear();
+            token.factionBase.removeChildren().forEach(c => c.destroy());
         }
         //@ts-ignore
         if (!token.factionFrame) {
             //@ts-ignore
             token.factionFrame = token.addChildAt(new PIXI.Container(), token.getChildIndex(token.icon) + 1);
         } else {
-            //token.factionFrame.removeChildren().forEach(c => c.destroy());
             //@ts-ignore
-            token.factionFrame.clear();
+            token.factionFrame.removeChildren().forEach(c => c.destroy());
         }
 
         if (colorFrom === 'token-disposition') {
@@ -244,8 +242,10 @@ export const TokenFactions = ((canvas) => {
         }
 
         if (color) {
-          //@ts-ignore
-          TokenFactions.drawBase(color, token.factionBase, token );
+          if(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'fillTexture')){
+            //@ts-ignore
+            TokenFactions.drawBase(color, token.factionBase, token );
+          }
           if (drawFrame) {
             //@ts-ignore
             TokenFactions.drawFrame( color, token.factionFrame, token );
@@ -344,9 +344,11 @@ export const TokenFactions = ((canvas) => {
           container.addChild(outerRingMask);
           outerRing.mask = outerRingMask;
 
+          
           container.addChild(innerRing);
           container.addChild(innerRingMask);
           innerRing.mask = innerRingMask;
+          
 
           container.addChild(ringTexture);
           container.addChild(ringTextureMask);

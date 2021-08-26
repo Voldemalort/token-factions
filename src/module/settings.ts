@@ -78,6 +78,19 @@ export const registerSettings = function () {
     },
   });
 
+  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'fillTexture', {
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.fillTexture.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.fillTexture.hint'),
+    scope: 'world',
+    type: Boolean,
+    default: true,
+    config: true,
+  }); 
+
+  // ===============================
+  // SUB FEATURE STANDARD
+  // ===============================
+
   getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'pixiFactionsEnabled', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.pixiFactionsEnabled.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.pixiFactionsEnabled.hint'),
@@ -124,6 +137,7 @@ export const registerSettings = function () {
     },
   });
 
+  // TODO MOVE THIS FOR BOTH THE FEATURE ????
   getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'frame-opacity', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.frame-opacity.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.frame-opacity.hint'),
@@ -138,6 +152,10 @@ export const registerSettings = function () {
       step: 0.05,
     },
   });
+
+  // ===============================
+  // SUB FEATURE ALTERNATIVE BORDER
+  // ===============================
 
   getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'borderFactionsEnabled', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.borderFactionsEnabled.name'),
@@ -342,5 +360,5 @@ export const registerSettings = function () {
     default: '#000000',
     config: true,
   });
-  
+
 };
