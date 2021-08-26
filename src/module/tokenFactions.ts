@@ -134,7 +134,7 @@ export const TokenFactions = ((canvas) => {
       const token = sheet.object;
       //const flags = token.data.flags[TOKEN_FACTIONS_MODULE_NAME];
       const drawFramesByDefault = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'draw-frames-by-default');
-      const drawFrameOverride = token.document.getFlag(TOKEN_FACTIONS_MODULE_NAME,TOKEN_FACTIONS_FLAGS.DRAW_FRAME); // flags ? flags[TOKEN_FACTIONS_FLAGS.DRAW_FRAME] : undefined;
+      const drawFrameOverride = token.document.getFlag(TOKEN_FACTIONS_MODULE_NAME,TOKEN_FACTIONS_FLAGS.FACTION_DRAW_FRAME); // flags ? flags[TOKEN_FACTIONS_FLAGS.DRAW_FRAME] : undefined;
       const drawFrame = drawFrameOverride === undefined ? drawFramesByDefault : drawFrameOverride;
       const checked = drawFrame ? ' checked="checked"' : '';
       const skipDraw = token.document.getFlag(TOKEN_FACTIONS_MODULE_NAME,TOKEN_FACTIONS_FLAGS.FACTION_DISABLE); // flags ? flags[TOKEN_FACTIONS_FLAGS.FACTION_DISABLE] : undefined;
@@ -146,7 +146,7 @@ export const TokenFactions = ((canvas) => {
         </div>
           <div class="form-group">
             <label>Overlay A Faction-Based Frame</label>
-            <input type="checkbox" name="flags.${TOKEN_FACTIONS_MODULE_NAME}.${TOKEN_FACTIONS_FLAGS.DRAW_FRAME}" data-dtype="Boolean"${checked}>
+            <input type="checkbox" name="flags.${TOKEN_FACTIONS_MODULE_NAME}.${TOKEN_FACTIONS_FLAGS.FACTION_DRAW_FRAME}" data-dtype="Boolean"${checked}>
           </div>`);
     }
 
@@ -183,7 +183,7 @@ export const TokenFactions = ((canvas) => {
           return;
         }
         const drawFramesByDefault = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'draw-frames-by-default');
-        const drawFrameOverride = token.document.getFlag(TOKEN_FACTIONS_MODULE_NAME,TOKEN_FACTIONS_FLAGS.DRAW_FRAME); // flags ? flags[TOKEN_FACTIONS_FLAGS.DRAW_FRAME] : undefined;
+        const drawFrameOverride = token.document.getFlag(TOKEN_FACTIONS_MODULE_NAME,TOKEN_FACTIONS_FLAGS.FACTION_DRAW_FRAME); // flags ? flags[TOKEN_FACTIONS_FLAGS.DRAW_FRAME] : undefined;
         const drawFrame = drawFrameOverride === undefined ? drawFramesByDefault : drawFrameOverride;
         const colorFrom = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'color-from');
         let color;

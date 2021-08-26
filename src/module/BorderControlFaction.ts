@@ -99,7 +99,7 @@ export class BorderFrameFaction {
   static newBorder() {
     // if(!BCC) BCC = new BCconfig()
     //@ts-ignore
-    this.factionBorder.clear();
+    this.border.clear();
     //@ts-ignore
     const borderColor = this._getBorderColor();
     if (!borderColor){
@@ -152,9 +152,15 @@ export class BorderFrameFaction {
       const h = Math.round(t / 2);
       const o = Math.round(h / 2);
       //@ts-ignore
-      this.factionBorder.lineStyle(t, borderColor.EX, 0.8).drawCircle(this.w / 2, this.h / 2, this.w / 2 + t + p);
+      this.border
+        .lineStyle(t, borderColor.EX, 0.8)
+        //@ts-ignore
+        .drawCircle(this.w / 2, this.h / 2, this.w / 2 + t + p);
       //@ts-ignore
-      this.factionBorder.lineStyle(h, borderColor.INT, 1.0).drawCircle(this.w / 2, this.h / 2, this.w / 2 + h + t / 2 + p);
+      this.border
+        .lineStyle(h, borderColor.INT, 1.0)
+        //@ts-ignore
+        .drawCircle(this.w / 2, this.h / 2, this.w / 2 + h + t / 2 + p);
     }
     //@ts-ignore
     else if (hexTypes.includes(getCanvas().grid?.type) && this.data.width === 1 && this.data.height === 1) {
@@ -163,9 +169,11 @@ export class BorderFrameFaction {
       //@ts-ignore
       const polygon = getCanvas().grid?.grid?.getPolygon(-1.5 - q, -1.5 - q, this.w + 2 + p, this.h + 2 + p);
       //@ts-ignore
-      this.factionBorder.lineStyle(t, borderColor.EX, 0.8).drawPolygon(polygon);
+      this.border
+        .lineStyle(t, borderColor.EX, 0.8).drawPolygon(polygon);
       //@ts-ignore
-      this.factionBorder.lineStyle(t / 2, borderColor.INT, 1.0).drawPolygon(polygon);
+      this.border
+        .lineStyle(t / 2, borderColor.INT, 1.0).drawPolygon(polygon);
     }
 
     // Otherwise Draw Square border
@@ -175,9 +183,15 @@ export class BorderFrameFaction {
       const h = Math.round(t / 2);
       const o = Math.round(h / 2);
       //@ts-ignore
-      this.factionBorder.lineStyle(t, borderColor.EX, 0.8).drawRoundedRect(-o - q, -o - q, this.w + h + p, this.h + h + p, 3);
+      this.border
+        .lineStyle(t, borderColor.EX, 0.8)
+        //@ts-ignore
+        .drawRoundedRect(-o - q, -o - q, this.w + h + p, this.h + h + p, 3);
       //@ts-ignore
-      this.factionBorder.lineStyle(h, borderColor.INT, 1.0).drawRoundedRect(-o - q, -o - q, this.w + h + p, this.h + h + p, 3);
+      this.border
+        .lineStyle(h, borderColor.INT, 1.0)
+        //@ts-ignore
+        .drawRoundedRect(-o - q, -o - q, this.w + h + p, this.h + h + p, 3);
     }
     return;
   }
@@ -431,7 +445,7 @@ export class BorderFrameFaction {
         ACTOR_FOLDER_COLOR: {
           INT: parseInt(String(color).substr(1), 16),
           EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'actorFolderColorEx')).substr(1), 16),
-          ICON: String(icon),
+          ICON: icon ? String(icon) : "",
         },
         CUSTOM_DISPOSITION: {
           INT: parseInt(String(color).substr(1), 16),
@@ -468,7 +482,7 @@ export class BorderFrameFaction {
       // SECOND PART
       // if(!BCC) BCC = new BCconfig()
       //@ts-ignore
-      token.factionBorder.clear();
+      token.border.clear();
       if (!borderColor){
         return;
       }
@@ -511,16 +525,18 @@ export class BorderFrameFaction {
         const o = Math.round(h / 2);
 
         //@ts-ignore
-        token.factionBorder
+        token.border
           .beginFill(borderColor.EX)
           .lineStyle(t, borderColor.EX, 0.8)
-          .drawCircle(token.w / 2, token.h / 2, token.w / 2 + t + p);
+          .drawCircle(token.w / 2, token.h / 2, token.w / 2 + t + p)
+          .endFill();
 
         //@ts-ignore
-        token.factionBorder
+        token.border
           .beginFill(borderColor.INT)
           .lineStyle(h, borderColor.INT, 1.0)
-          .drawCircle(token.w / 2, token.h / 2, token.w / 2 + h + t / 2 + p);
+          .drawCircle(token.w / 2, token.h / 2, token.w / 2 + h + t / 2 + p)
+          .endFill();
       }
       //@ts-ignore
       else if (hexTypes.includes(getCanvas().grid?.type) && token.data.width === 1 && token.data.height === 1) {
@@ -531,16 +547,18 @@ export class BorderFrameFaction {
         const polygon = getCanvas().grid?.grid?.getPolygon(-1.5 - q, -1.5 - q, token.w + 2 + p, token.h + 2 + p);
 
         //@ts-ignore
-        token.factionBorder
+        token.border
           .beginFill(borderColor.EX)
           .lineStyle(t, borderColor.EX, 0.8)
-          .drawPolygon(polygon);
+          .drawPolygon(polygon)
+          .endFill();
 
         //@ts-ignore
-        token.factionBorder
+        token.border
           .beginFill(borderColor.INT)
           .lineStyle(t / 2, borderColor.INT, 1.0)
-          .drawPolygon(polygon);
+          .drawPolygon(polygon)
+          .endFill();
       }
 
       // Otherwise Draw Square border
@@ -551,16 +569,22 @@ export class BorderFrameFaction {
         const h = Math.round(t / 2);
         const o = Math.round(h / 2);
         //@ts-ignore
-        token.factionBorder
+        token.border
           .beginFill(borderColor.EX)
+          .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3)
+          .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.EX, alpha: 1 })
           .lineStyle(t, borderColor.EX, 0.8)
-          .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3);
+          .endFill()
+          ;
 
         //@ts-ignore
-        token.factionBorder
+        token.border
           .beginFill(borderColor.INT)
+          .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3)
+          .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.INT, alpha: 1 })
           .lineStyle(h, borderColor.INT, 1.0)
-          .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3);
+          .endFill()
+          ;
       }
     });
     return;

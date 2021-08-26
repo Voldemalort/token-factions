@@ -445,6 +445,24 @@ export const registerSettings = function () {
     config: true,
   });
 
+  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'actorFolderColorEx', {
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.actorFolderColorEx.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.actorFolderColorEx.hint'),
+    scope: 'client',
+    type: String,
+    default: '#000000',
+    config: true,
+  });
+
+  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'customDispositionColorEx', {
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.customDispositionColorEx.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.customDispositionColorEx.hint'),
+    scope: 'client',
+    type: String,
+    default: '#000000',
+    config: true,
+  });
+
   // getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME+'', 'disableRefreshTarget', {
   //   name: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.disableRefreshTarget.name'),
   //   hint: i18n(TOKEN_FACTIONS_MODULE_NAME+'.setting.disableRefreshTarget.hint'),

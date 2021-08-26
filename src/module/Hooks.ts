@@ -5,7 +5,7 @@ import { getCanvas, getGame, TOKEN_FACTIONS_MODULE_NAME } from './settings';
 import { TokenFactions, TokenPrototypeRefreshHandler } from './tokenFactions';
 
 export enum TOKEN_FACTIONS_FLAGS {
-  DRAW_FRAME = 'factionDrawFrame', //'draw-frame',
+  FACTION_DRAW_FRAME = 'factionDrawFrame', //'draw-frame',
   FACTION_DISABLE = 'factionDisable', // 'disable'
   FACTION_NO_BORDER = 'factionNoBorder' // noBorder
 }
