@@ -841,10 +841,10 @@ export class BorderFrameFaction {
                     .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.EX, alpha: baseOpacity })
                     .lineStyle(t, borderColor.EX, 0.8)
                     .endFill()
-                    .beginFill(borderColor.EX)
+                    //.beginFill(borderColor.EX)
                     .lineStyle(t, borderColor.EX, 0.8)
-                    .drawCircle(token.w / 2, token.h / 2, token.w / 2 + t + p)
-                    .endFill();
+                    .drawCircle(token.w / 2, token.h / 2, token.w / 2 + t + p);
+                //.endFill();
                 //@ts-ignore
                 token.border
                     .beginFill(borderColor.INT, baseOpacity)
@@ -852,24 +852,24 @@ export class BorderFrameFaction {
                     .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.INT, alpha: baseOpacity })
                     .lineStyle(h, borderColor.INT, 1.0)
                     .endFill()
-                    .beginFill(borderColor.INT)
+                    //.beginFill(borderColor.INT)
                     .lineStyle(h, borderColor.INT, 1.0)
-                    .drawCircle(token.w / 2, token.h / 2, token.w / 2 + h + t / 2 + p)
-                    .endFill();
+                    .drawCircle(token.w / 2, token.h / 2, token.w / 2 + h + t / 2 + p);
+                //.endFill();
             }
             else {
                 //@ts-ignore
                 token.border
-                    .beginFill(borderColor.EX)
+                    //.beginFill(borderColor.EX)
                     .lineStyle(t, borderColor.EX, 0.8)
-                    .drawCircle(token.w / 2, token.h / 2, token.w / 2 + t + p)
-                    .endFill();
+                    .drawCircle(token.w / 2, token.h / 2, token.w / 2 + t + p);
+                //.endFill();
                 //@ts-ignore
                 token.border
-                    .beginFill(borderColor.INT)
+                    //.beginFill(borderColor.INT)
                     .lineStyle(h, borderColor.INT, 1.0)
-                    .drawCircle(token.w / 2, token.h / 2, token.w / 2 + h + t / 2 + p)
-                    .endFill();
+                    .drawCircle(token.w / 2, token.h / 2, token.w / 2 + h + t / 2 + p);
+                //.endFill();
             }
         }
         //@ts-ignore
@@ -886,10 +886,10 @@ export class BorderFrameFaction {
                     .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.EX, alpha: baseOpacity })
                     .lineStyle(t, borderColor.EX, 0.8)
                     .endFill()
-                    .beginFill(borderColor.EX)
+                    //.beginFill(borderColor.EX)
                     .lineStyle(t, borderColor.EX, 0.8)
-                    .drawPolygon(polygon)
-                    .endFill();
+                    .drawPolygon(polygon);
+                //.endFill();
                 //@ts-ignore
                 token.border
                     .beginFill(borderColor.INT, baseOpacity)
@@ -897,24 +897,24 @@ export class BorderFrameFaction {
                     .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.INT, alpha: baseOpacity })
                     .lineStyle(t / 2, borderColor.INT, 1.0)
                     .endFill()
-                    .beginFill(borderColor.INT)
+                    //.beginFill(borderColor.INT)
                     .lineStyle(t / 2, borderColor.INT, 1.0)
-                    .drawPolygon(polygon)
-                    .endFill();
+                    .drawPolygon(polygon);
+                //.endFill();
             }
             else {
                 //@ts-ignore
                 token.border
-                    .beginFill(borderColor.EX)
+                    //.beginFill(borderColor.EX)
                     .lineStyle(t, borderColor.EX, 0.8)
-                    .drawPolygon(polygon)
-                    .endFill();
+                    .drawPolygon(polygon);
+                //.endFill();
                 //@ts-ignore
                 token.border
-                    .beginFill(borderColor.INT)
+                    //.beginFill(borderColor.INT)
                     .lineStyle(t / 2, borderColor.INT, 1.0)
-                    .drawPolygon(polygon)
-                    .endFill();
+                    .drawPolygon(polygon);
+                //.endFill();
             }
         }
         // Otherwise Draw Square border
