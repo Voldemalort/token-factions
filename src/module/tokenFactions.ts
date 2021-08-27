@@ -1,23 +1,6 @@
 import { TokenData } from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs';
-import { defaultColors, dispositions, TOKEN_FACTIONS_FLAGS } from './Hooks';
+import { defaultColors, dispositionKey, dispositions, TOKEN_FACTIONS_FLAGS } from './Hooks';
 import { getCanvas, getGame, TOKEN_FACTIONS_MODULE_NAME } from './settings';
-
-export const dispositionKey = (token) => {
-  const dispositionValue = parseInt(String(token.data.disposition), 10);
-  let disposition;
-  if (token.actor && token.actor.hasPlayerOwner && token.actor.type === 'character') {
-    disposition = 'party-member';
-  } else if (token.actor && token.actor.hasPlayerOwner) {
-    disposition = 'party-npc';
-  } else if (dispositionValue === 1) {
-    disposition = 'friendly-npc';
-  } else if (dispositionValue === 0) {
-    disposition = 'neutral-npc';
-  } else if (dispositionValue === -1) {
-    disposition = 'hostile-npc';
-  }
-  return disposition;
-};
 
 export const TokenFactions = ((canvas) => {
   // const defaultColors = {
@@ -344,11 +327,11 @@ export const TokenFactions = ((canvas) => {
           container.addChild(outerRingMask);
           outerRing.mask = outerRingMask;
 
-          
+
           container.addChild(innerRing);
           container.addChild(innerRingMask);
           innerRing.mask = innerRingMask;
-          
+
 
           container.addChild(ringTexture);
           container.addChild(ringTextureMask);

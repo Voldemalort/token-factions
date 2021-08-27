@@ -85,7 +85,7 @@ export const registerSettings = function () {
     type: Boolean,
     default: true,
     config: true,
-  }); 
+  });
 
   // ===============================
   // SUB FEATURE STANDARD
@@ -180,14 +180,14 @@ export const registerSettings = function () {
     config: true,
   });
 
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME + '', 'stepLevel', {
-    name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.stepLevel.name'),
-    hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.stepLevel.hint'),
-    scope: 'world',
-    type: Number,
-    default: 10,
-    config: true,
-  });
+  // getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME + '', 'stepLevel', {
+  //   name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.stepLevel.name'),
+  //   hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.stepLevel.hint'),
+  //   scope: 'world',
+  //   type: Number,
+  //   default: 10,
+  //   config: true,
+  // });
 
   getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME + '', 'borderWidth', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.borderWidth.name'),
