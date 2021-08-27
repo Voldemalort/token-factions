@@ -94,7 +94,7 @@ export const readyHooks = async () => {
         }
       });
 
-
+      
     }
 
     if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderFactionsEnabled')) {

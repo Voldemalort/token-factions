@@ -327,11 +327,11 @@ export const TokenFactions = ((canvas) => {
           container.addChild(outerRingMask);
           outerRing.mask = outerRingMask;
 
-
+          
           container.addChild(innerRing);
           container.addChild(innerRingMask);
           innerRing.mask = innerRingMask;
-
+          
 
           container.addChild(ringTexture);
           container.addChild(ringTextureMask);

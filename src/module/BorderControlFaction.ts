@@ -96,13 +96,177 @@ export class BorderFrameFaction {
     event.currentTarget.classList.toggle('active', !border);
   }
   static newBorder() {
+    //@ts-ignore
+    const token:Token = this as Token;
     // if(!BCC) BCC = new BCconfig()
     //@ts-ignore
-    // this.border.clear(); // is in drawBorderFaction
+    this.border.clear(); // is in drawBorderFaction
     //@ts-ignore
     const borderColor = this._getBorderColor();
+    
+    if (!borderColor){
+      return;
+    }
+    switch (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'removeBorders')) {
+      case '0':
+        break;
+      case '1':
+        //@ts-ignore
+        if (!token.owner){
+           return;
+        }
+        break;
+      case '2':
+        return;
+    }
     //@ts-ignore
-    BorderFrameFaction.drawBorderFaction(this, borderColor);
+    if (token.document.getFlag(TOKEN_FACTIONS_MODULE_NAME,TOKEN_FACTIONS_FLAGS.FACTION_NO_BORDER)) {
+      return;
+    }
+    if (!borderColor.INT || Number.isNaN(borderColor.INT)) {
+      return;
+    }
+    const t =
+      <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderWidth') ||
+      CONFIG.Canvas.objectBorderThickness;
+    
+    const baseOpacity = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'base-opacity');
+    
+    // Draw Hex border for size 1 tokens on a hex grid
+    const gt = CONST.GRID_TYPES;
+    const hexTypes = [gt.HEXEVENQ, gt.HEXEVENR, gt.HEXODDQ, gt.HEXODDR];
+
+    if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'circleBorders')) {
+
+      const p = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderOffset');
+      const h = Math.round(t / 2);
+      const o = Math.round(h / 2);
+
+      if(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'fillTexture')){
+
+        //@ts-ignore
+        token.border
+          .beginFill(borderColor.EX, baseOpacity)
+          .drawCircle(token.w / 2, token.h / 2, token.w / 2 + t + p)
+          .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.EX, alpha: baseOpacity })
+          .lineStyle(t, borderColor.EX, 0.8)
+          .endFill()
+          .lineStyle(t, borderColor.EX, 0.8)
+          .drawCircle(token.w / 2, token.h / 2, token.w / 2 + t + p);
+
+        //@ts-ignore
+        token.border
+          .beginFill(borderColor.INT, baseOpacity)
+          .drawCircle(token.w / 2, token.h / 2, token.w / 2 + h + t / 2 + p)
+          .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.INT, alpha: baseOpacity })
+          .lineStyle(h, borderColor.INT, 1.0)
+          .endFill()
+          .lineStyle(h, borderColor.INT, 1.0)
+          .drawCircle(token.w / 2, token.h / 2, token.w / 2 + h + t / 2 + p);
+
+      }else{
+
+        //@ts-ignore
+        token.border
+          .lineStyle(t, borderColor.EX, 0.8)
+          .drawCircle(token.w / 2, token.h / 2, token.w / 2 + t + p);
+
+        //@ts-ignore
+        token.border
+          .lineStyle(h, borderColor.INT, 1.0)
+          .drawCircle(token.w / 2, token.h / 2, token.w / 2 + h + t / 2 + p);
+      }
+    }
+    //@ts-ignore
+    else if (hexTypes.includes(getCanvas().grid?.type) && token.data.width === 1 && token.data.height === 1) {
+      
+      const p = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderOffset');
+      const q = Math.round(p / 2);
+      //@ts-ignore
+      const polygon = getCanvas().grid?.grid?.getPolygon(-1.5 - q, -1.5 - q, token.w + 2 + p, token.h + 2 + p);
+
+      if(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'fillTexture')){
+
+        //@ts-ignore
+        token.border
+          .beginFill(borderColor.EX, baseOpacity)
+          .drawPolygon(polygon)
+          .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.EX, alpha: baseOpacity })
+          .lineStyle(t, borderColor.EX, 0.8)
+          .endFill()
+          .lineStyle(t, borderColor.EX, 0.8)
+          .drawPolygon(polygon);
+
+        //@ts-ignore
+        token.border
+          .beginFill(borderColor.INT, baseOpacity)
+          .drawPolygon(polygon)
+          .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.INT, alpha: baseOpacity })
+          .lineStyle(t / 2, borderColor.INT, 1.0)
+          .endFill()
+          .lineStyle(t / 2, borderColor.INT, 1.0)
+          .drawPolygon(polygon);
+
+      }else{
+
+        //@ts-ignore
+        token.border
+          .lineStyle(t, borderColor.EX, 0.8)
+          .drawPolygon(polygon);
+
+        //@ts-ignore
+        token.border
+          .lineStyle(t / 2, borderColor.INT, 1.0)
+          .drawPolygon(polygon);
+      }
+    }
+
+    // Otherwise Draw Square border
+    else {
+
+      const p = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderOffset');
+      const q = Math.round(p / 2);
+      const h = Math.round(t / 2);
+      const o = Math.round(h / 2);
+
+      if(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'fillTexture')){
+
+        //@ts-ignore
+        token.border
+          .beginFill(borderColor.EX, baseOpacity)
+          .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3)
+          .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.EX, alpha: baseOpacity })
+          .lineStyle(t, borderColor.EX, 0.8)
+          .endFill()
+          .lineStyle(t, borderColor.EX, 0.8)
+          .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3);
+
+        //@ts-ignore
+        token.border
+          .beginFill(borderColor.INT, baseOpacity)
+          .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3)
+          .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.INT, alpha: baseOpacity })
+          .lineStyle(h, borderColor.INT, 1.0)
+          .endFill()
+          .lineStyle(h, borderColor.INT, 1.0)
+          .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3);
+
+      }else{
+
+        //@ts-ignore
+        token.border
+          .lineStyle(t, borderColor.EX, 0.8)
+          .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3);
+
+        //@ts-ignore
+        token.border
+          .lineStyle(h, borderColor.INT, 1.0)
+          .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3);
+      }
+    }
+    
+    //@ts-ignore
+    //BorderFrameFaction.drawBorderFaction(this, borderColor);
     return;
   }
 
@@ -110,84 +274,86 @@ export class BorderFrameFaction {
     return Math.min(Math.max(value, min), max);
   }
 
-  static newBorderColor():{INT, EX, ICON} {
+  static newBorderColor() {
     //@ts-ignore
     const token: Token = this as Token;
-    // const colorFrom = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'color-from');
-    // let color;
-    // if (colorFrom === 'token-disposition') {
-    //   const disposition = dispositionKey(token);
-    //   if (disposition) {
-    //     color = defaultColors[disposition];
-    //   }
-    // } else if (colorFrom === 'actor-folder-color') {
-    //   if (token.actor && token.actor.folder && token.actor.folder.data && token.actor.folder.data.color) {
-    //     color = token.actor.folder.data.color;
-    //   }
-    // } else {
-    //   // colorFrom === 'custom-disposition'
-    //   const disposition = dispositionKey(token);
-    //   if (disposition) {
-    //     color = <string>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, `custom-${disposition}-color`);
-    //   }
-    // }
+    /*
+    const colorFrom = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'color-from');
+    let color;
+    if (colorFrom === 'token-disposition') {
+      const disposition = dispositionKey(token);
+      if (disposition) {
+        color = defaultColors[disposition];
+      }
+    } else if (colorFrom === 'actor-folder-color') {
+      if (token.actor && token.actor.folder && token.actor.folder.data && token.actor.folder.data.color) {
+        color = token.actor.folder.data.color;
+      }
+    } else {
+      // colorFrom === 'custom-disposition'
+      const disposition = dispositionKey(token);
+      if (disposition) {
+        color = <string>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, `custom-${disposition}-color`);
+      }
+    }
 
-    // const overrides = {
-    //   CONTROLLED: {
-    //     INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'controlledColor')).substr(1), 16),
-    //     EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'controlledColorEx')).substr(1), 16),
-    //   },
-    //   FRIENDLY: {
-    //     INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'friendlyColor')).substr(1), 16),
-    //     EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'friendlyColorEx')).substr(1), 16),
-    //   },
-    //   NEUTRAL: {
-    //     INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'neutralColor')).substr(1), 16),
-    //     EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'neutralColorEx')).substr(1), 16),
-    //   },
-    //   HOSTILE: {
-    //     INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'hostileColor')).substr(1), 16),
-    //     EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'hostileColorEx')).substr(1), 16),
-    //   },
-    //   PARTY: {
-    //     INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'partyColor')).substr(1), 16),
-    //     EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'partyColorEx')).substr(1), 16),
-    //   },
-    //   ACTOR_FOLDER_COLOR: {
-    //     INT: parseInt(String(color).substr(1), 16),
-    //     EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'actorFolderColorEx')).substr(1), 16),
-    //   },
-    //   CUSTOM_DISPOSITION: {
-    //     INT: parseInt(String(color).substr(1), 16),
-    //     EX: parseInt(
-    //       String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'customDispositionColorEx')).substr(1),
-    //       16,
-    //     ),
-    //   },
-    // };
-    // if (colorFrom === 'token-disposition') {
-    //   //@ts-ignore
-    //   //if (token._controlled) return overrides.CONTROLLED;
-    //   //@ts-ignore
-    //   //else if (token._hover) {
-    //   const disPath = isNewerVersion(getGame().data.version, '0.8.0') ? CONST.TOKEN_DISPOSITIONS : TOKEN_DISPOSITIONS;
-    //   //@ts-ignore
-    //   const d = parseInt(token.data.disposition);
-    //   //@ts-ignore
-    //   if (!getGame().user?.isGM && token.owner) return overrides.CONTROLLED;
-    //   //@ts-ignore
-    //   else if (token.actor?.hasPlayerOwner) return overrides.PARTY;
-    //   else if (d === disPath.FRIENDLY) return overrides.FRIENDLY;
-    //   else if (d === disPath.NEUTRAL) return overrides.NEUTRAL;
-    //   else return overrides.HOSTILE;
-    //   //}
-    //   //else return null;
-    // } else if (colorFrom === 'actor-folder-color') {
-    //   return overrides.ACTOR_FOLDER_COLOR;
-    // } else {
-    //   // colorFrom === 'custom-disposition'
-    //   return overrides.CUSTOM_DISPOSITION;
-    // }
+    const overrides = {
+      CONTROLLED: {
+        INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'controlledColor')).substr(1), 16),
+        EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'controlledColorEx')).substr(1), 16),
+      },
+      FRIENDLY: {
+        INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'friendlyColor')).substr(1), 16),
+        EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'friendlyColorEx')).substr(1), 16),
+      },
+      NEUTRAL: {
+        INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'neutralColor')).substr(1), 16),
+        EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'neutralColorEx')).substr(1), 16),
+      },
+      HOSTILE: {
+        INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'hostileColor')).substr(1), 16),
+        EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'hostileColorEx')).substr(1), 16),
+      },
+      PARTY: {
+        INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'partyColor')).substr(1), 16),
+        EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'partyColorEx')).substr(1), 16),
+      },
+      ACTOR_FOLDER_COLOR: {
+        INT: parseInt(String(color).substr(1), 16),
+        EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'actorFolderColorEx')).substr(1), 16),
+      },
+      CUSTOM_DISPOSITION: {
+        INT: parseInt(String(color).substr(1), 16),
+        EX: parseInt(
+          String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'customDispositionColorEx')).substr(1),
+          16,
+        ),
+      },
+    };
+    if (colorFrom === 'token-disposition') {
+      //@ts-ignore
+      //if (token._controlled) return overrides.CONTROLLED;
+      //@ts-ignore
+      //else if (token._hover) {
+      const disPath = isNewerVersion(getGame().data.version, '0.8.0') ? CONST.TOKEN_DISPOSITIONS : TOKEN_DISPOSITIONS;
+      //@ts-ignore
+      const d = parseInt(token.data.disposition);
+      //@ts-ignore
+      if (!getGame().user?.isGM && token.owner) return overrides.CONTROLLED;
+      //@ts-ignore
+      else if (token.actor?.hasPlayerOwner) return overrides.PARTY;
+      else if (d === disPath.FRIENDLY) return overrides.FRIENDLY;
+      else if (d === disPath.NEUTRAL) return overrides.NEUTRAL;
+      else return overrides.HOSTILE;
+      //}
+      //else return null;
+    } else if (colorFrom === 'actor-folder-color') {
+      return overrides.ACTOR_FOLDER_COLOR;
+    } else {
+      // colorFrom === 'custom-disposition'
+      return overrides.CUSTOM_DISPOSITION;
+    }
+    */
     return BorderFrameFaction.colorBorderFaction(token);
   }
 
@@ -304,6 +470,284 @@ export class BorderFrameFaction {
       // TokenDocument to Token
       //@ts-ignore
       const token: Token = tokenDoc._object;
+      /*
+      const colorFrom = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'color-from');
+      let color;
+      let icon;
+      if (colorFrom === 'token-disposition') {
+        const disposition = dispositionKey(token);
+        if (disposition) {
+          color = defaultColors[disposition];
+        }
+      } else if (colorFrom === 'actor-folder-color') {
+        if (token.actor && token.actor.folder && token.actor.folder.data) {
+          color = token.actor.folder.data.color;
+          //@ts-ignore
+          icon = token.actor.folder.data.icon;
+        }
+      } else {
+        // colorFrom === 'custom-disposition'
+        const disposition = dispositionKey(token);
+        if (disposition) {
+          color = <string>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, `custom-${disposition}-color`);
+        }
+      }
+
+      const overrides = {
+        CONTROLLED: {
+          INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'controlledColor')).substr(1), 16),
+          EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'controlledColorEx')).substr(1), 16),
+          ICON: ""
+        },
+        FRIENDLY: {
+          INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'friendlyColor')).substr(1), 16),
+          EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'friendlyColorEx')).substr(1), 16),
+          ICON: ""
+        },
+        NEUTRAL: {
+          INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'neutralColor')).substr(1), 16),
+          EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'neutralColorEx')).substr(1), 16),
+          ICON: ""
+        },
+        HOSTILE: {
+          INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'hostileColor')).substr(1), 16),
+          EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'hostileColorEx')).substr(1), 16),
+          ICON: ""
+        },
+        PARTY: {
+          INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'partyColor')).substr(1), 16),
+          EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'partyColorEx')).substr(1), 16),
+          ICON: ""
+        },
+        ACTOR_FOLDER_COLOR: {
+          INT: parseInt(String(color).substr(1), 16),
+          EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'actorFolderColorEx')).substr(1), 16),
+          ICON: icon ? String(icon) : "",
+        },
+        CUSTOM_DISPOSITION: {
+          INT: parseInt(String(color).substr(1), 16),
+          EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'customDispositionColorEx')).substr(1),16),
+          ICON: ""
+        },
+      };
+
+      let borderColor = { INT: 0, EX: 0, ICON: "" };
+      if (colorFrom === 'token-disposition') {
+        //@ts-ignore
+        //if (token._controlled) return overrides.CONTROLLED;
+        //@ts-ignore
+        //else if (token._hover) {
+        const disPath = isNewerVersion(getGame().data.version, '0.8.0') ? CONST.TOKEN_DISPOSITIONS : TOKEN_DISPOSITIONS;
+        //@ts-ignore
+        const d = parseInt(token.data.disposition);
+        //@ts-ignore
+        if (!getGame().user?.isGM && token.owner) borderColor = overrides.CONTROLLED;
+        //@ts-ignore
+        else if (token.actor?.hasPlayerOwner) borderColor = overrides.PARTY;
+        else if (d === disPath.FRIENDLY) borderColor = overrides.FRIENDLY;
+        else if (d === disPath.NEUTRAL) borderColor = overrides.NEUTRAL;
+        else borderColor = overrides.HOSTILE;
+        //}
+        //else return null;
+      } else if (colorFrom === 'actor-folder-color') {
+        borderColor = overrides.ACTOR_FOLDER_COLOR;
+      } else {
+        // colorFrom === 'custom-disposition'
+        borderColor = overrides.CUSTOM_DISPOSITION;
+      }
+
+      // SECOND PART
+      // if(!BCC) BCC = new BCconfig()
+      //@ts-ignore
+      token.border.clear();
+      if (!borderColor){
+        return;
+      }
+      switch (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'removeBorders')) {
+        case '0':
+          break;
+        //@ts-ignore
+        case '1':
+          if (!token.owner) return;
+          break;
+        case '2':
+          return;
+      }
+      //@ts-ignore
+      if (token.document.getFlag(TOKEN_FACTIONS_MODULE_NAME,TOKEN_FACTIONS_FLAGS.FACTION_NO_BORDER)) {
+        return;
+      }
+      if (!borderColor.INT || Number.isNaN(borderColor.INT)) {
+        return;
+      }
+      const t =
+        <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderWidth') ||
+        CONFIG.Canvas.objectBorderThickness;
+
+      const baseOpacity = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'base-opacity');
+
+      // TODO
+      // Prepare texture for faction symbol
+      // if(borderColor.ICON) {
+
+      // }
+
+
+      // Draw Hex border for size 1 tokens on a hex grid
+      const gt = CONST.GRID_TYPES;
+      const hexTypes = [gt.HEXEVENQ, gt.HEXEVENR, gt.HEXODDQ, gt.HEXODDR];
+
+      if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'circleBorders')) {
+
+        const p = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderOffset');
+        const h = Math.round(t / 2);
+        const o = Math.round(h / 2);
+
+        if(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'fillTexture')){
+
+          //@ts-ignore
+          token.border
+            .beginFill(borderColor.EX, baseOpacity)
+            .drawCircle(token.w / 2, token.h / 2, token.w / 2 + t + p)
+            .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.EX, alpha: baseOpacity })
+            .lineStyle(t, borderColor.EX, 0.8)
+            .endFill()
+            .beginFill(borderColor.EX)
+            .lineStyle(t, borderColor.EX, 0.8)
+            .drawCircle(token.w / 2, token.h / 2, token.w / 2 + t + p)
+            .endFill();
+          ;
+
+          //@ts-ignore
+          token.border
+            .beginFill(borderColor.INT, baseOpacity)
+            .drawCircle(token.w / 2, token.h / 2, token.w / 2 + h + t / 2 + p)
+            .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.INT, alpha: baseOpacity })
+            .lineStyle(t / 2, borderColor.INT, 1.0)
+            .endFill()
+            .beginFill(borderColor.INT)
+            .lineStyle(h, borderColor.INT, 1.0)
+            .drawCircle(token.w / 2, token.h / 2, token.w / 2 + h + t / 2 + p)
+            .endFill();
+          ;
+
+        }else{
+
+          //@ts-ignore
+          token.border
+            .beginFill(borderColor.EX)
+            .lineStyle(t, borderColor.EX, 0.8)
+            .drawCircle(token.w / 2, token.h / 2, token.w / 2 + t + p)
+            .endFill();
+
+          //@ts-ignore
+          token.border
+            .beginFill(borderColor.INT)
+            .lineStyle(h, borderColor.INT, 1.0)
+            .drawCircle(token.w / 2, token.h / 2, token.w / 2 + h + t / 2 + p)
+            .endFill();
+        }
+      }
+      //@ts-ignore
+      else if (hexTypes.includes(getCanvas().grid?.type) && token.data.width === 1 && token.data.height === 1) {
+
+        const p = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderOffset');
+        const q = Math.round(p / 2);
+        //@ts-ignore
+        const polygon = getCanvas().grid?.grid?.getPolygon(-1.5 - q, -1.5 - q, token.w + 2 + p, token.h + 2 + p);
+
+        if(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'fillTexture')){
+          //@ts-ignore
+          token.border
+            .beginFill(borderColor.EX, baseOpacity)
+            .drawPolygon(polygon)
+            .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.EX, alpha: baseOpacity })
+            .lineStyle(t, borderColor.EX, 0.8)
+            .endFill()
+            .beginFill(borderColor.EX)
+            .lineStyle(t, borderColor.EX, 0.8)
+            .drawPolygon(polygon)
+            .endFill();
+          ;
+
+          //@ts-ignore
+          token.border
+            .beginFill(borderColor.INT, baseOpacity)
+            .drawPolygon(polygon)
+            .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.INT, alpha: baseOpacity })
+            .lineStyle(t / 2, borderColor.INT, 1.0)
+            .endFill()
+            .beginFill(borderColor.INT)
+            .lineStyle(t / 2, borderColor.INT, 1.0)
+            .drawPolygon(polygon)
+            .endFill();
+          ;
+
+        }else{
+
+          //@ts-ignore
+          token.border
+            .beginFill(borderColor.EX)
+            .lineStyle(t, borderColor.EX, 0.8)
+            .drawPolygon(polygon)
+            .endFill();
+
+          //@ts-ignore
+          token.border
+            .beginFill(borderColor.INT)
+            .lineStyle(t / 2, borderColor.INT, 1.0)
+            .drawPolygon(polygon)
+            .endFill();
+        }
+      }
+
+      // Otherwise Draw Square border
+      else {
+
+        const p = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderOffset');
+        const q = Math.round(p / 2);
+        const h = Math.round(t / 2);
+        const o = Math.round(h / 2);
+
+        if(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'fillTexture')){
+          //@ts-ignore
+          token.border
+            .beginFill(borderColor.EX, baseOpacity)
+            .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3)
+            .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.EX, alpha: baseOpacity })
+            .lineStyle(t, borderColor.EX, 0.8)
+            .endFill()
+            .lineStyle(t, borderColor.EX, 0.8)
+            .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3)
+          ;
+
+          //@ts-ignore
+          token.border
+            .beginFill(borderColor.INT, baseOpacity)
+            .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3)
+            .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.INT, alpha: baseOpacity })
+            .lineStyle(h, borderColor.INT, 1.0)
+            .endFill()
+            .lineStyle(h, borderColor.INT, 1.0)
+            .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3)
+          ;
+
+        }else{
+          
+          //@ts-ignore
+          token.border
+            .lineStyle(t, borderColor.EX, 0.8)
+            .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3)
+          ;
+
+          //@ts-ignore
+          token.border
+            .lineStyle(h, borderColor.INT, 1.0)
+            .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3)
+          ;
+        }
+      }
+      */
       const borderColor = BorderFrameFaction.colorBorderFaction(token);
       BorderFrameFaction.drawBorderFaction(token,borderColor);
 
@@ -412,9 +856,11 @@ export class BorderFrameFaction {
     switch (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'removeBorders')) {
       case '0':
         break;
-      //@ts-ignore
       case '1':
-        if (!token.owner) return;
+        //@ts-ignore
+        if (!token.owner){
+          return;
+        }
         break;
       case '2':
         return;
@@ -432,13 +878,6 @@ export class BorderFrameFaction {
 
     const baseOpacity = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'base-opacity');
 
-    // TODO
-    // Prepare texture for faction symbol
-    // if(borderColor.ICON) {
-
-    // }
-
-
     // Draw Hex border for size 1 tokens on a hex grid
     const gt = CONST.GRID_TYPES;
     const hexTypes = [gt.HEXEVENQ, gt.HEXEVENR, gt.HEXODDQ, gt.HEXODDR];
@@ -455,27 +894,25 @@ export class BorderFrameFaction {
         token.border
           .beginFill(borderColor.EX, baseOpacity)
           .drawCircle(token.w / 2, token.h / 2, token.w / 2 + t + p)
-          .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.EX, alpha: 1 })
+          .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.EX, alpha: baseOpacity })
           .lineStyle(t, borderColor.EX, 0.8)
           .endFill()
           .beginFill(borderColor.EX)
           .lineStyle(t, borderColor.EX, 0.8)
           .drawCircle(token.w / 2, token.h / 2, token.w / 2 + t + p)
           .endFill();
-        ;
 
         //@ts-ignore
         token.border
           .beginFill(borderColor.INT, baseOpacity)
           .drawCircle(token.w / 2, token.h / 2, token.w / 2 + h + t / 2 + p)
-          .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.INT, alpha: 1 })
-          .lineStyle(t / 2, borderColor.INT, 1.0)
+          .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.INT, alpha: baseOpacity })
+          .lineStyle(h, borderColor.INT, 1.0)
           .endFill()
           .beginFill(borderColor.INT)
           .lineStyle(h, borderColor.INT, 1.0)
           .drawCircle(token.w / 2, token.h / 2, token.w / 2 + h + t / 2 + p)
           .endFill();
-        ;
 
       }else{
 
@@ -503,31 +940,30 @@ export class BorderFrameFaction {
       const polygon = getCanvas().grid?.grid?.getPolygon(-1.5 - q, -1.5 - q, token.w + 2 + p, token.h + 2 + p);
 
       if(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'fillTexture')){
+
         //@ts-ignore
         token.border
           .beginFill(borderColor.EX, baseOpacity)
           .drawPolygon(polygon)
-          .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.EX, alpha: 1 })
+          .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.EX, alpha: baseOpacity })
           .lineStyle(t, borderColor.EX, 0.8)
           .endFill()
           .beginFill(borderColor.EX)
           .lineStyle(t, borderColor.EX, 0.8)
           .drawPolygon(polygon)
           .endFill();
-        ;
 
         //@ts-ignore
         token.border
           .beginFill(borderColor.INT, baseOpacity)
           .drawPolygon(polygon)
-          .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.INT, alpha: 1 })
+          .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.INT, alpha: baseOpacity })
           .lineStyle(t / 2, borderColor.INT, 1.0)
           .endFill()
           .beginFill(borderColor.INT)
           .lineStyle(t / 2, borderColor.INT, 1.0)
           .drawPolygon(polygon)
           .endFill();
-        ;
 
       }else{
 
@@ -556,41 +992,38 @@ export class BorderFrameFaction {
       const o = Math.round(h / 2);
 
       if(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'fillTexture')){
+
         //@ts-ignore
         token.border
           .beginFill(borderColor.EX, baseOpacity)
           .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3)
-          .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.EX, alpha: 1 })
+          .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.EX, alpha: baseOpacity })
           .lineStyle(t, borderColor.EX, 0.8)
           .endFill()
           .lineStyle(t, borderColor.EX, 0.8)
-          .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3)
-        ;
+          .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3);
 
         //@ts-ignore
         token.border
           .beginFill(borderColor.INT, baseOpacity)
           .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3)
-          .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.INT, alpha: 1 })
+          .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.INT, alpha: baseOpacity })
           .lineStyle(h, borderColor.INT, 1.0)
           .endFill()
           .lineStyle(h, borderColor.INT, 1.0)
-          .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3)
-        ;
+          .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3);
 
       }else{
 
         //@ts-ignore
         token.border
           .lineStyle(t, borderColor.EX, 0.8)
-          .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3)
-        ;
+          .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3);
 
         //@ts-ignore
         token.border
           .lineStyle(h, borderColor.INT, 1.0)
-          .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3)
-        ;
+          .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3);
       }
     }
   }
@@ -628,7 +1061,7 @@ export class BorderFrameFaction {
   //     .drawCircle(2 + i * circleOffsetMult + insidePip, 0 + insidePip, circleR)
   //     .beginTextureFill({
   //       texture: texture,
-  //       alpha: 1,
+  //       alpha: baseOpacity,
   //       matrix: matrix,
   //     })
   //     .lineStyle(borderThic, 0x0000000)
