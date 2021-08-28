@@ -35,6 +35,64 @@ export let defaultColors;
 export let dispositions;
 
 export const readyHooks = async () => {
+
+  Hooks.on('renderSettingsConfig', (app, el, data) => {
+    const nC = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'neutralColor');
+    const fC = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'friendlyColor');
+    const hC = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'hostileColor');
+    const cC = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'controlledColor');
+    const pC = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'partyColor');
+    const nCE = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'neutralColorEx');
+    const fCE = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'friendlyColorEx');
+    const hCE = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'hostileColorEx');
+    const cCE = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'controlledColorEx');
+    const pCE = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'partyColorEx');
+    const gS = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "actorFolderColorEx");
+    const gE = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "customDispositionColorEx");
+    // const gT = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "healthGradientC");
+    el.find('[name="token-factions.neutralColor"]')
+      .parent()
+      .append(`<input type="color" value="${nC}" data-edit="token-factions.neutralColor">`);
+    el.find('[name="token-factions.friendlyColor"]')
+      .parent()
+      .append(`<input type="color" value="${fC}" data-edit="token-factions.friendlyColor">`);
+    el.find('[name="token-factions.hostileColor"]')
+      .parent()
+      .append(`<input type="color" value="${hC}" data-edit="token-factions.hostileColor">`);
+    el.find('[name="token-factions.controlledColor"]')
+      .parent()
+      .append(`<input type="color"value="${cC}" data-edit="token-factions.controlledColor">`);
+    el.find('[name="token-factions.partyColor"]')
+      .parent()
+      .append(`<input type="color"value="${pC}" data-edit="token-factions.partyColor">`);
+
+    el.find('[name="token-factions.neutralColorEx"]')
+      .parent()
+      .append(`<input type="color" value="${nCE}" data-edit="token-factions.neutralColorEx">`);
+    el.find('[name="token-factions.friendlyColorEx"]')
+      .parent()
+      .append(`<input type="color" value="${fCE}" data-edit="token-factions.friendlyColorEx">`);
+    el.find('[name="token-factions.hostileColorEx"]')
+      .parent()
+      .append(`<input type="color" value="${hCE}" data-edit="token-factions.hostileColorEx">`);
+    el.find('[name="token-factions.controlledColorEx"]')
+      .parent()
+      .append(`<input type="color"value="${cCE}" data-edit="token-factions.controlledColorEx">`);
+    el.find('[name="token-factions.partyColorEx"]')
+      .parent()
+      .append(`<input type="color"value="${pCE}" data-edit="token-factions.partyColorEx">`);
+
+    el.find('[name="token-factions.actorFolderColorEx"]')
+      .parent()
+      .append(`<input type="color"value="${gS}" data-edit="token-factions.actorFolderColorEx">`)
+    el.find('[name="token-factions.customDispositionColorEx"]')
+      .parent()
+      .append(`<input type="color"value="${gE}" data-edit="token-factions.customDispositionColorEx">`)
+    // el.find('[name="token-factions.healthGradientC"]')
+    //  .parent()
+    //  .append(`<input type="color"value="${gT}" data-edit="token-factions.healthGradientC">`)
+  });
+
   if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'tokenFactionsEnabled')) {
     // setup all the hooks
 
@@ -154,7 +212,6 @@ export const readyHooks = async () => {
       //   newBorderColor,
       //   'MIXED',
       // );
-
       
       //@ts-ignore
       libWrapper.register(
@@ -165,63 +222,6 @@ export const readyHooks = async () => {
       );
 
       BCC = new BCconfig();
-
-      Hooks.on('renderSettingsConfig', (app, el, data) => {
-        const nC = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'neutralColor');
-        const fC = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'friendlyColor');
-        const hC = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'hostileColor');
-        const cC = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'controlledColor');
-        const pC = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'partyColor');
-        const nCE = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'neutralColorEx');
-        const fCE = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'friendlyColorEx');
-        const hCE = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'hostileColorEx');
-        const cCE = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'controlledColorEx');
-        const pCE = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'partyColorEx');
-        const gS = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "actorFolderColorEx");
-        const gE = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "customDispositionColorEx");
-        // const gT = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "healthGradientC");
-        el.find('[name="token-factions.neutralColor"]')
-          .parent()
-          .append(`<input type="color" value="${nC}" data-edit="token-factions.neutralColor">`);
-        el.find('[name="token-factions.friendlyColor"]')
-          .parent()
-          .append(`<input type="color" value="${fC}" data-edit="token-factions.friendlyColor">`);
-        el.find('[name="token-factions.hostileColor"]')
-          .parent()
-          .append(`<input type="color" value="${hC}" data-edit="token-factions.hostileColor">`);
-        el.find('[name="token-factions.controlledColor"]')
-          .parent()
-          .append(`<input type="color"value="${cC}" data-edit="token-factions.controlledColor">`);
-        el.find('[name="token-factions.partyColor"]')
-          .parent()
-          .append(`<input type="color"value="${pC}" data-edit="token-factions.partyColor">`);
-
-        el.find('[name="token-factions.neutralColorEx"]')
-          .parent()
-          .append(`<input type="color" value="${nCE}" data-edit="token-factions.neutralColorEx">`);
-        el.find('[name="token-factions.friendlyColorEx"]')
-          .parent()
-          .append(`<input type="color" value="${fCE}" data-edit="token-factions.friendlyColorEx">`);
-        el.find('[name="token-factions.hostileColorEx"]')
-          .parent()
-          .append(`<input type="color" value="${hCE}" data-edit="token-factions.hostileColorEx">`);
-        el.find('[name="token-factions.controlledColorEx"]')
-          .parent()
-          .append(`<input type="color"value="${cCE}" data-edit="token-factions.controlledColorEx">`);
-        el.find('[name="token-factions.partyColorEx"]')
-          .parent()
-          .append(`<input type="color"value="${pCE}" data-edit="token-factions.partyColorEx">`);
-
-        el.find('[name="token-factions.actorFolderColorEx"]')
-          .parent()
-          .append(`<input type="color"value="${gS}" data-edit="token-factions.actorFolderColorEx">`)
-        el.find('[name="token-factions.customDispositionColorEx"]')
-          .parent()
-          .append(`<input type="color"value="${gE}" data-edit="token-factions.customDispositionColorEx">`)
-        // el.find('[name="token-factions.healthGradientC"]')
-        //  .parent()
-        //  .append(`<input type="color"value="${gT}" data-edit="token-factions.healthGradientC">`)
-      });
 
       Hooks.on('renderTokenHUD', (app, html, data) => {
         BorderFrameFaction.AddBorderToggle(app, html, data);

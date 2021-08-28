@@ -314,17 +314,28 @@ export class BorderFrameFaction {
     //   //@ts-ignore
     //   token.icon.zIndex =  1;
     // }
+    let factionBorder = token.factionBorder;
     //@ts-ignore
-    if(token.factionBorder){
+    if(factionBorder){
       //@ts-ignore
-      token.factionBorder.clear();
+      factionBorder.clear();
     }
     //@ts-ignore
-    if (!token.factionBorder) {
+    if (!factionBorder) {
       //@ts-ignore
-      //token.factionBase:PIXI.Container = token.addChildAt(new PIXI.Container(), token.getChildIndex(token.border));
+      // token.factionBase = token.addChild(new PIXI.Container());
+
       //@ts-ignore
       token.factionBorder = token.addChild(new PIXI.Graphics());
+      // found the child, push it to element 0
+      //@ts-ignore
+      BorderFrameFaction.moveArrayItemToNewIndex(token.children,token.getChildIndex(token.factionBorder),0);  
+      //@ts-ignore
+      token.factionBorder.zIndex = 0;
+      //@ts-ignore
+      token.factionBorder._zIndex = 0;
+      //@ts-ignore
+      factionBorder = token.factionBorder;
 
       //token.factionBorder = token.addChildAt(new PIXI.Graphics(), token.getChildIndex(token.border));
       // token.factionBorder = token.addChildAt(new PIXI.Graphics(), token.getChildIndex(token.icon) -1);
@@ -339,9 +350,6 @@ export class BorderFrameFaction {
     //   token.factionBorder.clear()
     }
       
-    // found the child, push it to element 0
-    //@ts-ignore
-    token.children = BorderFrameFaction.moveArrayItemToNewIndex(token.children,token.getChildIndex(token.factionBorder),0);    
 
     if (!borderColor){
       return;
@@ -384,7 +392,7 @@ export class BorderFrameFaction {
       if(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'fillTexture')){
 
         //@ts-ignore
-        token.factionBorder
+        factionBorder
           .beginFill(borderColor.EX, baseOpacity)
           .drawCircle(token.w / 2, token.h / 2, token.w / 2 + t + p)
           .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.EX, alpha: baseOpacity })
@@ -394,7 +402,7 @@ export class BorderFrameFaction {
           .drawCircle(token.w / 2, token.h / 2, token.w / 2 + t + p)
 
         //@ts-ignore
-        token.factionBorder
+        factionBorder
           .beginFill(borderColor.INT, baseOpacity)
           .drawCircle(token.w / 2, token.h / 2, token.w / 2 + h + t / 2 + p)
           .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.INT, alpha: baseOpacity })
@@ -406,12 +414,12 @@ export class BorderFrameFaction {
       }else{
 
         //@ts-ignore
-        token.factionBorder
+        factionBorder
           .lineStyle(t, borderColor.EX, 0.8)
           .drawCircle(token.w / 2, token.h / 2, token.w / 2 + t + p)
 
         //@ts-ignore
-        token.factionBorder
+        factionBorder
           .lineStyle(h, borderColor.INT, 1.0)
           .drawCircle(token.w / 2, token.h / 2, token.w / 2 + h + t / 2 + p)
       }
@@ -427,7 +435,7 @@ export class BorderFrameFaction {
       if(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'fillTexture')){
 
         //@ts-ignore
-        token.factionBorder
+        factionBorder
           .beginFill(borderColor.EX, baseOpacity)
           .drawPolygon(polygon)
           .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.EX, alpha: baseOpacity })
@@ -437,7 +445,7 @@ export class BorderFrameFaction {
           .drawPolygon(polygon)
 
         //@ts-ignore
-        token.factionBorder
+        factionBorder
           .beginFill(borderColor.INT, baseOpacity)
           .drawPolygon(polygon)
           .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.INT, alpha: baseOpacity })
@@ -449,12 +457,12 @@ export class BorderFrameFaction {
       }else{
 
         //@ts-ignore
-        token.factionBorder
+        factionBorder
           .lineStyle(t, borderColor.EX, 0.8)
           .drawPolygon(polygon)
 
         //@ts-ignore
-        token.factionBorder
+        factionBorder
           .lineStyle(t / 2, borderColor.INT, 1.0)
           .drawPolygon(polygon)
       }
@@ -471,7 +479,7 @@ export class BorderFrameFaction {
       if(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'fillTexture')){
 
         //@ts-ignore
-        token.factionBorder
+        factionBorder
           .beginFill(borderColor.EX, baseOpacity)
           .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3)
           .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.EX, alpha: baseOpacity })
@@ -481,7 +489,7 @@ export class BorderFrameFaction {
           .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3);
 
         //@ts-ignore
-        token.factionBorder
+        factionBorder
           .beginFill(borderColor.INT, baseOpacity)
           .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3)
           .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.INT, alpha: baseOpacity })
@@ -493,12 +501,12 @@ export class BorderFrameFaction {
       }else{
 
         //@ts-ignore
-        token.factionBorder
+        factionBorder
           .lineStyle(t, borderColor.EX, 0.8)
           .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3);
 
         //@ts-ignore
-        token.factionBorder
+        factionBorder
           .lineStyle(h, borderColor.INT, 1.0)
           .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3);
       }
