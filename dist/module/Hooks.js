@@ -84,17 +84,17 @@ export const readyHooks = async () => {
         if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderFactionsEnabled')) {
             Hooks.on('closeSettingsConfig', (token, data) => {
                 if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'tokenFactionsEnabled')) {
-                    BorderFrameFaction.updateTokensBorder(token.data);
+                    BorderFrameFaction.updateTokensBorderAll();
                 }
             });
-            Hooks.on('renderTokenConfig', (config, html) => {
-                if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'tokenFactionsEnabled')) {
-                    TokenFactions.renderTokenConfig(config, html);
-                }
-            });
+            // Hooks.on('renderTokenConfig', (config, html) => {
+            //   if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'tokenFactionsEnabled')) {
+            //     BorderFrameFaction.updateTokensBorder(token.data);
+            //   }
+            // });
             Hooks.on('renderSettingsConfig', (sheet, html) => {
                 if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'tokenFactionsEnabled')) {
-                    TokenFactions.renderSettingsConfig(sheet, html);
+                    BorderFrameFaction.updateTokensBorderAll();
                 }
             });
             Hooks.on('updateActor', (tokenData, data) => {
@@ -116,22 +116,18 @@ export const readyHooks = async () => {
             // libWrapper.register(
             //   TOKEN_FACTIONS_MODULE_NAME,
             //   'Token.prototype._refreshBorder',
-            //   BorderFrameFaction.newBorder,
+            //   newBorder,
             //   'MIXED',
             // );
             // //@ts-ignore
             // libWrapper.register(
             //   TOKEN_FACTIONS_MODULE_NAME,
             //   'Token.prototype._getBorderColor',
-            //   BorderFrameFaction.newBorderColor,
+            //   newBorderColor,
             //   'MIXED',
             // );
             //@ts-ignore
             libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype.draw', TokenPrototypeDrawHandler, 'MIXED');
-            // TODO CHECK IF THIS ARE NECESSARY
-            //libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token..prototype._onDragLeftStart', BorderFrameFaction.drawNameplate, 'MIXED')
-            //libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token..prototype._onDragLeftMove', BorderFrameFaction.drawNameplate, 'MIXED')
-            //libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token..prototype._onDragLeftDrop', BorderFrameFaction.drawNameplate, 'MIXED')
             BCC = new BCconfig();
             Hooks.on('renderSettingsConfig', (app, el, data) => {
                 const nC = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'neutralColor');
@@ -144,8 +140,6 @@ export const readyHooks = async () => {
                 const hCE = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'hostileColorEx');
                 const cCE = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'controlledColorEx');
                 const pCE = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'partyColorEx');
-                const tC = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'targetColor');
-                const tCE = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'targetColorEx');
                 const gS = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "actorFolderColorEx");
                 const gE = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "customDispositionColorEx");
                 // const gT = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "healthGradientC");
@@ -164,9 +158,6 @@ export const readyHooks = async () => {
                 el.find('[name="token-factions.partyColor"]')
                     .parent()
                     .append(`<input type="color"value="${pC}" data-edit="token-factions.partyColor">`);
-                el.find('[name="token-factions.targetColor"]')
-                    .parent()
-                    .append(`<input type="color"value="${tC}" data-edit="token-factions.targetColor">`);
                 el.find('[name="token-factions.neutralColorEx"]')
                     .parent()
                     .append(`<input type="color" value="${nCE}" data-edit="token-factions.neutralColorEx">`);
@@ -182,9 +173,6 @@ export const readyHooks = async () => {
                 el.find('[name="token-factions.partyColorEx"]')
                     .parent()
                     .append(`<input type="color"value="${pCE}" data-edit="token-factions.partyColorEx">`);
-                el.find('[name="token-factions.targetColorEx"]')
-                    .parent()
-                    .append(`<input type="color"value="${tCE}" data-edit="token-factions.targetColorEx">`);
                 el.find('[name="token-factions.actorFolderColorEx"]')
                     .parent()
                     .append(`<input type="color"value="${gS}" data-edit="token-factions.actorFolderColorEx">`);
@@ -232,4 +220,21 @@ export const TokenPrototypeDrawHandler = function (wrapped, ...args) {
         BorderFrameFaction.drawBorderFaction(token, borderColor);
     }
     return wrapped(...args);
+};
+export const newBorder = function (wrapped, ...args) {
+    //@ts-ignore
+    const token = this;
+    // if(!BCC) BCC = new BCconfig()
+    //@ts-ignore
+    const borderColor = this._getBorderColor();
+    //@ts-ignore
+    BorderFrameFaction.drawBorderFaction(this, borderColor);
+    return;
+    // return wrapped(args);
+};
+export const newBorderColor = function (wrapped, ...args) {
+    //@ts-ignore
+    const token = this;
+    return BorderFrameFaction.colorBorderFaction(token);
+    //return wrapped(args);
 };

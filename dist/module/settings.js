@@ -285,22 +285,6 @@ export const registerSettings = function () {
         default: '#000000',
         config: true,
     });
-    getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'targetColor', {
-        name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.targetColor.name'),
-        hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.targetColor.hint'),
-        scope: 'client',
-        type: String,
-        default: '#FF9829',
-        config: true,
-    });
-    getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'targetColorEx', {
-        name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.targetColorEx.name'),
-        hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.targetColorEx.hint'),
-        scope: 'client',
-        type: String,
-        default: '#000000',
-        config: true,
-    });
     getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'actorFolderColorEx', {
         name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.actorFolderColorEx.name'),
         hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.actorFolderColorEx.hint'),

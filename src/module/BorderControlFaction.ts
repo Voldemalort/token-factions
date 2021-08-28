@@ -47,28 +47,28 @@ export class BorderFrameFaction {
     await this.object.document.setFlag(TOKEN_FACTIONS_MODULE_NAME, TOKEN_FACTIONS_FLAGS.FACTION_NO_BORDER, !border);
     event.currentTarget.classList.toggle('active', !border);
   }
-  static newBorder(wrapped, ...args) {
-    //@ts-ignore
-    const token:Token = this as Token;
-    // if(!BCC) BCC = new BCconfig()
-    //@ts-ignore
-    const borderColor = this._getBorderColor();
-    //@ts-ignore
-    BorderFrameFaction.drawBorderFaction(this, borderColor);
-    return;
-    // return wrapped(args);
-  }
+  // static newBorder(wrapped, ...args) {
+  //   //@ts-ignore
+  //   const token:Token = this as Token;
+  //   // if(!BCC) BCC = new BCconfig()
+  //   //@ts-ignore
+  //   const borderColor = this._getBorderColor();
+  //   //@ts-ignore
+  //   BorderFrameFaction.drawBorderFaction(this, borderColor);
+  //   return;
+  //   // return wrapped(args);
+  // }
 
   static clamp(value, max, min) {
     return Math.min(Math.max(value, min), max);
   }
 
-  static newBorderColor(wrapped, ...args) {
-    //@ts-ignore
-    const token: Token = this as Token;
-    return BorderFrameFaction.colorBorderFaction(token);
-    //return wrapped(args);
-  }
+  // static newBorderColor(wrapped, ...args) {
+  //   //@ts-ignore
+  //   const token: Token = this as Token;
+  //   return BorderFrameFaction.colorBorderFaction(token);
+  //   //return wrapped(args);
+  // }
 
   static componentToHex(c) {
     const hex = c.toString(16);
@@ -127,6 +127,12 @@ export class BorderFrameFaction {
   }
 
   // ADDED
+
+  static async updateTokensBorderAll() {
+    getCanvas().tokens?.placeables.forEach((tokenDoc:Token) => {
+      BorderFrameFaction.updateTokensBorder(tokenDoc.data);
+    });
+  }
 
   static async updateTokensBorder(tokenData) {
     const currentTokenID = tokenData?.id ? tokenData?.id : tokenData?._id;
@@ -280,9 +286,34 @@ export class BorderFrameFaction {
     return borderColor;
   }
 
+  static moveArrayItemToNewIndex(arr, old_index, new_index) {
+    if (new_index >= arr.length) {
+        let k = new_index - arr.length + 1;
+        while (k--) {
+            arr.push(undefined);
+        }
+    }
+    arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
+    return arr; 
+  }
+
   static drawBorderFaction(token:Token, borderColor:{INT, EX, ICON}): void{
     //@ts-ignore
     //token.border.clear();
+    //@ts-ignore
+    // if(token.border){
+    //   //@ts-ignore
+    //   token.border._zIndex = 1;
+    //   //@ts-ignore
+    //   token.border.zIndex = 1;
+    // }
+    // //@ts-ignore
+    // if(token.icon){
+    //   //@ts-ignore
+    //   token.icon._zIndex = 1;
+    //   //@ts-ignore
+    //   token.icon.zIndex =  1;
+    // }
     //@ts-ignore
     if(token.factionBorder){
       //@ts-ignore
@@ -293,9 +324,11 @@ export class BorderFrameFaction {
       //@ts-ignore
       //token.factionBase:PIXI.Container = token.addChildAt(new PIXI.Container(), token.getChildIndex(token.border));
       //@ts-ignore
-      token.factionBorder = token.addChildAt(new PIXI.Graphics());
-      ///token.factionBorder = token.addChildAt(new PIXI.Graphics(), token.getChildIndex(token.border));
-      //token.factionBorder = token.addChildAt(new PIXI.Graphics(), token.getChildIndex(token.icon));
+      token.factionBorder = token.addChild(new PIXI.Graphics());
+
+      //token.factionBorder = token.addChildAt(new PIXI.Graphics(), token.getChildIndex(token.border));
+      // token.factionBorder = token.addChildAt(new PIXI.Graphics(), token.getChildIndex(token.icon) -1);
+      // token.factionBorder = token.addChildAt(new PIXI.Graphics(), 0);
     // } else {
     //     //@ts-ignore
     //     token.factionBorder.removeChildren().forEach(c => c.destroy());
@@ -305,6 +338,11 @@ export class BorderFrameFaction {
     //   //@ts-ignore
     //   token.factionBorder.clear()
     }
+      
+    // found the child, push it to element 0
+    //@ts-ignore
+    token.children = BorderFrameFaction.moveArrayItemToNewIndex(token.children,token.getChildIndex(token.factionBorder),0);    
+
     if (!borderColor){
       return;
     }

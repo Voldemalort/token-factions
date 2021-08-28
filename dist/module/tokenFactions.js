@@ -14,8 +14,6 @@ export const TokenFactions = ((canvas) => {
     //   'controlled-external-npc' :  getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "controlledColorEx"),
     //   'party-external-member' :  getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "partyColorEx"),
     //   'party-external-npc' :  getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "partyColorEx"),
-    //   'target-npc' :  getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "targetColor"),
-    //   'target-external-npc' :  getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "targetColorEx"),
     // };
     // let dispositions = Object.keys(defaultColors);
     let bevelGradient;
