@@ -112,10 +112,22 @@ export const readyHooks = async () => {
                     BorderFrameFaction.updateTokensBorder(tokenData);
                 }
             });
+            // //@ts-ignore
+            // libWrapper.register(
+            //   TOKEN_FACTIONS_MODULE_NAME,
+            //   'Token.prototype._refreshBorder',
+            //   BorderFrameFaction.newBorder,
+            //   'MIXED',
+            // );
+            // //@ts-ignore
+            // libWrapper.register(
+            //   TOKEN_FACTIONS_MODULE_NAME,
+            //   'Token.prototype._getBorderColor',
+            //   BorderFrameFaction.newBorderColor,
+            //   'MIXED',
+            // );
             //@ts-ignore
-            libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype._refreshBorder', BorderFrameFaction.newBorder, 'MIXED');
-            //@ts-ignore
-            libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype._getBorderColor', BorderFrameFaction.newBorderColor, 'MIXED');
+            libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype.draw', TokenPrototypeDrawHandler, 'MIXED');
             // TODO CHECK IF THIS ARE NECESSARY
             //libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token..prototype._onDragLeftStart', BorderFrameFaction.drawNameplate, 'MIXED')
             //libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token..prototype._onDragLeftMove', BorderFrameFaction.drawNameplate, 'MIXED')
@@ -173,14 +185,15 @@ export const readyHooks = async () => {
                 el.find('[name="token-factions.targetColorEx"]')
                     .parent()
                     .append(`<input type="color"value="${tCE}" data-edit="token-factions.targetColorEx">`);
-                el.find('[name="token-factions.healthGradientA"]')
+                el.find('[name="token-factions.actorFolderColorEx"]')
                     .parent()
                     .append(`<input type="color"value="${gS}" data-edit="token-factions.actorFolderColorEx">`);
-                el.find('[name="token-factions.healthGradientB"]')
+                el.find('[name="token-factions.customDispositionColorEx"]')
                     .parent()
                     .append(`<input type="color"value="${gE}" data-edit="token-factions.customDispositionColorEx">`);
                 // el.find('[name="token-factions.healthGradientC"]')
-                //.parent().append(`<input type="color"value="${gT}" data-edit="token-factions.healthGradientC">`)
+                //  .parent()
+                //  .append(`<input type="color"value="${gT}" data-edit="token-factions.healthGradientC">`)
             });
             Hooks.on('renderTokenHUD', (app, html, data) => {
                 BorderFrameFaction.AddBorderToggle(app, html, data);
@@ -209,6 +222,14 @@ export const TokenPrototypeRefreshHandler = function (wrapped, ...args) {
     }
     if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderFactionsEnabled')) {
         BorderFrameFaction.updateTokensBorder(tokenData);
+    }
+    return wrapped(...args);
+};
+export const TokenPrototypeDrawHandler = function (wrapped, ...args) {
+    const token = this;
+    if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderFactionsEnabled')) {
+        const borderColor = BorderFrameFaction.colorBorderFaction(token);
+        BorderFrameFaction.drawBorderFaction(token, borderColor);
     }
     return wrapped(...args);
 };

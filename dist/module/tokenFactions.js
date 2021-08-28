@@ -317,24 +317,5 @@ export const TokenFactions = ((canvas) => {
             return color;
         }
     }
-    // REMOVED
-    //TokenFactions['tokenRefresh'] = Token.prototype.refresh;
     return TokenFactions;
 })();
-//   Token.prototype.refresh = function refresh() {
-//     TokenFactions.tokenRefresh.bind(this)();
-//     TokenFactions.updateTokens(this);
-//   };
-//   Hooks.once('init', TokenFactions.onInit);
-//   Hooks.on('renderSettingsConfig', TokenFactions.renderSettingsConfig);
-//   Hooks.on('renderTokenConfig', TokenFactions.renderTokenConfig);
-//   Hooks.on('updateActor', TokenFactions.updateTokens);
-//   Hooks.on('updateFolder', TokenFactions.updateTokens);
-//   Hooks.on('ready', () => {
-//     Hooks.on('closeSettingsConfig', TokenFactions.updateTokens);
-//   });
-// export const TokenPrototypeRefreshHandler = function (wrapped, ...args) {
-//   const tokenData = this as TokenData;
-//   TokenFactions.updateTokens(tokenData);
-//   return wrapped(...args);
-// };

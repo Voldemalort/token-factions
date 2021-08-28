@@ -38,7 +38,7 @@ export class BorderFrameFaction {
         await this.object.document.setFlag(TOKEN_FACTIONS_MODULE_NAME, TOKEN_FACTIONS_FLAGS.FACTION_NO_BORDER, !border);
         event.currentTarget.classList.toggle('active', !border);
     }
-    static newBorder() {
+    static newBorder(wrapped, ...args) {
         //@ts-ignore
         const token = this;
         // if(!BCC) BCC = new BCconfig()
@@ -46,15 +46,17 @@ export class BorderFrameFaction {
         const borderColor = this._getBorderColor();
         //@ts-ignore
         BorderFrameFaction.drawBorderFaction(this, borderColor);
-        return;
+        //return;
+        return wrapped(args);
     }
     static clamp(value, max, min) {
         return Math.min(Math.max(value, min), max);
     }
-    static newBorderColor() {
+    static newBorderColor(wrapped, ...args) {
         //@ts-ignore
         const token = this;
-        return BorderFrameFaction.colorBorderFaction(token);
+        BorderFrameFaction.colorBorderFaction(token);
+        return wrapped(args);
     }
     static componentToHex(c) {
         const hex = c.toString(16);
@@ -257,7 +259,29 @@ export class BorderFrameFaction {
     }
     static drawBorderFaction(token, borderColor) {
         //@ts-ignore
-        token.border.clear();
+        //token.border.clear();
+        //@ts-ignore
+        if (token.factionBorder) {
+            //@ts-ignore
+            token.factionBorder.clear();
+        }
+        //@ts-ignore
+        if (!token.factionBorder) {
+            //@ts-ignore
+            //token.factionBase:PIXI.Container = token.addChildAt(new PIXI.Container(), token.getChildIndex(token.border));
+            //@ts-ignore
+            token.factionBorder = token.addChildAt(new PIXI.Graphics());
+            ///token.factionBorder = token.addChildAt(new PIXI.Graphics(), token.getChildIndex(token.border));
+            //token.factionBorder = token.addChildAt(new PIXI.Graphics(), token.getChildIndex(token.icon));
+            // } else {
+            //     //@ts-ignore
+            //     token.factionBorder.removeChildren().forEach(c => c.destroy());
+            // }
+            // //@ts-ignore
+            // if (!token.factionBorder) {
+            //   //@ts-ignore
+            //   token.factionBorder.clear()
+        }
         if (!borderColor) {
             return;
         }
@@ -292,7 +316,7 @@ export class BorderFrameFaction {
             const o = Math.round(h / 2);
             if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'fillTexture')) {
                 //@ts-ignore
-                token.border
+                token.factionBorder
                     .beginFill(borderColor.EX, baseOpacity)
                     .drawCircle(token.w / 2, token.h / 2, token.w / 2 + t + p)
                     .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.EX, alpha: baseOpacity })
@@ -301,7 +325,7 @@ export class BorderFrameFaction {
                     .lineStyle(t, borderColor.EX, 0.8)
                     .drawCircle(token.w / 2, token.h / 2, token.w / 2 + t + p);
                 //@ts-ignore
-                token.border
+                token.factionBorder
                     .beginFill(borderColor.INT, baseOpacity)
                     .drawCircle(token.w / 2, token.h / 2, token.w / 2 + h + t / 2 + p)
                     .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.INT, alpha: baseOpacity })
@@ -312,11 +336,11 @@ export class BorderFrameFaction {
             }
             else {
                 //@ts-ignore
-                token.border
+                token.factionBorder
                     .lineStyle(t, borderColor.EX, 0.8)
                     .drawCircle(token.w / 2, token.h / 2, token.w / 2 + t + p);
                 //@ts-ignore
-                token.border
+                token.factionBorder
                     .lineStyle(h, borderColor.INT, 1.0)
                     .drawCircle(token.w / 2, token.h / 2, token.w / 2 + h + t / 2 + p);
             }
@@ -329,7 +353,7 @@ export class BorderFrameFaction {
             const polygon = getCanvas().grid?.grid?.getPolygon(-1.5 - q, -1.5 - q, token.w + 2 + p, token.h + 2 + p);
             if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'fillTexture')) {
                 //@ts-ignore
-                token.border
+                token.factionBorder
                     .beginFill(borderColor.EX, baseOpacity)
                     .drawPolygon(polygon)
                     .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.EX, alpha: baseOpacity })
@@ -338,7 +362,7 @@ export class BorderFrameFaction {
                     .lineStyle(t, borderColor.EX, 0.8)
                     .drawPolygon(polygon);
                 //@ts-ignore
-                token.border
+                token.factionBorder
                     .beginFill(borderColor.INT, baseOpacity)
                     .drawPolygon(polygon)
                     .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.INT, alpha: baseOpacity })
@@ -349,11 +373,11 @@ export class BorderFrameFaction {
             }
             else {
                 //@ts-ignore
-                token.border
+                token.factionBorder
                     .lineStyle(t, borderColor.EX, 0.8)
                     .drawPolygon(polygon);
                 //@ts-ignore
-                token.border
+                token.factionBorder
                     .lineStyle(t / 2, borderColor.INT, 1.0)
                     .drawPolygon(polygon);
             }
@@ -366,7 +390,7 @@ export class BorderFrameFaction {
             const o = Math.round(h / 2);
             if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'fillTexture')) {
                 //@ts-ignore
-                token.border
+                token.factionBorder
                     .beginFill(borderColor.EX, baseOpacity)
                     .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3)
                     .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.EX, alpha: baseOpacity })
@@ -375,7 +399,7 @@ export class BorderFrameFaction {
                     .lineStyle(t, borderColor.EX, 0.8)
                     .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3);
                 //@ts-ignore
-                token.border
+                token.factionBorder
                     .beginFill(borderColor.INT, baseOpacity)
                     .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3)
                     .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.INT, alpha: baseOpacity })
@@ -386,11 +410,11 @@ export class BorderFrameFaction {
             }
             else {
                 //@ts-ignore
-                token.border
+                token.factionBorder
                     .lineStyle(t, borderColor.EX, 0.8)
                     .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3);
                 //@ts-ignore
-                token.border
+                token.factionBorder
                     .lineStyle(h, borderColor.INT, 1.0)
                     .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3);
             }
