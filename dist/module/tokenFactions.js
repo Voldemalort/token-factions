@@ -177,7 +177,7 @@ export const TokenFactions = ((canvas) => {
                 }
                 else {
                     //@ts-ignore
-                    token.factionBase.removeChildren().forEach(c => c.destroy());
+                    token.factionBase.removeChildren().forEach((c) => c.destroy());
                 }
                 //@ts-ignore
                 if (!token.factionFrame) {
@@ -186,7 +186,7 @@ export const TokenFactions = ((canvas) => {
                 }
                 else {
                     //@ts-ignore
-                    token.factionFrame.removeChildren().forEach(c => c.destroy());
+                    token.factionFrame.removeChildren().forEach((c) => c.destroy());
                 }
                 if (colorFrom === 'token-disposition') {
                     color = TokenFactions.getDispositionColor(token);

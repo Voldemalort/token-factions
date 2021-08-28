@@ -196,40 +196,40 @@ export class BorderFrameFaction {
             CONTROLLED: {
                 INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'controlledColor')).substr(1), 16),
                 EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'controlledColorEx')).substr(1), 16),
-                ICON: ""
+                ICON: '',
             },
             FRIENDLY: {
                 INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'friendlyColor')).substr(1), 16),
                 EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'friendlyColorEx')).substr(1), 16),
-                ICON: ""
+                ICON: '',
             },
             NEUTRAL: {
                 INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'neutralColor')).substr(1), 16),
                 EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'neutralColorEx')).substr(1), 16),
-                ICON: ""
+                ICON: '',
             },
             HOSTILE: {
                 INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'hostileColor')).substr(1), 16),
                 EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'hostileColorEx')).substr(1), 16),
-                ICON: ""
+                ICON: '',
             },
             PARTY: {
                 INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'partyColor')).substr(1), 16),
                 EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'partyColorEx')).substr(1), 16),
-                ICON: ""
+                ICON: '',
             },
             ACTOR_FOLDER_COLOR: {
                 INT: parseInt(String(color).substr(1), 16),
                 EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'actorFolderColorEx')).substr(1), 16),
-                ICON: icon ? String(icon) : "",
+                ICON: icon ? String(icon) : '',
             },
             CUSTOM_DISPOSITION: {
                 INT: parseInt(String(color).substr(1), 16),
                 EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'customDispositionColorEx')).substr(1), 16),
-                ICON: ""
+                ICON: '',
             },
         };
-        let borderColor = { INT: 0, EX: 0, ICON: "" };
+        let borderColor = { INT: 0, EX: 0, ICON: '' };
         if (colorFrom === 'token-disposition') {
             //@ts-ignore
             //if (token._controlled) return overrides.CONTROLLED;
@@ -262,34 +262,23 @@ export class BorderFrameFaction {
         }
         return borderColor;
     }
-    static moveArrayItemToNewIndex(arr, old_index, new_index) {
-        if (new_index >= arr.length) {
-            let k = new_index - arr.length + 1;
-            while (k--) {
-                arr.push(undefined);
-            }
-        }
-        arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
-        return arr;
-    }
-    static drawBorderFaction(token, borderColor) {
+    // static moveArrayItemToNewIndex(arr, old_index, new_index) {
+    //   if (new_index >= arr.length) {
+    //       let k = new_index - arr.length + 1;
+    //       while (k--) {
+    //           arr.push(undefined);
+    //       }
+    //   }
+    //   arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
+    //   return arr;
+    // }
+    static async drawBorderFaction(token, borderColor) {
         //@ts-ignore
-        //token.border.clear();
-        //@ts-ignore
-        // if(token.border){
-        //   //@ts-ignore
-        //   token.border._zIndex = 1;
-        //   //@ts-ignore
-        //   token.border.zIndex = 1;
-        // }
-        // //@ts-ignore
-        // if(token.icon){
-        //   //@ts-ignore
-        //   token.icon._zIndex = 1;
-        //   //@ts-ignore
-        //   token.icon.zIndex =  1;
-        // }
-        let factionBorder = token.factionBorder;
+        let factionBorder = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'overrideBorderGraphic')
+            //@ts-ignore
+            ? token.border
+            //@ts-ignore
+            : token.factionBorder;
         //@ts-ignore
         if (factionBorder) {
             //@ts-ignore
@@ -301,26 +290,24 @@ export class BorderFrameFaction {
             // token.factionBase = token.addChild(new PIXI.Container());
             //@ts-ignore
             token.factionBorder = token.addChild(new PIXI.Graphics());
-            // found the child, push it to element 0
             //@ts-ignore
-            BorderFrameFaction.moveArrayItemToNewIndex(token.children, token.getChildIndex(token.factionBorder), 0);
-            //@ts-ignore
-            token.factionBorder.zIndex = 0;
-            //@ts-ignore
-            token.factionBorder._zIndex = 0;
-            //@ts-ignore
-            factionBorder = token.factionBorder;
-            //token.factionBorder = token.addChildAt(new PIXI.Graphics(), token.getChildIndex(token.border));
-            // token.factionBorder = token.addChildAt(new PIXI.Graphics(), token.getChildIndex(token.icon) -1);
-            // token.factionBorder = token.addChildAt(new PIXI.Graphics(), 0);
-            // } else {
-            //     //@ts-ignore
-            //     token.factionBorder.removeChildren().forEach(c => c.destroy());
-            // }
-            // //@ts-ignore
-            // if (!token.factionBorder) {
-            //   //@ts-ignore
-            //   token.factionBorder.clear()
+            if (token.factionBorder) {
+                // found the child, push it to element 0
+                //@ts-ignore
+                //BorderFrameFaction.moveArrayItemToNewIndex(token.children,token.getChildIndex(token.factionBorder),0);
+                //@ts-ignore
+                // token.icon.zIndex = token.factionBorder.zIndex + 1;
+                //@ts-ignore
+                // token.icon._zIndex = token.factionBorder._zIndex + 1;
+                //@ts-ignore
+                factionBorder = token.factionBorder;
+                //token.factionBorder = token.addChildAt(new PIXI.Graphics(), token.getChildIndex(token.border));
+                // token.factionBorder = token.addChildAt(new PIXI.Graphics(), token.getChildIndex(token.icon) -1);
+                // token.factionBorder = token.addChildAt(new PIXI.Graphics(), 0);
+            }
+        }
+        if (!factionBorder) {
+            return;
         }
         if (!borderColor) {
             return;
@@ -344,8 +331,7 @@ export class BorderFrameFaction {
         if (!borderColor.INT || Number.isNaN(borderColor.INT)) {
             return;
         }
-        const t = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderWidth') ||
-            CONFIG.Canvas.objectBorderThickness;
+        const t = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderWidth') || CONFIG.Canvas.objectBorderThickness;
         const baseOpacity = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'base-opacity');
         // Draw Hex border for size 1 tokens on a hex grid
         const gt = CONST.GRID_TYPES;
@@ -355,11 +341,12 @@ export class BorderFrameFaction {
             const h = Math.round(t / 2);
             const o = Math.round(h / 2);
             if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'fillTexture')) {
+                const textureTmp = PIXI.Texture.EMPTY; //await PIXI.Texture.fromURL(<string>token.data.img) || PIXI.Texture.EMPTY;
                 //@ts-ignore
                 factionBorder
                     .beginFill(borderColor.EX, baseOpacity)
                     .drawCircle(token.w / 2, token.h / 2, token.w / 2 + t + p)
-                    .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.EX, alpha: baseOpacity })
+                    .beginTextureFill({ texture: textureTmp, color: borderColor.EX, alpha: baseOpacity })
                     .lineStyle(t, borderColor.EX, 0.8)
                     .endFill()
                     .lineStyle(t, borderColor.EX, 0.8)
@@ -368,7 +355,7 @@ export class BorderFrameFaction {
                 factionBorder
                     .beginFill(borderColor.INT, baseOpacity)
                     .drawCircle(token.w / 2, token.h / 2, token.w / 2 + h + t / 2 + p)
-                    .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderColor.INT, alpha: baseOpacity })
+                    .beginTextureFill({ texture: textureTmp, color: borderColor.INT, alpha: baseOpacity })
                     .lineStyle(h, borderColor.INT, 1.0)
                     .endFill()
                     .lineStyle(h, borderColor.INT, 1.0)
@@ -376,9 +363,7 @@ export class BorderFrameFaction {
             }
             else {
                 //@ts-ignore
-                factionBorder
-                    .lineStyle(t, borderColor.EX, 0.8)
-                    .drawCircle(token.w / 2, token.h / 2, token.w / 2 + t + p);
+                factionBorder.lineStyle(t, borderColor.EX, 0.8).drawCircle(token.w / 2, token.h / 2, token.w / 2 + t + p);
                 //@ts-ignore
                 factionBorder
                     .lineStyle(h, borderColor.INT, 1.0)
@@ -413,13 +398,9 @@ export class BorderFrameFaction {
             }
             else {
                 //@ts-ignore
-                factionBorder
-                    .lineStyle(t, borderColor.EX, 0.8)
-                    .drawPolygon(polygon);
+                factionBorder.lineStyle(t, borderColor.EX, 0.8).drawPolygon(polygon);
                 //@ts-ignore
-                factionBorder
-                    .lineStyle(t / 2, borderColor.INT, 1.0)
-                    .drawPolygon(polygon);
+                factionBorder.lineStyle(t / 2, borderColor.INT, 1.0).drawPolygon(polygon);
             }
         }
         // Otherwise Draw Square border

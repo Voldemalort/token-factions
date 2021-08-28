@@ -6,7 +6,7 @@ export var TOKEN_FACTIONS_FLAGS;
 (function (TOKEN_FACTIONS_FLAGS) {
     TOKEN_FACTIONS_FLAGS["FACTION_DRAW_FRAME"] = "factionDrawFrame";
     TOKEN_FACTIONS_FLAGS["FACTION_DISABLE"] = "factionDisable";
-    TOKEN_FACTIONS_FLAGS["FACTION_NO_BORDER"] = "factionNoBorder"; // noBorder
+    TOKEN_FACTIONS_FLAGS["FACTION_NO_BORDER"] = "factionNoBorder";
 })(TOKEN_FACTIONS_FLAGS || (TOKEN_FACTIONS_FLAGS = {}));
 export const dispositionKey = (token) => {
     const dispositionValue = parseInt(String(token.data.disposition), 10);
@@ -43,8 +43,8 @@ export const readyHooks = async () => {
         const hCE = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'hostileColorEx');
         const cCE = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'controlledColorEx');
         const pCE = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'partyColorEx');
-        const gS = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "actorFolderColorEx");
-        const gE = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "customDispositionColorEx");
+        const gS = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'actorFolderColorEx');
+        const gE = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'customDispositionColorEx');
         // const gT = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "healthGradientC");
         el.find('[name="token-factions.neutralColor"]')
             .parent()
@@ -166,29 +166,16 @@ export const readyHooks = async () => {
                     BorderFrameFaction.updateTokensBorder(tokenData);
                 }
             });
-            // //@ts-ignore
-            // libWrapper.register(
-            //   TOKEN_FACTIONS_MODULE_NAME,
-            //   'Token.prototype._refreshBorder',
-            //   newBorder,
-            //   'MIXED',
-            // );
-            // //@ts-ignore
-            // libWrapper.register(
-            //   TOKEN_FACTIONS_MODULE_NAME,
-            //   'Token.prototype._getBorderColor',
-            //   newBorderColor,
-            //   'MIXED',
-            // );
-            // //@ts-ignore
-            // libWrapper.register(
-            //   TOKEN_FACTIONS_MODULE_NAME,
-            //   'Token.prototype.draw',
-            //   TokenPrototypeDrawHandler,
-            //   'MIXED',
-            // );
-            //@ts-ignore
-            libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype._drawOverlay', TokenPrototypeDrawHandler, 'MIXED');
+            if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'overrideBorderGraphic')) {
+                //@ts-ignore
+                libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype._refreshBorder', newBorder, 'MIXED');
+                //@ts-ignore
+                libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype._getBorderColor', newBorderColor, 'MIXED');
+            }
+            else {
+                //@ts-ignore
+                libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype.draw', TokenPrototypeDrawHandler, 'MIXED');
+            }
             BCC = new BCconfig();
             Hooks.on('renderTokenHUD', (app, html, data) => {
                 BorderFrameFaction.AddBorderToggle(app, html, data);

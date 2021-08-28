@@ -115,10 +115,13 @@ export const TokenFactions = ((canvas) => {
       const token = sheet.object;
       //const flags = token.data.flags[TOKEN_FACTIONS_MODULE_NAME];
       const drawFramesByDefault = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'draw-frames-by-default');
-      const drawFrameOverride = token.document.getFlag(TOKEN_FACTIONS_MODULE_NAME,TOKEN_FACTIONS_FLAGS.FACTION_DRAW_FRAME); // flags ? flags[TOKEN_FACTIONS_FLAGS.DRAW_FRAME] : undefined;
+      const drawFrameOverride = token.document.getFlag(
+        TOKEN_FACTIONS_MODULE_NAME,
+        TOKEN_FACTIONS_FLAGS.FACTION_DRAW_FRAME,
+      ); // flags ? flags[TOKEN_FACTIONS_FLAGS.DRAW_FRAME] : undefined;
       const drawFrame = drawFrameOverride === undefined ? drawFramesByDefault : drawFrameOverride;
       const checked = drawFrame ? ' checked="checked"' : '';
-      const skipDraw = token.document.getFlag(TOKEN_FACTIONS_MODULE_NAME,TOKEN_FACTIONS_FLAGS.FACTION_DISABLE); // flags ? flags[TOKEN_FACTIONS_FLAGS.FACTION_DISABLE] : undefined;
+      const skipDraw = token.document.getFlag(TOKEN_FACTIONS_MODULE_NAME, TOKEN_FACTIONS_FLAGS.FACTION_DISABLE); // flags ? flags[TOKEN_FACTIONS_FLAGS.FACTION_DISABLE] : undefined;
       const isDisabled = skipDraw ? ' checked="checked"' : '';
       html.find('input[name="mirrorY"]').parent().after(`\
         <div class="form-group">
@@ -155,16 +158,19 @@ export const TokenFactions = ((canvas) => {
       });
     }
 
-    static updateTokenBase(token:Token) {
+    static updateTokenBase(token: Token) {
       //@ts-ignore
       if (token instanceof Token && token.icon && bevelTexture && bevelTexture.baseTexture) {
         // const flags = <Record<string, unknown>>token.data.flags[TOKEN_FACTIONS_MODULE_NAME];
-        const skipDraw = token.document.getFlag(TOKEN_FACTIONS_MODULE_NAME,TOKEN_FACTIONS_FLAGS.FACTION_DISABLE); // flags ? flags[TOKEN_FACTIONS_FLAGS.FACTION_DISABLE] : undefined;
+        const skipDraw = token.document.getFlag(TOKEN_FACTIONS_MODULE_NAME, TOKEN_FACTIONS_FLAGS.FACTION_DISABLE); // flags ? flags[TOKEN_FACTIONS_FLAGS.FACTION_DISABLE] : undefined;
         if (skipDraw) {
           return;
         }
         const drawFramesByDefault = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'draw-frames-by-default');
-        const drawFrameOverride = token.document.getFlag(TOKEN_FACTIONS_MODULE_NAME,TOKEN_FACTIONS_FLAGS.FACTION_DRAW_FRAME); // flags ? flags[TOKEN_FACTIONS_FLAGS.DRAW_FRAME] : undefined;
+        const drawFrameOverride = token.document.getFlag(
+          TOKEN_FACTIONS_MODULE_NAME,
+          TOKEN_FACTIONS_FLAGS.FACTION_DRAW_FRAME,
+        ); // flags ? flags[TOKEN_FACTIONS_FLAGS.DRAW_FRAME] : undefined;
         const drawFrame = drawFrameOverride === undefined ? drawFramesByDefault : drawFrameOverride;
         const colorFrom = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'color-from');
         let color;
@@ -198,19 +204,19 @@ export const TokenFactions = ((canvas) => {
 
         //@ts-ignore
         if (!token.factionBase) {
-            //@ts-ignore
-            token.factionBase = token.addChildAt(new PIXI.Container(), token.getChildIndex(token.icon) - 1);
+          //@ts-ignore
+          token.factionBase = token.addChildAt(new PIXI.Container(), token.getChildIndex(token.icon) - 1);
         } else {
-            //@ts-ignore
-            token.factionBase.removeChildren().forEach(c => c.destroy());
+          //@ts-ignore
+          token.factionBase.removeChildren().forEach((c) => c.destroy());
         }
         //@ts-ignore
         if (!token.factionFrame) {
-            //@ts-ignore
-            token.factionFrame = token.addChildAt(new PIXI.Container(), token.getChildIndex(token.icon) + 1);
+          //@ts-ignore
+          token.factionFrame = token.addChildAt(new PIXI.Container(), token.getChildIndex(token.icon) + 1);
         } else {
-            //@ts-ignore
-            token.factionFrame.removeChildren().forEach(c => c.destroy());
+          //@ts-ignore
+          token.factionFrame.removeChildren().forEach((c) => c.destroy());
         }
 
         if (colorFrom === 'token-disposition') {
@@ -223,22 +229,22 @@ export const TokenFactions = ((canvas) => {
         }
 
         if (color) {
-          if(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'fillTexture')){
+          if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'fillTexture')) {
             //@ts-ignore
-            TokenFactions.drawBase(color, token.factionBase, token );
+            TokenFactions.drawBase(color, token.factionBase, token);
           }
           if (drawFrame) {
             //@ts-ignore
-            TokenFactions.drawFrame( color, token.factionFrame, token );
+            TokenFactions.drawFrame(color, token.factionFrame, token);
           } else {
             //@ts-ignore
-            TokenFactions.drawFrame( color, token.factionBase, token );
+            TokenFactions.drawFrame(color, token.factionBase, token);
           }
         }
       }
     }
 
-    static drawBase(color:number, container, token:Token) {
+    static drawBase(color: number, container, token: Token) {
       const base = container.addChild(new PIXI.Graphics());
       const frameWidth =
         <number>getCanvas().grid?.grid?.w *
@@ -255,7 +261,7 @@ export const TokenFactions = ((canvas) => {
         .drawCircle(token.w / 2, token.h / 2, token.w / 2 - frameWidth);
     }
 
-    static drawFrame(color:number, container, token:Token ) {
+    static drawFrame(color: number, container, token: Token) {
       const frameWidth =
         <number>getCanvas().grid?.grid?.w *
         (<number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'frame-width') / 100);
@@ -325,11 +331,9 @@ export const TokenFactions = ((canvas) => {
           container.addChild(outerRingMask);
           outerRing.mask = outerRingMask;
 
-          
           container.addChild(innerRing);
           container.addChild(innerRingMask);
           innerRing.mask = innerRingMask;
-          
 
           container.addChild(ringTexture);
           container.addChild(ringTextureMask);
@@ -359,7 +363,7 @@ export const TokenFactions = ((canvas) => {
       return color;
     }
 
-    static getCustomDispositionColor(token:Token) {
+    static getCustomDispositionColor(token: Token) {
       const disposition = dispositionKey(token);
       let color;
 
@@ -375,4 +379,3 @@ export const TokenFactions = ((canvas) => {
 
   return TokenFactions;
 })();
-

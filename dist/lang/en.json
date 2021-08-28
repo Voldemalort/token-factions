@@ -105,6 +105,6 @@
   "token-factions.setting.customDispositionColorEx.name": "Color: Custom Disposition External",
   "token-factions.setting.customDispositionColorEx.hint": " ",
 
-  "token-factions.setting.disableRefreshTarget.name": "Disable the refresh target feature",
-  "token-factions.setting.disableRefreshTarget.hint": "Use other module like Better Target, Smart Target, ecc. for apply design to target"
+  "token-factions.setting.overrideBorderGraphic.name": "Override the graphic of the border default token",
+  "token-factions.setting.overrideBorderGraphic.hint": "This will not work with 'Border Control' module active"
 }
