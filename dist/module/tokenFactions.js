@@ -1,3 +1,4 @@
+import { i18n } from "../main.js";
 import { getCanvas, getGame, TOKEN_FACTIONS_MODULE_NAME } from "./settings.js";
 import { FactionGraphic } from "./TokenFactionsModels.js";
 export class TokenFactions {
@@ -92,24 +93,73 @@ export class TokenFactions {
     //   html.find(`select[name="${TOKEN_FACTIONS_MODULE_NAME}.color-from"]`).change(update);
     //   html.find(`button[name="${TOKEN_FACTIONS_MODULE_NAME}-colors-reset"]`).click(resetColors);
     // }
-    static renderTokenConfig(sheet, html) {
-        const token = sheet.object;
-        //const flags = token.data.flags[TOKEN_FACTIONS_MODULE_NAME];
+    static renderTokenConfig(config, html) {
+        const token = config.object;
+        const factions = token.factions;
+        const skipDraw = token.getFlag(TOKEN_FACTIONS_MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE);
+        /*
         const drawFramesByDefault = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'draw-frames-by-default');
-        const drawFrameOverride = token.document.getFlag(TOKEN_FACTIONS_MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DRAW_FRAME);
+        const drawFrameOverride = token.getFlag(
+          TOKEN_FACTIONS_MODULE_NAME,
+          TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DRAW_FRAME,
+        );
         const drawFrame = drawFrameOverride === undefined ? drawFramesByDefault : drawFrameOverride;
         const checked = drawFrame ? ' checked="checked"' : '';
-        const skipDraw = token.document.getFlag(TOKEN_FACTIONS_MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE);
-        const isDisabled = skipDraw ? ' checked="checked"' : '';
+       
         html.find('input[name="mirrorY"]').parent().after(`\
-      <div class="form-group">
-        <label>Disable Faction Disposition Visualization</label>
-        <input type="checkbox" name="flags.${TOKEN_FACTIONS_MODULE_NAME}.${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}" data-dtype="Boolean"${isDisabled}>
-      </div>
-        <div class="form-group">
-          <label>Overlay A Faction-Based Frame</label>
-          <input type="checkbox" name="flags.${TOKEN_FACTIONS_MODULE_NAME}.${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DRAW_FRAME}" data-dtype="Boolean"${checked}>
-        </div>`);
+          <div class="form-group">
+            <label>Disable Faction Disposition Visualization</label>
+            <input type="checkbox" name="flags.${TOKEN_FACTIONS_MODULE_NAME}.${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}" data-dtype="Boolean"${isDisabled}>
+          </div>
+            <div class="form-group">
+              <label>Overlay A Faction-Based Frame</label>
+              <input type="checkbox" name="flags.${TOKEN_FACTIONS_MODULE_NAME}.${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DRAW_FRAME}" data-dtype="Boolean"${checked}>
+            </div>`);
+        */
+        // Expand the width
+        config.position.width = 540;
+        config.setPosition(config.position);
+        const nav = html.find('nav.sheet-tabs.tabs');
+        nav.append($(`
+			<a class="item" data-tab="factions">
+				<i class="far fa-dot-angry"></i>
+				${i18n('token-factions.label.factions')}
+			</a>
+		`));
+        const formConfig = ``;
+        //   <div class="form-group">
+        //     <label>${i18n('token-factions.label.factions.customDisable')}</label>
+        //     <input type="checkbox" name="flags.${TOKEN_FACTIONS_MODULE_NAME}"."${
+        //   TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE
+        // }" 
+        //       data-dtype="Boolean" ${skipDraw ? 'checked' : ''}>
+        //   </div>`;
+        // const auraConfig = factions.map((faction, idx) => `
+        //   <div class="form-group">
+        //     <label>${i18n('token-factions.label.factions.customColor')}</label>
+        //     <div class="form-fields">
+        //       <input class="color" type="text" value="${faction.colour}"
+        //             name="flags.token-auras.aura${idx + 1}.colour">
+        //       <input type="color" value="${faction.colour}"
+        //             data-edit="flags.token-auras.aura${idx + 1}.colour">
+        //     </div>
+        // </div>`
+        nav
+            .parent()
+            .find('footer')
+            .before($(`
+			<div class="tab" data-tab="factions">
+				${formConfig}
+			</div>
+		`));
+        nav
+            .parent()
+            .find('.tab[data-tab="factions"] input[type="checkbox"][data-edit]')
+            .change(config._onChangeInput.bind(config));
+        nav
+            .parent()
+            .find('.tab[data-tab="factions"] input[type="color"][data-edit]')
+            .change(config._onChangeInput.bind(config));
     }
     static async updateTokenData(tokenData) {
         let tokens;
@@ -136,10 +186,15 @@ export class TokenFactions {
     static updateToken(token) {
         //@ts-ignore
         if (token instanceof Token && token.icon && TokenFactions.bevelTexture && TokenFactions.bevelTexture.baseTexture) {
-            const color = TokenFactions.colorBorderFaction(token);
-            if (!color.INT) {
-                return;
-            }
+            // const color = TokenFactions.colorBorderFaction(token);
+            // if (!color.INT) {
+            //   //@ts-ignore
+            //   if (token.factions) {
+            //     //@ts-ignore
+            //     token.factions.removeChildren().forEach((c) => c.destroy());
+            //   }
+            //   return;
+            // }
             // const skipDraw = token.document.getFlag(TOKEN_FACTIONS_MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE);
             // if (skipDraw) {
             //   return;
@@ -191,15 +246,20 @@ export class TokenFactions {
             //   //@ts-ignore
             //   token.factionFrame.removeChildren().forEach((c) => c.destroy());
             // }
+            //@ts-ignore
+            if (!token.factions) {
+                //@ts-ignore
+                token.factions = token.addChildAt(new PIXI.Container(), 0);
+            }
             token.sortableChildren = true;
             //@ts-ignore
-            TokenFactions.drawBorderFaction(token); // ,token.factionFrame
+            TokenFactions.drawBorderFaction(token, token.factions);
             //@ts-ignore
             token.icon.zIndex = token.border.zIndex - 1;
             //@ts-ignore
-            if (token.factionFrame) {
+            if (token.factions) {
                 //@ts-ignore
-                token.factionFrame.zIndex = token.icon.zIndex - 1;
+                token.factions.zIndex = token.icon.zIndex - 1;
             }
         }
     }
@@ -316,10 +376,7 @@ export class TokenFactions {
     static rgbToHex(A) {
         if (A[0] === undefined || A[1] === undefined || A[2] === undefined)
             console.error('RGB color invalid');
-        return ('#' +
-            TokenFactions.componentToHex(A[0]) +
-            TokenFactions.componentToHex(A[1]) +
-            TokenFactions.componentToHex(A[2]));
+        return ('#' + TokenFactions.componentToHex(A[0]) + TokenFactions.componentToHex(A[1]) + TokenFactions.componentToHex(A[2]));
     }
     static hexToRgb(hex) {
         const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -423,13 +480,19 @@ export class TokenFactions {
             //   token.factionFrame.removeChildren().forEach((c) => c.destroy());
             // }
             //@ts-ignore
-            TokenFactions.drawBorderFaction(token); // , token.factionFrame
+            if (!token.factions) {
+                //@ts-ignore
+                token.factions = token.addChildAt(new PIXI.Container(), 0);
+            }
+            token.sortableChildren = true;
+            //@ts-ignore
+            TokenFactions.drawBorderFaction(token, token.factions);
             //@ts-ignore
             token.icon.zIndex = token.border.zIndex - 1;
             //@ts-ignore
-            if (token.factionFrame) {
+            if (token.factions) {
                 //@ts-ignore
-                token.factionFrame.zIndex = token.icon.zIndex - 1;
+                token.factions.zIndex = token.icon.zIndex - 1;
             }
         });
         return;
@@ -539,23 +602,14 @@ export class TokenFactions {
     //   arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
     //   return arr;
     // }
-    static drawBorderFaction(token) {
-        let factionBorder = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'overrideBorderGraphic')
-            //@ts-ignore
-            ? token.border
-            //@ts-ignore
-            : token.factionFrame;
+    static async drawBorderFaction(token, container) {
         //@ts-ignore
-        if (factionBorder) {
-            //@ts-ignore
-            factionBorder.clear();
-        }
-        else {
-            //@ts-ignore
-            token.factionFrame = token.addChild(new PIXI.Graphics());
-            //@ts-ignore
-            factionBorder = token.factionFrame;
-        }
+        container.removeChildren().forEach((c) => c.destroy());
+        // let factionBorder = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'overrideBorderGraphic')
+        // //@ts-ignore
+        // ? token.border
+        // //@ts-ignore
+        // : token.factionFrame;
         const borderColor = TokenFactions.colorBorderFaction(token);
         if (!borderColor) {
             return;
@@ -576,44 +630,37 @@ export class TokenFactions {
                 return;
         }
         //@ts-ignore
-        if (token.document.getFlag(TOKEN_FACTIONS_MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE)) {
+        let skipDraw;
+        try {
+            skipDraw = token.document.getFlag(TOKEN_FACTIONS_MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE);
+        }
+        catch (e) {
+            //@ts-ignore
+            await token.document.setFlag(TOKEN_FACTIONS_MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE, false);
+            skipDraw = token.document.getFlag(TOKEN_FACTIONS_MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE);
+        }
+        //@ts-ignore
+        if (skipDraw) {
             return;
         }
-        // if(!container){
-        //   container = token;
-        // }
+        //@ts-ignore
+        let factionBorder = container.addChild(new PIXI.Graphics());
         const frameStyle = String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'frame-style'));
-        const frameOpacity = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'frame-opacity');
-        const t = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderWidth') || CONFIG.Canvas.objectBorderThickness;
-        // const baseOpacity = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'base-opacity');
-        // //@ts-ignore
-        // if (!token.factionBase) {
-        //   //@ts-ignore
-        //   token.factionBase = token.addChildAt(new PIXI.Container(), token.getChildIndex(token.icon) - 1);
-        // } else {
-        //   //@ts-ignore
-        //   token.factionBase.removeChildren().forEach((c) => c.destroy());
-        // }
-        // //@ts-ignore
-        // if (!token.factionFrame) {
-        //   //@ts-ignore
-        //   token.factionFrame = token.addChildAt(new PIXI.Container(), token.getChildIndex(token.icon) + 1);
-        // } else {
-        //   //@ts-ignore
-        //   token.factionFrame.removeChildren().forEach((c) => c.destroy());
-        // }
         token.sortableChildren = true;
         if (frameStyle == TokenFactions.TOKEN_FACTIONS_FRAME_STYLE.FLAT) {
             // frameStyle === 'flat'
-            // const factionBorder = container.addChild(new PIXI.Graphics());
+            if (!factionBorder) {
+                factionBorder = container.addChild(new PIXI.Graphics());
+            }
             const fillTexture = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'fillTexture');
             TokenFactions.drawBorder(token, borderColor, factionBorder, fillTexture);
-            factionBorder.alpha = frameOpacity;
         }
         else if (frameStyle == TokenFactions.TOKEN_FACTIONS_FRAME_STYLE.BELEVELED) {
             // frameStyle === 'bevelled'
+            if (!factionBorder) {
+                factionBorder = container.addChild(new PIXI.Graphics());
+            }
             const fillTexture = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'fillTexture');
-            // const factionBorder = container.addChild(new PIXI.Graphics());
             // const ringTexture = new PIXI.Sprite(TokenFactions.bevelTexture);
             // ringTexture.tint = borderColor.INT;
             // ringTexture.alpha = <number>frameOpacity;
@@ -801,35 +848,20 @@ export class TokenFactions {
             //}else if(frameStyle == TOKEN_FACTIONS_FRAME_STYLE.BORDER){
         }
         else {
-            //@ts-ignore
             if (!factionBorder) {
-                //@ts-ignore
-                token.factionFrame = token.addChild(new PIXI.Graphics());
-                //@ts-ignore
-                if (token.factionFrame) {
-                    //@ts-ignore
-                    factionBorder = token.factionFrame;
-                }
-                if (!factionBorder) {
-                    return;
-                }
+                factionBorder = container.addChild(new PIXI.Graphics());
             }
             const fillTexture = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'fillTexture');
             TokenFactions.drawBorder(token, borderColor, factionBorder, fillTexture);
         }
-        //@ts-ignore
-        token.icon.zIndex = token.border.zIndex - 1;
-        //@ts-ignore
-        if (token.factionFrame) {
-            //@ts-ignore
-            token.factionFrame.zIndex = token.icon.zIndex - 1;
-        }
     }
     static drawBorder(token, borderColor, factionBorder, fillTexture) {
         const t = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderWidth') || CONFIG.Canvas.objectBorderThickness;
-        const baseOpacity = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'base-opacity');
+        const frameOpacity = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'frame-opacity') || 0.5;
+        const baseOpacity = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'base-opacity') || 0.5;
         const textureINT = borderColor.TEXTURE_INT || PIXI.Texture.EMPTY; //await PIXI.Texture.fromURL(<string>token.data.img) || PIXI.Texture.EMPTY;
         const textureEX = borderColor.TEXTURE_EX || PIXI.Texture.EMPTY;
+        factionBorder.alpha = frameOpacity;
         // Draw Hex border for size 1 tokens on a hex grid
         const gt = CONST.GRID_TYPES;
         const hexTypes = [gt.HEXEVENQ, gt.HEXEVENR, gt.HEXODDQ, gt.HEXODDR];
@@ -858,9 +890,7 @@ export class TokenFactions {
                 // .drawCircle(token.w / 2, token.h / 2, token.w / 2 + h + t / 2 + p);
             }
             //@ts-ignore
-            factionBorder
-                .lineStyle(t, borderColor.EX, 0.8)
-                .drawCircle(token.w / 2, token.h / 2, token.w / 2 + t + p);
+            factionBorder.lineStyle(t, borderColor.EX, 0.8).drawCircle(token.w / 2, token.h / 2, token.w / 2 + t + p);
             //@ts-ignore
             factionBorder
                 .lineStyle(h, borderColor.INT, 1.0)
@@ -935,11 +965,11 @@ export class TokenFactions {
     }
 }
 /*
-* The allowed Token disposition types
-* HOSTILE - Displayed as an enemy with a red border
-* NEUTRAL - Displayed as neutral with a yellow border
-* FRIENDLY - Displayed as an ally with a cyan border
-*/
+ * The allowed Token disposition types
+ * HOSTILE - Displayed as an enemy with a red border
+ * NEUTRAL - Displayed as neutral with a yellow border
+ * FRIENDLY - Displayed as an ally with a cyan border
+ */
 TokenFactions.TOKEN_DISPOSITIONS = {
     HOSTILE: -1,
     NEUTRAL: 0,
@@ -953,7 +983,7 @@ TokenFactions.TOKEN_FACTIONS_FLAGS = {
 TokenFactions.TOKEN_FACTIONS_FRAME_STYLE = {
     FLAT: 'flat',
     BELEVELED: 'beveled',
-    BORDER: 'border'
+    BORDER: 'border',
 };
 TokenFactions.dispositionKey = (token) => {
     const dispositionValue = parseInt(String(token.data.disposition), 10);

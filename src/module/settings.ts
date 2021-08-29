@@ -86,14 +86,14 @@ export const registerSettings = function () {
     config: true,
   });
 
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'overrideBorderGraphic', {
-    name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.overrideBorderGraphic.name'),
-    hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.overrideBorderGraphic.hint'),
-    scope: 'world',
-    type: Boolean,
-    default: false,
-    config: true,
-  });
+  // getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'overrideBorderGraphic', {
+  //   name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.overrideBorderGraphic.name'),
+  //   hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.overrideBorderGraphic.hint'),
+  //   scope: 'world',
+  //   type: Boolean,
+  //   default: false,
+  //   config: true,
+  // });
 
   // ===============================
   // SUB FEATURE STANDARD
@@ -127,7 +127,7 @@ export const registerSettings = function () {
     choices: {
       flat: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.frame-style.opt.flat'),
       beveled: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.frame-style.opt.beveled'),
-      border: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.frame-style.opt.border'),
+      // border: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.frame-style.opt.border'),
     },
   });
 

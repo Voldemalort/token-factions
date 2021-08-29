@@ -5,7 +5,6 @@ import { TokenFactions } from './tokenFactions';
 import { TokenData } from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs';
 
 export const readyHooks = async () => {
-
   Hooks.on('renderSettingsConfig', (app, el, data) => {
     const nC = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'neutralColor');
     const fC = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'friendlyColor');
@@ -89,24 +88,20 @@ export const readyHooks = async () => {
     Hooks.on('updateFolder', (tokenData, data) => {
       TokenFactions.updateTokenData(tokenData);
     });
-    
+
     //@ts-ignore
-    libWrapper.register(
-      TOKEN_FACTIONS_MODULE_NAME, 
-      'Token.prototype.refresh', 
-      TokenPrototypeRefreshHandler, 
-      'MIXED');
+    libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype.refresh', TokenPrototypeRefreshHandler, 'MIXED');
 
-    if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'overrideBorderGraphic')) {
-      //@ts-ignore
-      libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype._refreshBorder', TokenPrototypeRefreshBorderHandler, 'MIXED');
+    // if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'overrideBorderGraphic')) {
+    //   //@ts-ignore
+    //   libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype._refreshBorder', TokenPrototypeRefreshBorderHandler, 'MIXED');
 
-      //@ts-ignore
-      libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype._getBorderColor', TokenPrototypeGetBorderColorHandler, 'MIXED');
-    } else {
-      //@ts-ignore
-      libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype.draw', TokenPrototypeDrawHandler, 'MIXED');
-    }
+    //   //@ts-ignore
+    //   libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype._getBorderColor', TokenPrototypeGetBorderColorHandler, 'MIXED');
+    // } else {
+    //@ts-ignore
+    libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype.draw', TokenPrototypeDrawHandler, 'MIXED');
+    // }
 
     Hooks.on('renderTokenHUD', (app, html, data) => {
       TokenFactions.AddBorderToggle(app, html, data);
@@ -114,7 +109,7 @@ export const readyHooks = async () => {
 
     Hooks.on('createToken', (data) => {
       const token = <Token>getCanvas().tokens?.get(data._id);
-      if (!token.owner){
+      if (!token.owner) {
         token.cursor = 'default';
       }
     });
@@ -122,7 +117,6 @@ export const readyHooks = async () => {
     getCanvas().tokens?.placeables.forEach((t) => {
       if (!t.owner) t.cursor = 'default';
     });
-    
   }
 };
 

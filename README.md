@@ -31,7 +31,7 @@ This module uses the [libWrapper](https://github.com/ruipin/fvtt-lib-wrapper) li
 
 - There is a incompatibility with the module [Perfect vision](https://github.com/dev7355608/perfect-vision ) when both module are active everything is broken
 
-- The old BLevel frame style not work anymore, but i'll try for the feature to make more customizable faction image, there are already may options, but i don' have time for all the others.
+- The old "BLevel" frame style not work anymore, but i'll try for the feature to make more customizable faction image, there are already may options, but i don' have time for all the others.
 
 
 ## Configuration with Pixi Texture

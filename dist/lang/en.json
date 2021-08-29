@@ -25,8 +25,8 @@
   "token-factions.setting.frame-style.hint": " ",
 
   "token-factions.setting.frame-style.opt.flat": "Default: Flat",
-  "token-factions.setting.frame-style.opt.beveled": "Beveled",
-  "token-factions.setting.frame-style.opt.border": "Custom border",
+  "token-factions.setting.frame-style.opt.beveled": "Beveled (Must be developed from much more expert developer...)",
+  "token-factions.setting.frame-style.opt.border": "Custom border (Must be developed from much more expert developer...)",
 
   "token-factions.setting.frame-width.name": "Frame Width (Percent of Grid Unit)",
   "token-factions.setting.frame-width.hint": " ",
@@ -110,6 +110,9 @@
   "token-factions.setting.customDispositionColorEx.hint": " ",
 
   "token-factions.setting.overrideBorderGraphic.name": "Override the graphic of the border default token",
-  "token-factions.setting.overrideBorderGraphic.hint": "This will not work with 'Border Control' module active"
-  
+  "token-factions.setting.overrideBorderGraphic.hint": "This will not work with 'Border Control' module active",
+
+  "token-factions.label.factions": "Factions",
+  "token-factions.label.factions.customDisable": "Disable Faction Disposition",
+  "token-factions.label.factions.customColor": "Custom color faction"
 }

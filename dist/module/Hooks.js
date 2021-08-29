@@ -58,8 +58,6 @@ export const readyHooks = async () => {
     });
     if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'tokenFactionsEnabled')) {
         // setup all the hooks
-        //@ts-ignore
-        libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype.refresh', TokenPrototypeRefreshHandler, 'MIXED');
         Hooks.on('closeSettingsConfig', (token, data) => {
             TokenFactions.updateTokensAll();
         });
@@ -78,16 +76,17 @@ export const readyHooks = async () => {
         Hooks.on('updateFolder', (tokenData, data) => {
             TokenFactions.updateTokenData(tokenData);
         });
-        if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'overrideBorderGraphic')) {
-            //@ts-ignore
-            libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype._refreshBorder', TokenPrototypeRefreshBorderHandler, 'MIXED');
-            //@ts-ignore
-            libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype._getBorderColor', TokenPrototypeGetBorderColorHandler, 'MIXED');
-        }
-        else {
-            //@ts-ignore
-            libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype.draw', TokenPrototypeDrawHandler, 'MIXED');
-        }
+        //@ts-ignore
+        libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype.refresh', TokenPrototypeRefreshHandler, 'MIXED');
+        // if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'overrideBorderGraphic')) {
+        //   //@ts-ignore
+        //   libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype._refreshBorder', TokenPrototypeRefreshBorderHandler, 'MIXED');
+        //   //@ts-ignore
+        //   libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype._getBorderColor', TokenPrototypeGetBorderColorHandler, 'MIXED');
+        // } else {
+        //@ts-ignore
+        libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype.draw', TokenPrototypeDrawHandler, 'MIXED');
+        // }
         Hooks.on('renderTokenHUD', (app, html, data) => {
             TokenFactions.AddBorderToggle(app, html, data);
         });
