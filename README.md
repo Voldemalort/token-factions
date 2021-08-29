@@ -27,11 +27,12 @@ This module uses the [libWrapper](https://github.com/ruipin/fvtt-lib-wrapper) li
 
 ## Known issue
 
-- The SUBFEATURE STANDARD There is a incompatibility with the module [Foundry VTT Mount Up](https://github.com/p4535992/MountUp ) when i "Mount Up" a faction token the PIXI Graphic go in conlict and launch a exception is not a grave exception but is annoying
+- There is a incompatibility with the module [Foundry VTT Mount Up](https://github.com/p4535992/MountUp ) when i "Mount Up" a faction token the PIXI Graphic go in conlict and launch a exception is not a grave exception but is annoying
 
-- The SUBFEATURE STANDARD has a incompatibility with the module [Perfect vision](https://github.com/dev7355608/perfect-vision ) when both module are active everything is broken, a simple soution on my side is disable the subfeature with pixy texture in favor of the solution with the border drawing on the token (note if you use [Border-Control](https://github.com/kandashi/Border-Control) module that module win on mine because use a ovveride wrapper method)
+- There is a incompatibility with the module [Perfect vision](https://github.com/dev7355608/perfect-vision ) when both module are active everything is broken
 
-- The SUBFEATURE BORDER has a incompatibility with the module [Border-Control](https://github.com/kandashi/Border-Control) module that module win on mine because use a ovveride wrapper method)
+- The old BLevel frame style not work anymore, but i'll try for the feature to make more customizable faction image, there are already may options, but i don' have time for all the others.
+
 
 ## Configuration with Pixi Texture
 

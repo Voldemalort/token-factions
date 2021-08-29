@@ -66,13 +66,6 @@ export const readyHooks = async () => {
   if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'tokenFactionsEnabled')) {
     // setup all the hooks
 
-    //@ts-ignore
-    libWrapper.register(
-      TOKEN_FACTIONS_MODULE_NAME, 
-      'Token.prototype.refresh', 
-      TokenPrototypeRefreshHandler, 
-      'MIXED');
-
     Hooks.on('closeSettingsConfig', (token, data) => {
       TokenFactions.updateTokensAll();
     });
@@ -97,7 +90,12 @@ export const readyHooks = async () => {
       TokenFactions.updateTokenData(tokenData);
     });
     
-
+    //@ts-ignore
+    libWrapper.register(
+      TOKEN_FACTIONS_MODULE_NAME, 
+      'Token.prototype.refresh', 
+      TokenPrototypeRefreshHandler, 
+      'MIXED');
 
     if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'overrideBorderGraphic')) {
       //@ts-ignore
