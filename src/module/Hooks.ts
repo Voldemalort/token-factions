@@ -4,41 +4,6 @@ import { getCanvas, getGame, TOKEN_FACTIONS_MODULE_NAME } from './settings';
 import { TokenFactions } from './tokenFactions';
 import { TokenData } from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs';
 
-export enum TOKEN_FACTIONS_FLAGS {
-  FACTION_DRAW_FRAME = 'factionDrawFrame', //'draw-frame',
-  FACTION_DISABLE = 'factionDisable', // 'disable'
-  FACTION_NO_BORDER = 'factionNoBorder', // noBorder
-}
-
-export enum TOKEN_FACTIONS_FRAME_STYLE {
-  FLAT = 'flat',
-  BELEVELED = 'beveled',
-  BORDER = 'border'
-}
-
-export const dispositionKey = (token) => {
-  const dispositionValue = parseInt(String(token.data.disposition), 10);
-  let disposition;
-  if (token.actor && token.actor.hasPlayerOwner && token.actor.type === 'character') {
-    disposition = 'party-member';
-  } else if (token.actor && token.actor.hasPlayerOwner) {
-    disposition = 'party-npc';
-  } else if (dispositionValue === 1) {
-    disposition = 'friendly-npc';
-  } else if (dispositionValue === 0) {
-    disposition = 'neutral-npc';
-  } else if (dispositionValue === -1) {
-    disposition = 'hostile-npc';
-  }
-  return disposition;
-};
-
-export let BCC;
-
-export let defaultColors;
-
-export let dispositions;
-
 export const readyHooks = async () => {
 
   Hooks.on('renderSettingsConfig', (app, el, data) => {
@@ -101,35 +66,12 @@ export const readyHooks = async () => {
   if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'tokenFactionsEnabled')) {
     // setup all the hooks
 
-    defaultColors = {
-      'party-member': getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'partyColor'), //'#33bc4e',
-      'party-npc': getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'partyColor'), //'#33bc4e',
-      'friendly-npc': getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'friendlyColor'), //'#43dfdf',
-      'neutral-npc': getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'neutralColor'), //'#f1d836',
-      'hostile-npc': getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'hostileColor'), //'#e72124',
-
-      'controlled-npc': getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'controlledColor'),
-      'neutral-external-npc': getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'neutralColorEx'),
-      'friendly-external-npc': getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'friendlyColorEx'),
-      'hostile-external-npc': getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'hostileColorEx'),
-      'controlled-external-npc': getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'controlledColorEx'),
-      'party-external-member': getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'partyColorEx'),
-      'party-external-npc': getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'partyColorEx'),
-      //'target-npc' :  getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "targetColor"),
-      //'target-external-npc' :  getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "targetColorEx"),
-    };
-
-    dispositions = Object.keys(defaultColors);
-
     //@ts-ignore
     libWrapper.register(
       TOKEN_FACTIONS_MODULE_NAME, 
       'Token.prototype.refresh', 
       TokenPrototypeRefreshHandler, 
       'MIXED');
-
-   
-    TokenFactions.onInit(defaultColors, dispositions);
 
     Hooks.on('closeSettingsConfig', (token, data) => {
       TokenFactions.updateTokensAll();
@@ -144,25 +86,25 @@ export const readyHooks = async () => {
     });
 
     Hooks.on('updateActor', (tokenData, data) => {
-      TokenFactions.updateTokenFaction(tokenData);
+      TokenFactions.updateTokenData(tokenData);
     });
 
     Hooks.on('updateToken', (tokenData, data) => {
-      TokenFactions.updateTokenFaction(tokenData);
+      TokenFactions.updateTokenData(tokenData);
     });
 
     Hooks.on('updateFolder', (tokenData, data) => {
-      TokenFactions.updateTokenFaction(tokenData);
+      TokenFactions.updateTokenData(tokenData);
     });
     
 
 
     if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'overrideBorderGraphic')) {
       //@ts-ignore
-      libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype._refreshBorder', newBorder, 'MIXED');
+      libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype._refreshBorder', TokenPrototypeRefreshBorderHandler, 'MIXED');
 
       //@ts-ignore
-      libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype._getBorderColor', newBorderColor, 'MIXED');
+      libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype._getBorderColor', TokenPrototypeGetBorderColorHandler, 'MIXED');
     } else {
       //@ts-ignore
       libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype.draw', TokenPrototypeDrawHandler, 'MIXED');
@@ -192,34 +134,33 @@ export const readyHooks = async () => {
 
 export const initHooks = async () => {
   warn('Init Hooks processing');
+  TokenFactions.onInit();
 };
 
 export const TokenPrototypeRefreshHandler = function (wrapped, ...args) {
   const tokenData = this as TokenData;
-  TokenFactions.updateTokenFaction(tokenData);
+  TokenFactions.updateTokenData(tokenData);
   return wrapped(...args);
 };
 
 export const TokenPrototypeDrawHandler = function (wrapped, ...args) {
   const token = this as Token;
-  TokenFactions.updateTokenFaction(token.data);
+  TokenFactions.updateTokenData(token.data);
   return wrapped(...args);
 };
 
-export const newBorder = function (wrapped, ...args) {
+export const TokenPrototypeRefreshBorderHandler = function (wrapped, ...args) {
   //@ts-ignore
   const token: Token = this as Token;
   //@ts-ignore
-  const borderColor = this._getBorderColor();
-  //@ts-ignore
-  TokenFactions.updateTokenFaction(token.data);
+  TokenFactions.updateTokenData(token.data);
   return;
   // return wrapped(args);
 };
 
-export const newBorderColor = function (wrapped, ...args) {
+export const TokenPrototypeGetBorderColorHandler = function (wrapped, ...args) {
   //@ts-ignore
   const token: Token = this as Token;
-  return TokenFactions.updateTokenFaction(token.data);
+  return TokenFactions.updateTokenData(token.data);
   //return wrapped(args);
 };
