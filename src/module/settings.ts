@@ -99,23 +99,23 @@ export const registerSettings = function () {
   // SUB FEATURE STANDARD
   // ===============================
 
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'pixiFactionsEnabled', {
-    name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.pixiFactionsEnabled.name'),
-    hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.pixiFactionsEnabled.hint'),
-    scope: 'world',
-    type: Boolean,
-    default: false,
-    config: true,
-  });
+  // getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'pixiFactionsEnabled', {
+  //   name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.pixiFactionsEnabled.name'),
+  //   hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.pixiFactionsEnabled.hint'),
+  //   scope: 'world',
+  //   type: Boolean,
+  //   default: false,
+  //   config: true,
+  // });
 
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'draw-frames-by-default', {
-    name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.draw-frames-by-default.name'),
-    hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.draw-frames-by-default.hint'),
-    scope: 'world',
-    config: true,
-    default: true,
-    type: Boolean,
-  });
+  // getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'draw-frames-by-default', {
+  //   name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.draw-frames-by-default.name'),
+  //   hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.draw-frames-by-default.hint'),
+  //   scope: 'world',
+  //   config: true,
+  //   default: true,
+  //   type: Boolean,
+  // });
 
   getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'frame-style', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.frame-style.name'),
@@ -125,25 +125,26 @@ export const registerSettings = function () {
     default: 'flat',
     type: String,
     choices: {
-      flat: 'Default: Flat',
-      beveled: 'Beveled',
+      flat: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.frame-style.opt.flat'),
+      beveled: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.frame-style.opt.beveled'),
+      border: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.frame-style.opt.border'),
     },
   });
 
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'frame-width', {
-    name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.frame-width.name'),
-    hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.frame-width.hint'),
-    scope: 'world',
-    config: true,
-    default: 7.5,
-    type: Number,
-    //@ts-ignore
-    range: {
-      min: 0,
-      max: 10,
-      step: 0.5,
-    },
-  });
+  // getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'frame-width', {
+  //   name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.frame-width.name'),
+  //   hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.frame-width.hint'),
+  //   scope: 'world',
+  //   config: true,
+  //   default: 7.5,
+  //   type: Number,
+  //   //@ts-ignore
+  //   range: {
+  //     min: 0,
+  //     max: 10,
+  //     step: 0.5,
+  //   },
+  // });
 
   // TODO MOVE THIS FOR BOTH THE FEATURE ????
   getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'frame-opacity', {
@@ -165,14 +166,14 @@ export const registerSettings = function () {
   // SUB FEATURE ALTERNATIVE BORDER
   // ===============================
 
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'borderFactionsEnabled', {
-    name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.borderFactionsEnabled.name'),
-    hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.borderFactionsEnabled.hint'),
-    scope: 'world',
-    type: Boolean,
-    default: true,
-    config: true,
-  });
+  // getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'borderFactionsEnabled', {
+  //   name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.borderFactionsEnabled.name'),
+  //   hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.borderFactionsEnabled.hint'),
+  //   scope: 'world',
+  //   type: Boolean,
+  //   default: true,
+  //   config: true,
+  // });
 
   getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME + '', 'removeBorders', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.removeBorders.name'),

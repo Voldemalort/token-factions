@@ -16,19 +16,23 @@
   "token-factions.setting.color-from.opt.custom-disposition": "A Custom Color Set For Token Disposition",
 
   "token-factions.setting.pixiFactionsEnabled.name": "SUBFEATURE - Enable the standard token faction texture",
-  "token-factions.setting.pixiFactionsEnabled.hint": "This feature is deprecated, Standard use add texture to the token, need reload",
+  "token-factions.setting.pixiFactionsEnabled.hint": "Standard use add texture to the token, need reload",
 
   "token-factions.setting.draw-frames-by-default.name": "Draw Token Frames By Default?",
-  "token-factions.setting.draw-frames-by-default.hint": "This feature is deprecated, Token frames (rings) are layered above token graphics. Enable this if you primarily use round tokens. Disable it if you primarily use irregularly-shaped tokens.",
+  "token-factions.setting.draw-frames-by-default.hint": "Token frames (rings) are layered above token graphics. Enable this if you primarily use round tokens. Disable it if you primarily use irregularly-shaped tokens.",
 
   "token-factions.setting.frame-style.name": "Frame Render Style",
-  "token-factions.setting.frame-style.hint": "This feature is deprecated",
+  "token-factions.setting.frame-style.hint": " ",
+
+  "token-factions.setting.frame-style.opt.flat": "Default: Flat",
+  "token-factions.setting.frame-style.opt.beveled": "Beveled",
+  "token-factions.setting.frame-style.opt.border": "Custom border",
 
   "token-factions.setting.frame-width.name": "Frame Width (Percent of Grid Unit)",
-  "token-factions.setting.frame-width.hint": "This feature is deprecated",
+  "token-factions.setting.frame-width.hint": " ",
 
   "token-factions.setting.frame-opacity.name": "Frame Opacity",
-  "token-factions.setting.frame-opacity.hint": "This feature is deprecated",
+  "token-factions.setting.frame-opacity.hint": " ",
 
   "token-factions.setting.borderFactionsEnabled.name": "SUBFEATURE - Enable the alternative token custom border",
   "token-factions.setting.borderFactionsEnabled.hint": "Alternative custom the border of the token, need reload",
@@ -107,4 +111,5 @@
 
   "token-factions.setting.overrideBorderGraphic.name": "Override the graphic of the border default token",
   "token-factions.setting.overrideBorderGraphic.hint": "This will not work with 'Border Control' module active"
+  
 }

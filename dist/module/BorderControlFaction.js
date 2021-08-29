@@ -262,16 +262,16 @@ export class BorderFrameFaction {
         }
         return borderColor;
     }
-    // static moveArrayItemToNewIndex(arr, old_index, new_index) {
-    //   if (new_index >= arr.length) {
-    //       let k = new_index - arr.length + 1;
-    //       while (k--) {
-    //           arr.push(undefined);
-    //       }
-    //   }
-    //   arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
-    //   return arr;
-    // }
+    static moveArrayItemToNewIndex(arr, old_index, new_index) {
+        if (new_index >= arr.length) {
+            let k = new_index - arr.length + 1;
+            while (k--) {
+                arr.push(undefined);
+            }
+        }
+        arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
+        return arr;
+    }
     static async drawBorderFaction(token, borderColor) {
         //@ts-ignore
         let factionBorder = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'overrideBorderGraphic')
@@ -296,10 +296,6 @@ export class BorderFrameFaction {
                 //@ts-ignore
                 //BorderFrameFaction.moveArrayItemToNewIndex(token.children,token.getChildIndex(token.factionBorder),0);
                 //@ts-ignore
-                // token.icon.zIndex = token.factionBorder.zIndex + 1;
-                //@ts-ignore
-                // token.icon._zIndex = token.factionBorder._zIndex + 1;
-                //@ts-ignore
                 factionBorder = token.factionBorder;
                 //token.factionBorder = token.addChildAt(new PIXI.Graphics(), token.getChildIndex(token.border));
                 // token.factionBorder = token.addChildAt(new PIXI.Graphics(), token.getChildIndex(token.icon) -1);
@@ -309,6 +305,9 @@ export class BorderFrameFaction {
         if (!factionBorder) {
             return;
         }
+        token.sortableChildren = true;
+        //@ts-ignore
+        token.icon.zIndex = token.factionBorder.zIndex + 1;
         if (!borderColor) {
             return;
         }
