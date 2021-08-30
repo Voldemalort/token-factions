@@ -113,6 +113,6 @@
   "token-factions.setting.overrideBorderGraphic.hint": "This will not work with 'Border Control' module active",
 
   "token-factions.label.factions": "Factions",
-  "token-factions.label.factions.customDisable": "Disable Faction Disposition",
-  "token-factions.label.factions.customColor": "Custom color faction"
+  "token-factions.label.factionsCustomDisable": "Disable Faction Disposition",
+  "token-factions.label.factionsCustomColor": "Custom color faction"
 }

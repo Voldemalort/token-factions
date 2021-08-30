@@ -103,6 +103,22 @@ export const readyHooks = async () => {
     libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype.draw', TokenPrototypeDrawHandler, 'MIXED');
     // }
 
+    //@ts-ignore
+    libWrapper.register(
+      TOKEN_FACTIONS_MODULE_NAME,
+      'Token.prototype._onUpdate',
+      TokenPrototypeOnUpdateHandler,
+      'MIXED',
+    );
+
+    //@ts-ignore
+    libWrapper.register(
+      TOKEN_FACTIONS_MODULE_NAME,
+      'Actor.prototype._onUpdate',
+      ActorPrototypeOnUpdateHandler,
+      'MIXED',
+    );
+
     Hooks.on('renderTokenHUD', (app, html, data) => {
       TokenFactions.AddBorderToggle(app, html, data);
     });
@@ -115,7 +131,9 @@ export const readyHooks = async () => {
     });
 
     getCanvas().tokens?.placeables.forEach((t) => {
-      if (!t.owner) t.cursor = 'default';
+      if (!t.owner) {
+        t.cursor = 'default';
+      }
     });
   }
 };
@@ -138,21 +156,43 @@ export const TokenPrototypeRefreshHandler = function (wrapped, ...args) {
 export const TokenPrototypeDrawHandler = function (wrapped, ...args) {
   const token = this as Token;
   TokenFactions.updateTokenData(token.data);
+  // this.drawFactions();
   return wrapped(...args);
 };
 
-export const TokenPrototypeRefreshBorderHandler = function (wrapped, ...args) {
-  //@ts-ignore
-  const token: Token = this as Token;
-  //@ts-ignore
+export const TokenPrototypeOnUpdateHandler = function (wrapped, ...args) {
+  const token = this as Token;
   TokenFactions.updateTokenData(token.data);
-  return;
-  // return wrapped(args);
+  // this.drawFactions();
+  return wrapped(...args);
 };
 
-export const TokenPrototypeGetBorderColorHandler = function (wrapped, ...args) {
-  //@ts-ignore
-  const token: Token = this as Token;
-  return TokenFactions.updateTokenData(token.data);
-  //return wrapped(args);
+export const ActorPrototypeOnUpdateHandler = function (wrapped, ...args) {
+  // const [data, options, userId] = args;
+  const actor = this as Actor;
+  TokenFactions.updateTokenData(<TokenData>actor.token?.data);
+  // this.drawFactions();
+  return wrapped(...args);
 };
+
+// export const TokenPrototypeRefreshBorderHandler = function (wrapped, ...args) {
+//   //@ts-ignore
+//   const token: Token = this as Token;
+//   //@ts-ignore
+//   TokenFactions.updateTokenData(token.data);
+//   return;
+//   // return wrapped(args);
+// };
+
+// export const TokenPrototypeGetBorderColorHandler = function (wrapped, ...args) {
+//   //@ts-ignore
+//   const token: Token = this as Token;
+//   return TokenFactions.updateTokenData(token.data);
+//   //return wrapped(args);
+// };
+
+//@ts-ignore
+// Token.prototype.drawFactions = function () {
+//   const token = this as Token;
+//   TokenFactions.updateTokenData(token.data);
+// };

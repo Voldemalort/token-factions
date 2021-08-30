@@ -161,9 +161,12 @@ export class TokenFactions {
   // }
 
   static renderTokenConfig(config, html) {
-    const token = config.object;
-    const factions = token.factions;
-    const skipDraw = token.getFlag(TOKEN_FACTIONS_MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE);
+    const tokenDocument = config.object as TokenDocument;
+    // const factions = token.factions;
+    const skipDraw = tokenDocument.getFlag(
+      TOKEN_FACTIONS_MODULE_NAME,
+      TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE,
+    );
     /*
     const drawFramesByDefault = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'draw-frames-by-default');
     const drawFrameOverride = token.getFlag(
@@ -197,25 +200,14 @@ export class TokenFactions {
 		`),
     );
 
-    const formConfig = ``;
-    //   <div class="form-group">
-    //     <label>${i18n('token-factions.label.factions.customDisable')}</label>
-    //     <input type="checkbox" name="flags.${TOKEN_FACTIONS_MODULE_NAME}"."${
-    //   TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE
-    // }" 
-    //       data-dtype="Boolean" ${skipDraw ? 'checked' : ''}>
-    //   </div>`;
-
-    // const auraConfig = factions.map((faction, idx) => `
-    //   <div class="form-group">
-    //     <label>${i18n('token-factions.label.factions.customColor')}</label>
-    //     <div class="form-fields">
-    //       <input class="color" type="text" value="${faction.colour}"
-    //             name="flags.token-auras.aura${idx + 1}.colour">
-    //       <input type="color" value="${faction.colour}"
-    //             data-edit="flags.token-auras.aura${idx + 1}.colour">
-    //     </div>
-    // </div>`
+    const formConfig = `
+      <div class="form-group">
+        <label>${i18n('token-factions.label.factionsCustomDisable')}</label>
+        <input type="checkbox" name="flags.${TOKEN_FACTIONS_MODULE_NAME}.${
+      TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE
+    }" 
+          data-dtype="Boolean" ${skipDraw ? 'checked' : ''}>
+      </div>`;
 
     nav
       .parent()
@@ -232,10 +224,10 @@ export class TokenFactions {
       .parent()
       .find('.tab[data-tab="factions"] input[type="checkbox"][data-edit]')
       .change(config._onChangeInput.bind(config));
-    nav
-      .parent()
-      .find('.tab[data-tab="factions"] input[type="color"][data-edit]')
-      .change(config._onChangeInput.bind(config));
+    // nav
+    //   .parent()
+    //   .find('.tab[data-tab="factions"] input[type="color"][data-edit]')
+    //   .change(config._onChangeInput.bind(config));
   }
 
   static async updateTokenData(tokenData: TokenData): Promise<any> {
@@ -260,11 +252,11 @@ export class TokenFactions {
     }
 
     tokens.forEach((token) => {
-      TokenFactions.updateToken(token);
+      TokenFactions.updateTokenFaction(token);
     });
   }
 
-  static updateToken(token: Token) {
+  static updateTokenFaction(token: Token) {
     //@ts-ignore
     if (token instanceof Token && token.icon && TokenFactions.bevelTexture && TokenFactions.bevelTexture.baseTexture) {
       // const color = TokenFactions.colorBorderFaction(token);
@@ -774,16 +766,16 @@ export class TokenFactions {
 
     //@ts-ignore
     let skipDraw;
-    try{
-      skipDraw = token.document.getFlag(TOKEN_FACTIONS_MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE)
-    }catch(e){
+    try {
+      skipDraw = token.document.getFlag(TOKEN_FACTIONS_MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE);
+    } catch (e) {
       //@ts-ignore
       await token.document.setFlag(
         TOKEN_FACTIONS_MODULE_NAME,
         TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE,
         false,
       );
-      skipDraw = token.document.getFlag(TOKEN_FACTIONS_MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE)
+      skipDraw = token.document.getFlag(TOKEN_FACTIONS_MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE);
     }
     //@ts-ignore
     if (skipDraw) {
@@ -799,14 +791,14 @@ export class TokenFactions {
 
     if (frameStyle == TokenFactions.TOKEN_FACTIONS_FRAME_STYLE.FLAT) {
       // frameStyle === 'flat'
-      if(!factionBorder){
+      if (!factionBorder) {
         factionBorder = container.addChild(new PIXI.Graphics());
       }
       const fillTexture = <boolean>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'fillTexture');
       TokenFactions.drawBorder(token, borderColor, factionBorder, fillTexture);
     } else if (frameStyle == TokenFactions.TOKEN_FACTIONS_FRAME_STYLE.BELEVELED) {
       // frameStyle === 'bevelled'
-      if(!factionBorder){
+      if (!factionBorder) {
         factionBorder = container.addChild(new PIXI.Graphics());
       }
 
@@ -1000,7 +992,7 @@ export class TokenFactions {
       */
       //}else if(frameStyle == TOKEN_FACTIONS_FRAME_STYLE.BORDER){
     } else {
-      if(!factionBorder){
+      if (!factionBorder) {
         factionBorder = container.addChild(new PIXI.Graphics());
       }
       const fillTexture = <boolean>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'fillTexture');

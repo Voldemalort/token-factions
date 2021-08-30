@@ -94,9 +94,9 @@ export class TokenFactions {
     //   html.find(`button[name="${TOKEN_FACTIONS_MODULE_NAME}-colors-reset"]`).click(resetColors);
     // }
     static renderTokenConfig(config, html) {
-        const token = config.object;
-        const factions = token.factions;
-        const skipDraw = token.getFlag(TOKEN_FACTIONS_MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE);
+        const tokenDocument = config.object;
+        // const factions = token.factions;
+        const skipDraw = tokenDocument.getFlag(TOKEN_FACTIONS_MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE);
         /*
         const drawFramesByDefault = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'draw-frames-by-default');
         const drawFrameOverride = token.getFlag(
@@ -126,24 +126,12 @@ export class TokenFactions {
 				${i18n('token-factions.label.factions')}
 			</a>
 		`));
-        const formConfig = ``;
-        //   <div class="form-group">
-        //     <label>${i18n('token-factions.label.factions.customDisable')}</label>
-        //     <input type="checkbox" name="flags.${TOKEN_FACTIONS_MODULE_NAME}"."${
-        //   TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE
-        // }" 
-        //       data-dtype="Boolean" ${skipDraw ? 'checked' : ''}>
-        //   </div>`;
-        // const auraConfig = factions.map((faction, idx) => `
-        //   <div class="form-group">
-        //     <label>${i18n('token-factions.label.factions.customColor')}</label>
-        //     <div class="form-fields">
-        //       <input class="color" type="text" value="${faction.colour}"
-        //             name="flags.token-auras.aura${idx + 1}.colour">
-        //       <input type="color" value="${faction.colour}"
-        //             data-edit="flags.token-auras.aura${idx + 1}.colour">
-        //     </div>
-        // </div>`
+        const formConfig = `
+      <div class="form-group">
+        <label>${i18n('token-factions.label.factionsCustomDisable')}</label>
+        <input type="checkbox" name="flags.${TOKEN_FACTIONS_MODULE_NAME}.${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}" 
+          data-dtype="Boolean" ${skipDraw ? 'checked' : ''}>
+      </div>`;
         nav
             .parent()
             .find('footer')
@@ -156,10 +144,10 @@ export class TokenFactions {
             .parent()
             .find('.tab[data-tab="factions"] input[type="checkbox"][data-edit]')
             .change(config._onChangeInput.bind(config));
-        nav
-            .parent()
-            .find('.tab[data-tab="factions"] input[type="color"][data-edit]')
-            .change(config._onChangeInput.bind(config));
+        // nav
+        //   .parent()
+        //   .find('.tab[data-tab="factions"] input[type="color"][data-edit]')
+        //   .change(config._onChangeInput.bind(config));
     }
     static async updateTokenData(tokenData) {
         let tokens;
@@ -180,10 +168,10 @@ export class TokenFactions {
             }
         }
         tokens.forEach((token) => {
-            TokenFactions.updateToken(token);
+            TokenFactions.updateTokenFaction(token);
         });
     }
-    static updateToken(token) {
+    static updateTokenFaction(token) {
         //@ts-ignore
         if (token instanceof Token && token.icon && TokenFactions.bevelTexture && TokenFactions.bevelTexture.baseTexture) {
             // const color = TokenFactions.colorBorderFaction(token);
