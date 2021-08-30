@@ -68,13 +68,13 @@ export const readyHooks = async () => {
             TokenFactions.updateTokensAll();
         });
         Hooks.on('updateActor', (tokenData, data) => {
-            TokenFactions.updateTokenData(tokenData);
+            TokenFactions.updateTokenDataFaction(tokenData);
         });
         Hooks.on('updateToken', (tokenData, data) => {
-            TokenFactions.updateTokenData(tokenData);
+            TokenFactions.updateTokenDataFaction(tokenData);
         });
         Hooks.on('updateFolder', (tokenData, data) => {
-            TokenFactions.updateTokenData(tokenData);
+            TokenFactions.updateTokenDataFaction(tokenData);
         });
         //@ts-ignore
         libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype.refresh', TokenPrototypeRefreshHandler, 'MIXED');
@@ -115,25 +115,25 @@ export const initHooks = async () => {
 };
 export const TokenPrototypeRefreshHandler = function (wrapped, ...args) {
     const tokenData = this;
-    TokenFactions.updateTokenData(tokenData);
+    TokenFactions.updateTokenDataFaction(tokenData);
     return wrapped(...args);
 };
 export const TokenPrototypeDrawHandler = function (wrapped, ...args) {
     const token = this;
-    TokenFactions.updateTokenData(token.data);
+    TokenFactions.updateTokenDataFaction(token.data);
     // this.drawFactions();
     return wrapped(...args);
 };
 export const TokenPrototypeOnUpdateHandler = function (wrapped, ...args) {
     const token = this;
-    TokenFactions.updateTokenData(token.data);
+    TokenFactions.updateTokenDataFaction(token.data);
     // this.drawFactions();
     return wrapped(...args);
 };
 export const ActorPrototypeOnUpdateHandler = function (wrapped, ...args) {
     // const [data, options, userId] = args;
     const actor = this;
-    TokenFactions.updateTokenData(actor.token?.data);
+    TokenFactions.updateTokenDataFaction(actor.token?.data);
     // this.drawFactions();
     return wrapped(...args);
 };
@@ -141,18 +141,18 @@ export const ActorPrototypeOnUpdateHandler = function (wrapped, ...args) {
 //   //@ts-ignore
 //   const token: Token = this as Token;
 //   //@ts-ignore
-//   TokenFactions.updateTokenData(token.data);
+//   TokenFactions.updateTokenDataFaction(token.data);
 //   return;
 //   // return wrapped(args);
 // };
 // export const TokenPrototypeGetBorderColorHandler = function (wrapped, ...args) {
 //   //@ts-ignore
 //   const token: Token = this as Token;
-//   return TokenFactions.updateTokenData(token.data);
+//   return TokenFactions.updateTokenDataFaction(token.data);
 //   //return wrapped(args);
 // };
 //@ts-ignore
 // Token.prototype.drawFactions = function () {
 //   const token = this as Token;
-//   TokenFactions.updateTokenData(token.data);
+//   TokenFactions.updateTokenDataFaction(token.data);
 // };

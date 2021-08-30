@@ -230,7 +230,7 @@ export class TokenFactions {
     //   .change(config._onChangeInput.bind(config));
   }
 
-  static async updateTokenData(tokenData: TokenData): Promise<any> {
+  static async updateTokenDataFaction(tokenData: TokenData): Promise<any> {
     let tokens: Token[];
     try {
       tokens = <Token[]>getCanvas().tokens?.placeables;

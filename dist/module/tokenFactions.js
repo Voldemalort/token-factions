@@ -149,7 +149,7 @@ export class TokenFactions {
         //   .find('.tab[data-tab="factions"] input[type="color"][data-edit]')
         //   .change(config._onChangeInput.bind(config));
     }
-    static async updateTokenData(tokenData) {
+    static async updateTokenDataFaction(tokenData) {
         let tokens;
         try {
             tokens = getCanvas().tokens?.placeables;

@@ -78,15 +78,15 @@ export const readyHooks = async () => {
     });
 
     Hooks.on('updateActor', (tokenData, data) => {
-      TokenFactions.updateTokenData(tokenData);
+      TokenFactions.updateTokenDataFaction(tokenData);
     });
 
     Hooks.on('updateToken', (tokenData, data) => {
-      TokenFactions.updateTokenData(tokenData);
+      TokenFactions.updateTokenDataFaction(tokenData);
     });
 
     Hooks.on('updateFolder', (tokenData, data) => {
-      TokenFactions.updateTokenData(tokenData);
+      TokenFactions.updateTokenDataFaction(tokenData);
     });
 
     //@ts-ignore
@@ -149,20 +149,20 @@ export const initHooks = async () => {
 
 export const TokenPrototypeRefreshHandler = function (wrapped, ...args) {
   const tokenData = this as TokenData;
-  TokenFactions.updateTokenData(tokenData);
+  TokenFactions.updateTokenDataFaction(tokenData);
   return wrapped(...args);
 };
 
 export const TokenPrototypeDrawHandler = function (wrapped, ...args) {
   const token = this as Token;
-  TokenFactions.updateTokenData(token.data);
+  TokenFactions.updateTokenDataFaction(token.data);
   // this.drawFactions();
   return wrapped(...args);
 };
 
 export const TokenPrototypeOnUpdateHandler = function (wrapped, ...args) {
   const token = this as Token;
-  TokenFactions.updateTokenData(token.data);
+  TokenFactions.updateTokenDataFaction(token.data);
   // this.drawFactions();
   return wrapped(...args);
 };
@@ -170,7 +170,7 @@ export const TokenPrototypeOnUpdateHandler = function (wrapped, ...args) {
 export const ActorPrototypeOnUpdateHandler = function (wrapped, ...args) {
   // const [data, options, userId] = args;
   const actor = this as Actor;
-  TokenFactions.updateTokenData(<TokenData>actor.token?.data);
+  TokenFactions.updateTokenDataFaction(<TokenData>actor.token?.data);
   // this.drawFactions();
   return wrapped(...args);
 };
@@ -179,7 +179,7 @@ export const ActorPrototypeOnUpdateHandler = function (wrapped, ...args) {
 //   //@ts-ignore
 //   const token: Token = this as Token;
 //   //@ts-ignore
-//   TokenFactions.updateTokenData(token.data);
+//   TokenFactions.updateTokenDataFaction(token.data);
 //   return;
 //   // return wrapped(args);
 // };
@@ -187,12 +187,12 @@ export const ActorPrototypeOnUpdateHandler = function (wrapped, ...args) {
 // export const TokenPrototypeGetBorderColorHandler = function (wrapped, ...args) {
 //   //@ts-ignore
 //   const token: Token = this as Token;
-//   return TokenFactions.updateTokenData(token.data);
+//   return TokenFactions.updateTokenDataFaction(token.data);
 //   //return wrapped(args);
 // };
 
 //@ts-ignore
 // Token.prototype.drawFactions = function () {
 //   const token = this as Token;
-//   TokenFactions.updateTokenData(token.data);
+//   TokenFactions.updateTokenDataFaction(token.data);
 // };
