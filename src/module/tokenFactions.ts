@@ -75,90 +75,7 @@ export class TokenFactions {
 
     TokenFactions.bevelGradient = await loadTexture(`modules/${TOKEN_FACTIONS_MODULE_NAME}/assets/bevel-gradient.jpg`);
     TokenFactions.bevelTexture = await loadTexture(`modules/${TOKEN_FACTIONS_MODULE_NAME}/assets/bevel-texture.png`);
-
-    // dispositions.forEach((disposition) => {
-    //   getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, `custom-${disposition}-color`, {
-    //     name: `Custom ${disposition.charAt(0).toUpperCase()}${disposition
-    //       .slice(1)
-    //       .replace(/-/g, ' ')
-    //       .replace(/npc/g, 'NPC')
-    //       .replace(/member/g, 'Member')} Color`,
-    //     scope: 'world',
-    //     config: true,
-    //     type: String,
-    //     default: defaultColors[disposition],
-    //   });
-    // });
-
-    // currentSystem = getGame().system.id;
   }
-
-  // static renderSettingsConfig(sheet, html) {
-  //   dispositions.forEach((disposition) => {
-  //     const colorInput = document.createElement('input');
-  //     colorInput.setAttribute('type', 'color');
-  //     colorInput.setAttribute(
-  //       'value',
-  //       html.find(`input[name="${TOKEN_FACTIONS_MODULE_NAME}.custom-${disposition}-color"]`).val(),
-  //     );
-  //     colorInput.setAttribute('data-edit', `${TOKEN_FACTIONS_MODULE_NAME}.custom-${disposition}-color`);
-  //     html.find(`input[name="${TOKEN_FACTIONS_MODULE_NAME}.custom-${disposition}-color"]`).after(colorInput);
-  //     $(colorInput).on('change', sheet._onChangeInput.bind(sheet));
-  //   });
-
-  //   html.find(`input[name="${TOKEN_FACTIONS_MODULE_NAME}.custom-hostile-npc-color"]`).parent().parent().after(`\
-  //       <div class="form-group submenu">
-  //         <label></label>
-  //         <button name="${TOKEN_FACTIONS_MODULE_NAME}-colors-reset" type="button">
-  //           <i class="fas fa-undo"></i>
-  //           <label>Reset Colors</label>
-  //         </button>
-  //       </div>`);
-
-  //   const resetColors = () => {
-  //     dispositions.forEach((disposition) => {
-  //       const $input = html.find(`input[name="${TOKEN_FACTIONS_MODULE_NAME}.custom-${disposition}-color"]`);
-  //       const $color = $input.next();
-
-  //       $input.val(defaultColors[disposition]);
-  //       $color.val($input.val());
-  //     });
-  //   };
-
-  //   const update = () => {
-  //     const colorFrom = html.find(`select[name="${TOKEN_FACTIONS_MODULE_NAME}.color-from"]`).val();
-  //     const customColorsEnabled = colorFrom === 'custom-disposition';
-
-  //     dispositions.forEach((disposition) => {
-  //       const $input = html.find(`input[name="${TOKEN_FACTIONS_MODULE_NAME}.custom-${disposition}-color"]`);
-  //       const $color = $input.next();
-  //       const $fieldGroup = $input.parent().parent();
-
-  //       $input.prop('disabled', !customColorsEnabled).attr('class', 'color');
-  //       $color.prop('disabled', !customColorsEnabled);
-
-  //       if (!customColorsEnabled) {
-  //         $fieldGroup.hide();
-  //       } else {
-  //         $fieldGroup.show();
-  //       }
-
-  //       $input.val($input.val() || defaultColors[disposition]);
-  //       $color.val($input.val());
-  //     });
-  //     const $resetButton = html.find(`button[name="${TOKEN_FACTIONS_MODULE_NAME}-colors-reset"]`);
-  //     if (!customColorsEnabled) {
-  //       $resetButton.parent().hide();
-  //     } else {
-  //       $resetButton.parent().show();
-  //     }
-  //   };
-
-  //   update();
-
-  //   html.find(`select[name="${TOKEN_FACTIONS_MODULE_NAME}.color-from"]`).change(update);
-  //   html.find(`button[name="${TOKEN_FACTIONS_MODULE_NAME}-colors-reset"]`).click(resetColors);
-  // }
 
   static renderTokenConfig(config, html) {
     const tokenDocument = config.object as TokenDocument;
@@ -259,73 +176,6 @@ export class TokenFactions {
   static updateTokenFaction(token: Token) {
     //@ts-ignore
     if (token instanceof Token && token.icon && TokenFactions.bevelTexture && TokenFactions.bevelTexture.baseTexture) {
-      // const color = TokenFactions.colorBorderFaction(token);
-      // if (!color.INT) {
-      //   //@ts-ignore
-      //   if (token.factions) {
-      //     //@ts-ignore
-      //     token.factions.removeChildren().forEach((c) => c.destroy());
-      //   }
-      //   return;
-      // }
-
-      // const skipDraw = token.document.getFlag(TOKEN_FACTIONS_MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE);
-      // if (skipDraw) {
-      //   return;
-      // }
-
-      // const drawFramesByDefault = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'draw-frames-by-default');
-      // const drawFrameOverride = token.document.getFlag(
-      //   TOKEN_FACTIONS_MODULE_NAME,
-      //   TOKEN_FACTIONS_FLAGS.FACTION_DRAW_FRAME,
-      // );
-      // const drawFrame = drawFrameOverride === undefined ? drawFramesByDefault : drawFrameOverride;
-
-      // let child = 0;
-      // try {
-      //   //@ts-ignore
-      //   child = token.getChildIndex(token.icon); // token['icon']
-      // } catch (e) {
-      //   // WHY THIS ???????????????
-      // }
-      // if (child) {
-
-      //   //@ts-ignore
-      //   token.factionBase.clear();
-      //   // if (token.factionBase) {
-      //   //   //@ts-ignore
-      //   //   token.factionBase.destroy({ children: true });
-      //   // }
-      //   //@ts-ignore
-      //   token.factionBase = token.addChildAt(new PIXI.Container(), child - 1);
-      //   //@ts-ignore
-      //   token.factionFrame.clear();
-      //   // if (token.factionFrame) {
-      //   //   //@ts-ignore
-      //   //   token.factionFrame.destroy({ children: true });
-      //   // }
-      //   //@ts-ignore
-      //   token.factionFrame = token.addChildAt(new PIXI.Container(), child + (drawFrame ? 1 : -1));
-      // }
-
-      // //@ts-ignore
-      // if (!token.factionBase) {
-      //   //@ts-ignore
-      //   token.factionBase = token.addChildAt(new PIXI.Container(), token.getChildIndex(token.icon) - 1);
-      // } else {
-      //   //@ts-ignore
-      //   token.factionBase.removeChildren().forEach((c) => c.destroy());
-      // }
-
-      // //@ts-ignore
-      // if (!token.factionFrame) {
-      //   //@ts-ignore
-      //   token.factionFrame = token.addChildAt(new PIXI.Container(), token.getChildIndex(token.icon) + 1);
-      // } else {
-      //   //@ts-ignore
-      //   token.factionFrame.removeChildren().forEach((c) => c.destroy());
-      // }
-
       //@ts-ignore
       if (!token.factions) {
         //@ts-ignore
@@ -343,109 +193,6 @@ export class TokenFactions {
       }
     }
   }
-
-  // private static drawBase(color: number, container, token: Token) {
-  //   const base = container.addChild(new PIXI.Graphics());
-  //   const frameWidth =
-  //     <number>getCanvas().grid?.grid?.w *
-  //     (<number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'frame-width') / 100);
-  //   const baseOpacity = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'base-opacity');
-
-  //   base.alpha = baseOpacity;
-
-  //   base
-  //     .lineStyle(0)
-  //     .beginFill(color, 1.0)
-  //     .drawCircle(token.w / 2, token.h / 2, token.w / 2 - frameWidth)
-  //     .beginFill(0x000000, 0.25 * baseOpacity)
-  //     .drawCircle(token.w / 2, token.h / 2, token.w / 2 - frameWidth);
-  // }
-
-  // static drawFrame(color: number, container:PIXI.Container, token: Token) {
-  //   const frameWidth =
-  //     <number>getCanvas().grid?.grid?.w *
-  //     (<number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'frame-width') / 100);
-  //   const frameStyle = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'frame-style');
-  //   const frameOpacity = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'frame-opacity');
-
-  //   function drawGradient() {
-  //     const bg = new PIXI.Sprite(bevelGradient);
-
-  //     bg.anchor.set(0.0, 0.0);
-  //     bg.width = token.w;
-  //     bg.height = token.h;
-  //     bg.tint = color;
-
-  //     return bg;
-  //   }
-
-  //   function drawTexture() {
-  //     const bg = new PIXI.Sprite(TokenFactions.bevelTexture);
-
-  //     bg.anchor.set(0.0, 0.0);
-  //     bg.width = 400;
-  //     bg.height = 400;
-  //     bg.tint = color;
-
-  //     return bg;
-  //   }
-
-  //   if (frameWidth) {
-
-  //     if (frameStyle === TOKEN_FACTIONS_FRAME_STYLE.FLAT) {
-
-  //       const frame = container.addChild(new PIXI.Graphics());
-  //       frame
-  //         .lineStyle(frameWidth, color, 1.0, 0)
-  //         .drawCircle(token.w / 2, token.h / 2, token.w / 2);
-  //       frame.alpha = frameOpacity;
-
-  //     } else if( TOKEN_FACTIONS_FRAME_STYLE.BELEVELED){
-  //       // frameStyle === 'bevelled'
-  //       const outerRing = drawGradient();
-  //       const innerRing = drawGradient();
-  //       const ringTexture = drawTexture();
-
-  //       const outerRingMask = new PIXI.Graphics();
-  //       const innerRingMask = new PIXI.Graphics();
-  //       const ringTextureMask = new PIXI.Graphics();
-
-  //       outerRing.alpha = <number>frameOpacity;
-  //       innerRing.alpha = <number>frameOpacity;
-  //       ringTexture.alpha = <number>frameOpacity;
-
-  //       innerRing.pivot.set(1000.0, 1000.0);
-  //       innerRing.angle = 180;
-
-  //       outerRingMask
-  //         .lineStyle(frameWidth / 2, 0xffffff, 1.0, 0)
-  //         .beginFill(0xffffff, 0.0)
-  //         .drawCircle(token.w / 2, token.h / 2, token.w / 2);
-
-  //       innerRingMask
-  //         .lineStyle(frameWidth / 2, 0xffffff, 1.0, 0)
-  //         .beginFill(0xffffff, 0.0)
-  //         .drawCircle(token.w / 2, token.h / 2, token.w / 2 - frameWidth / 2);
-
-  //       ringTextureMask
-  //         .lineStyle(frameWidth, 0xffffff, 1.0, 0)
-  //         .beginFill(0xffffff, 0.0)
-  //         .drawCircle(token.w / 2, token.h / 2, token.w / 2);
-
-  //       container.addChild(outerRing);
-  //       container.addChild(outerRingMask);
-  //       outerRing.mask = outerRingMask;
-
-  //       container.addChild(innerRing);
-  //       container.addChild(innerRingMask);
-  //       innerRing.mask = innerRingMask;
-
-  //       container.addChild(ringTexture);
-  //       container.addChild(ringTextureMask);
-  //       ringTexture.mask = ringTextureMask;
-  //     }
-  //   }
-  // }
 
   // START NEW MANAGE
 
@@ -723,20 +470,11 @@ export class TokenFactions {
     return borderColor;
   }
 
-  // static moveArrayItemToNewIndex(arr, old_index, new_index) {
-  //   if (new_index >= arr.length) {
-  //       let k = new_index - arr.length + 1;
-  //       while (k--) {
-  //           arr.push(undefined);
-  //       }
-  //   }
-  //   arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
-  //   return arr;
-  // }
-
   private static async drawBorderFaction(token: Token, container: PIXI.Container): Promise<void> {
     //@ts-ignore
-    container.removeChildren().forEach((c) => c.destroy());
+    //container.removeChildren().forEach((c) => c.destroy());
+
+    container.children.forEach((c) => c.clear());
 
     // let factionBorder = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'overrideBorderGraphic')
     // //@ts-ignore
@@ -1128,47 +866,4 @@ export class TokenFactions {
         .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3);
     }
   }
-
-  // /**
-  //  * Creates a sprite from the selected factions icon and positions around the container
-  //  * @param {string} color -- the user to get
-  //  * @param {string} pTex  -- the url path to the texture image
-  //  * @param {token} target -- PIXI.js container for height & width (the token)
-  //  */
-  //  static async buildFactionPortrait(color:string, pTex:string, token:Token) {
-  //   const i = 0; // TODO Multiple factions feature ?????
-  //   const circleR = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "pipScale") || 12;
-  //   const circleOffsetMult = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "pipOffset") || 16;
-  //   const scaleMulti = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "pipImgScale") || 1;
-  //   const insidePip = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "insidePips") ? circleR : 0;
-  //   const texture = await PIXI.Texture.fromURL(pTex);
-  //   const newTexW = scaleMulti * (2 * circleR);
-  //   const newTexH = scaleMulti * (2 * circleR);
-  //   const borderThic = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "borderThicc");
-  //   let portraitCenterOffset = scaleMulti >= 1 ? (16 + circleR / 12) * Math.log2(scaleMulti) : 0;
-  //   portraitCenterOffset += <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "pipOffsetManualY") || 0;
-  //   const portraitXoffset = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "pipOffsetManualX") || 0;
-  //   const matrix = new PIXI.Matrix(
-  //     (scaleMulti * (2 * circleR + 2)) / texture.width,
-  //     0,
-  //     0,
-  //     (scaleMulti * (2 * circleR + 2)) / texture.height,
-  //     newTexW / 2 + 4 + i * circleOffsetMult + portraitXoffset + insidePip,
-  //     newTexH / 2 + portraitCenterOffset + insidePip
-  //   );
-  //   //@ts-ignore
-  //   token.factionSymbol
-  //     .beginFill(color)
-  //     .drawCircle(2 + i * circleOffsetMult + insidePip, 0 + insidePip, circleR)
-  //     .beginTextureFill({
-  //       texture: texture,
-  //       alpha: baseOpacity,
-  //       matrix: matrix,
-  //     })
-  //     .lineStyle(borderThic, 0x0000000)
-  //     .drawCircle(2 + i * circleOffsetMult + insidePip, 0 + insidePip, circleR)
-  //     .endFill()
-  //     .lineStyle(borderThic / 2, color)
-  //     .drawCircle(2 + i * circleOffsetMult + insidePip, 0 + insidePip, circleR);
-  // }
 }

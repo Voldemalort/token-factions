@@ -11,7 +11,7 @@
       "reddit": "u/voldemalort"
     }
   ],
-  "version": "0.2.8",
+  "version": "0.2.9",
   "type": "module",
   "socket": true,
   "includes": [
@@ -53,7 +53,7 @@
   "url": "https://github.com/p4535992/token-factions",
   "readme": "https://raw.githubusercontent.com/p4535992/token-factions/master/README.md",
   "manifest": "https://raw.githubusercontent.com/p4535992/token-factions/master/src/module.json",
-  "download": "https://raw.githubusercontent.com/p4535992/token-factions/master/package/token-factions-v0.2.8.zip",
+  "download": "https://raw.githubusercontent.com/p4535992/token-factions/master/package/token-factions-v0.2.9.zip",
   "minimumCoreVersion": "0.7.7",
   "compatibleCoreVersion": "0.8.9",
   "changelog": "https://raw.githubusercontent.com/p4535992/token-factions/master/changelog.md",
