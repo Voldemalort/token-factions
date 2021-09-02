@@ -76,17 +76,12 @@ export const readyHooks = async () => {
         Hooks.on('updateFolder', (tokenData, data) => {
             TokenFactions.updateTokenDataFaction(tokenData);
         });
+        Hooks.on("preUpdateActor", TokenFactions._applyFactions.bind(TokenFactions));
+        Hooks.on("preUpdateToken", TokenFactions._applyFactions.bind(TokenFactions));
         //@ts-ignore
         libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype.refresh', TokenPrototypeRefreshHandler, 'MIXED');
-        // if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'overrideBorderGraphic')) {
-        //   //@ts-ignore
-        //   libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype._refreshBorder', TokenPrototypeRefreshBorderHandler, 'MIXED');
-        //   //@ts-ignore
-        //   libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype._getBorderColor', TokenPrototypeGetBorderColorHandler, 'MIXED');
-        // } else {
         //@ts-ignore
         libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype.draw', TokenPrototypeDrawHandler, 'MIXED');
-        // }
         //@ts-ignore
         libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype._onUpdate', TokenPrototypeOnUpdateHandler, 'MIXED');
         //@ts-ignore

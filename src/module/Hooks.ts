@@ -89,19 +89,24 @@ export const readyHooks = async () => {
       TokenFactions.updateTokenDataFaction(tokenData);
     });
 
-    //@ts-ignore
-    libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype.refresh', TokenPrototypeRefreshHandler, 'MIXED');
+    Hooks.on("preUpdateActor", TokenFactions._applyFactions.bind(TokenFactions));
+    Hooks.on("preUpdateToken", TokenFactions._applyFactions.bind(TokenFactions));
 
-    // if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'overrideBorderGraphic')) {
-    //   //@ts-ignore
-    //   libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype._refreshBorder', TokenPrototypeRefreshBorderHandler, 'MIXED');
-
-    //   //@ts-ignore
-    //   libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype._getBorderColor', TokenPrototypeGetBorderColorHandler, 'MIXED');
-    // } else {
     //@ts-ignore
-    libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype.draw', TokenPrototypeDrawHandler, 'MIXED');
-    // }
+    libWrapper.register(
+      TOKEN_FACTIONS_MODULE_NAME,
+      'Token.prototype.refresh',
+      TokenPrototypeRefreshHandler,
+      'MIXED',
+    );
+
+    //@ts-ignore
+    libWrapper.register(
+      TOKEN_FACTIONS_MODULE_NAME,
+      'Token.prototype.draw',
+      TokenPrototypeDrawHandler,
+      'MIXED',
+    );
 
     //@ts-ignore
     libWrapper.register(

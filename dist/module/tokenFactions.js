@@ -26,7 +26,20 @@ export class TokenFactions {
     static renderTokenConfig(config, html) {
         const tokenDocument = config.object;
         // const factions = token.factions;
-        const skipDraw = tokenDocument.getFlag(TOKEN_FACTIONS_MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE);
+        // let skipDraw = tokenDocument.getFlag(
+        //   TOKEN_FACTIONS_MODULE_NAME,
+        //   TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE,
+        // );
+        // if(!skipDraw){
+        //   skipDraw = false;
+        // }
+        if (!html) {
+            return;
+        }
+        const relevantDocument = config?.object?._object?.document ?? config?.object?._object;
+        const factionDisableValue = config?.object instanceof Actor
+            ? getProperty(config?.object, `data.token.flags.${TOKEN_FACTIONS_MODULE_NAME}.${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}`)
+            : relevantDocument?.getFlag(TOKEN_FACTIONS_MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE) ?? false;
         /*
         const drawFramesByDefault = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'draw-frames-by-default');
         const drawFrameOverride = token.getFlag(
@@ -35,7 +48,7 @@ export class TokenFactions {
         );
         const drawFrame = drawFrameOverride === undefined ? drawFramesByDefault : drawFrameOverride;
         const checked = drawFrame ? ' checked="checked"' : '';
-       
+    
         html.find('input[name="mirrorY"]').parent().after(`\
           <div class="form-group">
             <label>Disable Faction Disposition Visualization</label>
@@ -59,8 +72,9 @@ export class TokenFactions {
         const formConfig = `
       <div class="form-group">
         <label>${i18n('token-factions.label.factionsCustomDisable')}</label>
-        <input type="checkbox" name="flags.${TOKEN_FACTIONS_MODULE_NAME}.${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}" 
-          data-dtype="Boolean" ${skipDraw ? 'checked' : ''}>
+        <input type="checkbox"
+          name="flags.${TOKEN_FACTIONS_MODULE_NAME}.${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}"
+          data-dtype="Boolean" ${factionDisableValue ? 'checked' : ''}>
       </div>`;
         nav
             .parent()
@@ -70,14 +84,25 @@ export class TokenFactions {
 				${formConfig}
 			</div>
 		`));
-        nav
-            .parent()
-            .find('.tab[data-tab="factions"] input[type="checkbox"][data-edit]')
-            .change(config._onChangeInput.bind(config));
+        // nav
+        //   .parent()
+        //   .find('.tab[data-tab="factions"] input[type="checkbox"][data-edit]')
+        //   .change(config._onChangeInput.bind(config));
         // nav
         //   .parent()
         //   .find('.tab[data-tab="factions"] input[type="color"][data-edit]')
         //   .change(config._onChangeInput.bind(config));
+    }
+    static _applyFactions(document, updateData) {
+        // Set the disable flag
+        let propertyNameDisable = `flags.${TOKEN_FACTIONS_MODULE_NAME}.${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}`;
+        if (document instanceof Actor) {
+            propertyNameDisable = "token." + propertyNameDisable;
+        }
+        const factionDisableValue = getProperty(updateData, propertyNameDisable);
+        if (factionDisableValue !== undefined && factionDisableValue !== null) {
+            setProperty(updateData, propertyNameDisable, factionDisableValue);
+        }
     }
     static async updateTokenDataFaction(tokenData) {
         let tokens;
@@ -466,7 +491,7 @@ export class TokenFactions {
                 const p = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderOffset');
                 const h = Math.round(t / 2);
                 const o = Math.round(h / 2);
-          
+      
                 //@ts-ignore
                 factionBorder
                   .beginFill(borderTextureMask.EX, baseOpacity)
@@ -476,7 +501,7 @@ export class TokenFactions {
                   .endFill()
                   .lineStyle(t, borderTextureMask.EX, 0.8)
                   .drawCircle(token.w / 2, token.h / 2, token.w / 2 + t + p);
-        
+      
                 //@ts-ignore
                 factionBorder
                   .beginFill(borderTextureMask.INT, baseOpacity)
@@ -486,7 +511,7 @@ export class TokenFactions {
                   .endFill()
                   .lineStyle(h, borderTextureMask.INT, 1.0)
                   .drawCircle(token.w / 2, token.h / 2, token.w / 2 + h + t / 2 + p);
-                
+      
               }
               //@ts-ignore
               else if (hexTypes.includes(getCanvas().grid?.type) && token.data.width === 1 && token.data.height === 1) {
@@ -494,7 +519,7 @@ export class TokenFactions {
                 const q = Math.round(p / 2);
                 //@ts-ignore
                 const polygon = getCanvas().grid?.grid?.getPolygon(-1.5 - q, -1.5 - q, token.w + 2 + p, token.h + 2 + p);
-          
+      
                 //@ts-ignore
                 factionBorder
                   .beginFill(borderTextureMask.EX, baseOpacity)
@@ -504,7 +529,7 @@ export class TokenFactions {
                   .endFill()
                   .lineStyle(t, borderTextureMask.EX, 0.8)
                   .drawPolygon(polygon);
-        
+      
                 //@ts-ignore
                 factionBorder
                   .beginFill(borderTextureMask.INT, baseOpacity)
@@ -514,7 +539,7 @@ export class TokenFactions {
                   .endFill()
                   .lineStyle(t / 2, borderTextureMask.INT, 1.0)
                   .drawPolygon(polygon);
-                
+      
               }
               // Otherwise Draw Square border
               else {
@@ -522,7 +547,7 @@ export class TokenFactions {
                 const q = Math.round(p / 2);
                 const h = Math.round(t / 2);
                 const o = Math.round(h / 2);
-          
+      
                 //@ts-ignore
                 factionBorder
                   .beginFill(borderTextureMask.EX, baseOpacity)
@@ -532,7 +557,7 @@ export class TokenFactions {
                   .endFill()
                   .lineStyle(t, borderTextureMask.EX, 0.8)
                   .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3);
-        
+      
                 //@ts-ignore
                 factionBorder
                   .beginFill(borderTextureMask.INT, baseOpacity)
@@ -542,7 +567,7 @@ export class TokenFactions {
                   .endFill()
                   .lineStyle(h, borderTextureMask.INT, 1.0)
                   .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3);
-                
+      
               }
             }
       

@@ -1,11 +1,12 @@
-![](https://img.shields.io/badge/Foundry-v0.7.9-informational)
+# Faction Tokens
+
+![](https://img.shields.io/badge/Foundry-v0.8.9-informational)
+
+This module will allow you to assign tokens to factions by using the token's disposition colors, the token actor's folder color, or defining your own custom replacement colors for token dispositions.
+
 ![alt text](./docs/module-on.png?raw=true)
 
 Artwork and assets kindly provided by and used with permission of Caeora. [www.caeora.com](http://www.caeora.com)
-
-# Faction Tokens
-
-This module will allow you to assign tokens to factions by using the token's disposition colors, the token actor's folder color, or defining your own custom replacement colors for token dispositions.
 
 ## NOTE: If you are a javascript developer and not a typescript developer, you can just use the javascript files under the dist folder
 
@@ -31,14 +32,18 @@ This module uses the [libWrapper](https://github.com/ruipin/fvtt-lib-wrapper) li
 
 - There is a incompatibility with the module [Perfect vision](https://github.com/dev7355608/perfect-vision ) when both module are active everything is broken
 
-- The old "BLevel" frame style not work anymore, but i'll try for the feature to make more customizable faction image, there are already may options, but i don' have time for all the others.
+- The old "BLevel" frame style not work anymore, but i'll try for the feature to make more customizable faction image, there are already may options, but i don' have time for all the others. FOR NOW JUST USE THE FLAT SETTING
 
 
-## Configuration with Pixi Texture
+## Configuration
 
 ![alt text](./docs/default-settings.png?raw=true)
 
 ### Generate Token Faction Color From
+
+- A Token's Disposition
+- An Actor's Folder Color
+- A Custom Color Set For Token Disposition
 
 #### Default: A Token's Disposition
 
@@ -52,15 +57,23 @@ This option uses the color of the folder a token's actor belongs in. A color of 
 
 ![alt text](./docs/actor-folder-color.png?raw=true)
 
-#### A Custom Color Set For Token Disposition
+#### [ON DEVELOPING] A Custom Color Set For Token Disposition
 
 This option reveals additional configuration options allowing you to customize colors associated with each token disposition.
 
 ![alt text](./docs/custom-settings.png?raw=true)
 
-### Draw Token Frames By Default?
+### Choose shape of your faction
 
-Token frames (rings) are layered above token graphics. Enable this if you primarily use round tokens. Disable it if you primarily use irregular-shaped tokens.
+Token frames (rings, square, hex) are layered above token graphics.
+
+![img1](./docs/border_faction_feature.png)
+
+![img2](./docs/border_faction_feature_round.png)
+
+![img3](./docs/border_faction_feature_fill_square.png)
+
+![img4](./docs/border_faction_feature_fill_round.png)
 
 ![alt text](./docs/draw-token-frame.png?raw=true)
 
@@ -70,19 +83,19 @@ You can override this setting on a per-token basis on a token's Image tab if you
 
 ### Frame Render Style
 
-#### Default: Flat
+#### [FOR NOW IS THE ONLY AVAIABLE OPTION] Default: Flat 
 
 This option renders the frame in a flat color.
 
 ![alt text](./docs/flat-frame-style.png?raw=true)
 
-#### Beveled
+#### [REMOVED] Beveled
 
 This option renders the frame in a beveled style typically seen surrounding round tokens.
 
 ![alt text](./docs/beveled-frame-style.png?raw=true)
 
-### Frame Width (Percent of Grid Unit)
+### Frame/Border Width (Percent of Grid Unit)
 
 This allows you to change the thickness of the rendered frame. The percentage is based on the width of a single grid unit, not the token width, so larger and smaller tokens will have a consistent frame size.
 
@@ -96,17 +109,7 @@ Setting this value to anything lower than 1 will allow the map background to be 
 
 Setting this value to anything lower than 1 will allow the map background or token to be seen through the frame. Setting this value to 0 will disable drawing the frame entirely.
 
-## Configuration with Border drawing (still in developing)
-
-You can set many details of the border , checkout the module settings.
-
-![img1](./docs/border_faction_feature.png)
-
-![img2](./docs/border_faction_feature_round.png)
-
-![img3](./docs/border_faction_feature_fill_square.png)
-
-![img4](./docs/border_faction_feature_fill_round.png)
+### Enable/Disable the faction on the single token on the canvas
 
 You can enable/disable the faction style for single token with a new hud button
 
