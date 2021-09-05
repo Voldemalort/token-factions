@@ -156,7 +156,7 @@ export class TokenFactions {
     //   .change(config._onChangeInput.bind(config));
   }
 
-  static _applyFactions(document, updateData) {
+  static _applyFactions(document:TokenDocument|Actor, updateData) {
     // Set the disable flag
     let propertyNameDisable = `flags.${TOKEN_FACTIONS_MODULE_NAME}.${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}`;
     if(document instanceof Actor){
@@ -165,6 +165,17 @@ export class TokenFactions {
     const factionDisableValue = getProperty(updateData, propertyNameDisable);
     if(factionDisableValue !== undefined && factionDisableValue !== null){
       setProperty(updateData, propertyNameDisable, factionDisableValue);
+      if(document instanceof Actor){
+        const actor = <Actor>document;
+        //@ts-ignore
+        const token  = (<Token>actor.token?._object)
+        token.draw();
+      }else{
+        const tokenDocument = <TokenDocument>document;
+        //@ts-ignore
+        const token  = (<Token>tokenDocument?._object);
+        token.draw();
+      }
     }
   }
 

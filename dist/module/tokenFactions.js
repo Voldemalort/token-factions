@@ -102,6 +102,18 @@ export class TokenFactions {
         const factionDisableValue = getProperty(updateData, propertyNameDisable);
         if (factionDisableValue !== undefined && factionDisableValue !== null) {
             setProperty(updateData, propertyNameDisable, factionDisableValue);
+            if (document instanceof Actor) {
+                const actor = document;
+                //@ts-ignore
+                const token = actor.token?._object;
+                token.draw();
+            }
+            else {
+                const tokenDocument = document;
+                //@ts-ignore
+                const token = tokenDocument?._object;
+                token.draw();
+            }
         }
     }
     static async updateTokenDataFaction(tokenData) {
