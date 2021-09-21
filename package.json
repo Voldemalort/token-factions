@@ -1,8 +1,9 @@
 {
   "private": true,
   "name": "token-factions",
-  "version": "0.2.9",
+  "title": "",
   "description": "Generate token bases based on token disposition or actor folder color.",
+  "version": "0.2.9",
   "main": "module.js",
   "repository": {
     "type": "git",

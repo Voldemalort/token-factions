@@ -87,13 +87,18 @@ export class TokenFactions {
     // if(!skipDraw){
     //   skipDraw = false;
     // }
-    if (!html){
+    if (!html) {
       return;
     }
     const relevantDocument = config?.object?._object?.document ?? config?.object?._object;
-    const factionDisableValue = config?.object instanceof Actor
-        ? getProperty(config?.object, `data.token.flags.${TOKEN_FACTIONS_MODULE_NAME}.${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}`)
-        : relevantDocument?.getFlag(TOKEN_FACTIONS_MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE) ?? false;
+    const factionDisableValue =
+      config?.object instanceof Actor
+        ? getProperty(
+            config?.object,
+            `data.token.flags.${TOKEN_FACTIONS_MODULE_NAME}.${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}`,
+          )
+        : relevantDocument?.getFlag(TOKEN_FACTIONS_MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE) ??
+          false;
     /*
     const drawFramesByDefault = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'draw-frames-by-default');
     const drawFrameOverride = token.getFlag(
@@ -156,24 +161,24 @@ export class TokenFactions {
     //   .change(config._onChangeInput.bind(config));
   }
 
-  static _applyFactions(document:TokenDocument|Actor, updateData) {
+  static _applyFactions(document: TokenDocument | Actor, updateData) {
     // Set the disable flag
     let propertyNameDisable = `flags.${TOKEN_FACTIONS_MODULE_NAME}.${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}`;
-    if(document instanceof Actor){
-      propertyNameDisable = "token." + propertyNameDisable;
+    if (document instanceof Actor) {
+      propertyNameDisable = 'token.' + propertyNameDisable;
     }
     const factionDisableValue = getProperty(updateData, propertyNameDisable);
-    if(factionDisableValue !== undefined && factionDisableValue !== null){
+    if (factionDisableValue !== undefined && factionDisableValue !== null) {
       setProperty(updateData, propertyNameDisable, factionDisableValue);
-      if(document instanceof Actor){
+      if (document instanceof Actor) {
         const actor = <Actor>document;
         //@ts-ignore
-        const token  = (<Token>actor.token?._object)
+        const token = <Token>actor.token?._object;
         token.draw();
-      }else{
+      } else {
         const tokenDocument = <TokenDocument>document;
         //@ts-ignore
-        const token  = (<Token>tokenDocument?._object);
+        const token = <Token>tokenDocument?._object;
         token.draw();
       }
     }
