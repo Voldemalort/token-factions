@@ -189,6 +189,15 @@ export const registerSettings = function () {
     config: true,
   });
 
+  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'permanentBorder', {
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.permanentBorder.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.permanentBorder.hint'),
+    default: false,
+    type: Boolean,
+    scope: 'world',
+    config: true,
+  });
+
   getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME + '', 'borderWidth', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.borderWidth.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.borderWidth.hint'),
@@ -197,6 +206,7 @@ export const registerSettings = function () {
     default: 4,
     config: true,
   });
+
   getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME + '', 'borderOffset', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.borderOffset.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.borderOffset.hint'),

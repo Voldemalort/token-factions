@@ -40,6 +40,9 @@
   "token-factions.setting.removeBorders.name": "Remove Borders",
   "token-factions.setting.removeBorders.hint": "Remove the border from specific tokens",
 
+  "token-factions.setting.permanentBorder.name": "Permanent Border",
+  "token-factions.setting.permanentBorder.hint": "Permanently shows token borders unless directly hidden, selected tokens have double width borders",
+
   "token-factions.setting.borderWidth.name": "Border Width",
   "token-factions.setting.borderWidth.hint": "Override border width",
 
