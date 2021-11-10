@@ -43,6 +43,9 @@
   "token-factions.setting.permanentBorder.name": "Permanent Border",
   "token-factions.setting.permanentBorder.hint": "Permanently shows token borders unless directly hidden, selected tokens have double width borders",
 
+  "token-factions.setting.scaleBorder.name": "Scale Borders",
+  "token-factions.setting.scaleBorder.hint": "Scales token border according to the 'scale' token setting",
+
   "token-factions.setting.borderWidth.name": "Border Width",
   "token-factions.setting.borderWidth.hint": "Override border width",
 

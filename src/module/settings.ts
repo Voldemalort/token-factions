@@ -175,7 +175,7 @@ export const registerSettings = function () {
   //   config: true,
   // });
 
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME + '', 'removeBorders', {
+  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'removeBorders', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.removeBorders.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.removeBorders.hint'),
     scope: 'world',
@@ -198,7 +198,7 @@ export const registerSettings = function () {
     config: true,
   });
 
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME + '', 'borderWidth', {
+  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'borderWidth', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.borderWidth.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.borderWidth.hint'),
     scope: 'client',
@@ -207,7 +207,7 @@ export const registerSettings = function () {
     config: true,
   });
 
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME + '', 'borderOffset', {
+  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'borderOffset', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.borderOffset.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.borderOffset.hint'),
     scope: 'client',
@@ -216,7 +216,7 @@ export const registerSettings = function () {
     config: true,
   });
 
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME + '', 'circleBorders', {
+  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'circleBorders', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.circleBorders.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.circleBorders.hint'),
     scope: 'client',
@@ -224,7 +224,17 @@ export const registerSettings = function () {
     default: false,
     config: true,
   });
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME + '', 'enableHud', {
+
+  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'scaleBorder', {
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.scaleBorder.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.scaleBorder.hint'),
+    scope: 'world',
+    type: Boolean,
+    default: false,
+    config: true,
+  });
+
+  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'enableHud', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.enableHud.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.enableHud.hint'),
     scope: 'world',
@@ -232,7 +242,7 @@ export const registerSettings = function () {
     default: true,
     config: true,
   });
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME + '', 'hudPos', {
+  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'hudPos', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.hudPos.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.hudPos.hint'),
     scope: 'world',

@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v0.2.11
+
+- Try to fix [Throw error & crash module: scaleBorder not registered setting ](https://github.com/p4535992/token-factions/issues/1)
+  
+## v02.10
+
+- Added permanent and scale border settings
+
 ## v0.2.9 WORKING ????
 
 ## v0.2.8 BETA

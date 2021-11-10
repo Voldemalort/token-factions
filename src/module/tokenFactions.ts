@@ -783,16 +783,16 @@ export class TokenFactions {
   ) {
     let t =
       <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderWidth') || CONFIG.Canvas.objectBorderThickness;
-    
+
     //@ts-ignore
-    if(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'permanentBorder') && token._controlled){
-      t = t*2
+    if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'permanentBorder') && token._controlled) {
+      t = t * 2;
     }
     const sB = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'scaleBorder');
     const s = sB ? token.data.scale : 1;
-    const sW = sB ? (token.w - (token.w * s)) / 2 : 0;
-    const sH = sB ? (token.h - (token.h * s)) / 2 : 0;
-    
+    const sW = sB ? (token.w - token.w * s) / 2 : 0;
+    const sH = sB ? (token.h - token.h * s) / 2 : 0;
+
     const frameOpacity = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'frame-opacity') || 0.5;
     const baseOpacity = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'base-opacity') || 0.5;
 
@@ -844,7 +844,12 @@ export class TokenFactions {
       const p = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderOffset');
       const q = Math.round(p / 2);
       //@ts-ignore
-      const polygon = getCanvas().grid?.grid?.getPolygon(-1.5 - q + sW, -1.5 - q + sH, (token.w + 2)*s + p, (token.h + 2)*s + p);
+      const polygon = getCanvas().grid?.grid?.getPolygon(
+        -1.5 - q + sW,
+        -1.5 - q + sH,
+        (token.w + 2) * s + p,
+        (token.h + 2) * s + p,
+      );
 
       if (fillTexture) {
         //@ts-ignore
