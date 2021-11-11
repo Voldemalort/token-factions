@@ -30,7 +30,7 @@ This module uses the [libWrapper](https://github.com/ruipin/fvtt-lib-wrapper) li
 
 - There is a incompatibility with the module [Foundry VTT Mount Up](https://github.com/p4535992/MountUp ) when i "Mount Up" a faction token the PIXI Graphic go in conlict and launch a exception is not a grave exception but is annoying
 
-- There is a incompatibility with the module [Perfect vision](https://github.com/dev7355608/perfect-vision ) when both module are active everything is broken
+- There is a little incompatibility with the module [Perfect vision](https://github.com/dev7355608/perfect-vision ) but we can get along with it
 
 - The old "BLevel" frame style not work anymore, but i'll try for the feature to make more customizable faction image, there are already may options, but i don' have time for all the others. FOR NOW JUST USE THE FLAT SETTING
 
