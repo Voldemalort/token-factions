@@ -1,12 +1,14 @@
-# Faction Tokens
-
 ![](https://img.shields.io/badge/Foundry-v0.8.9-informational)
+
+# Tokens Faction 
 
 This module will allow you to assign tokens to factions by using the token's disposition colors, the token actor's folder color, or defining your own custom replacement colors for token dispositions.
 
 ![alt text](./docs/module-on.png?raw=true)
 
 Artwork and assets kindly provided by and used with permission of Caeora. [www.caeora.com](http://www.caeora.com)
+
+**This is a keeping up to date of the idea of [Voldemalort](https://github.com/Voldemalort) and is project [Token Factions (original)](https://github.com/Voldemalort/token-factions) wishing him all the best possible**
 
 ## NOTE: If you are a javascript developer and not a typescript developer, you can just use the javascript files under the dist folder
 
