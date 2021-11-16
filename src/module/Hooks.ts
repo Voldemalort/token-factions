@@ -89,8 +89,12 @@ export const readyHooks = async () => {
       TokenFactions.updateTokenDataFaction(tokenData);
     });
 
-    Hooks.on('preUpdateActor', TokenFactions._applyFactions.bind(TokenFactions));
-    Hooks.on('preUpdateToken', TokenFactions._applyFactions.bind(TokenFactions));
+    // Hooks.on('preUpdateActor', (actor:Actor, updateData) => {
+    //   TokenFactions._applyFactions(actor, updateData);
+    // });
+    // Hooks.on('preUpdateToken', (tokenDocument:TokenDocument, updateData) => {
+    //   TokenFactions._applyFactions(tokenDocument,updateData);
+    // });
 
     //@ts-ignore
     libWrapper.register(TOKEN_FACTIONS_MODULE_NAME, 'Token.prototype.refresh', TokenPrototypeRefreshHandler, 'MIXED');

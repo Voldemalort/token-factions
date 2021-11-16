@@ -77,7 +77,7 @@ export class TokenFactions {
     TokenFactions.bevelTexture = await loadTexture(`modules/${TOKEN_FACTIONS_MODULE_NAME}/assets/bevel-texture.png`);
   }
 
-  static renderTokenConfig(config, html) {
+  static renderTokenConfig = async function(config, html) {
     const tokenDocument = config.object as TokenDocument;
     // const factions = token.factions;
     // let skipDraw = tokenDocument.getFlag(
@@ -87,18 +87,24 @@ export class TokenFactions {
     // if(!skipDraw){
     //   skipDraw = false;
     // }
+    if(!getGame().user?.isGM){
+      return;
+    }
     if (!html) {
       return;
     }
-    const relevantDocument = config?.object?._object?.document ?? config?.object?._object;
-    const factionDisableValue =
-      config?.object instanceof Actor
-        ? getProperty(
-            config?.object,
-            `data.token.flags.${TOKEN_FACTIONS_MODULE_NAME}.${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}`,
-          )
-        : relevantDocument?.getFlag(TOKEN_FACTIONS_MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE) ??
-          false;
+    // const relevantDocument = config?.object?._object?.document ?? config?.object?._object;
+    // const factionDisableValue =
+    //   config?.object instanceof Actor
+    //     ? getProperty(
+    //         config?.object,
+    //         `data.token.flags.${TOKEN_FACTIONS_MODULE_NAME}.${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}`,
+    //       )
+    //     : relevantDocument?.getFlag(TOKEN_FACTIONS_MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE) ??
+    //       false;
+    const factionDisableValue = 
+      config.object.getFlag(TOKEN_FACTIONS_MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE) 
+      ? 'checked' : '';
     /*
     const drawFramesByDefault = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'draw-frames-by-default');
     const drawFrameOverride = token.getFlag(
@@ -126,7 +132,7 @@ export class TokenFactions {
     nav.append(
       $(`
 			<a class="item" data-tab="factions">
-				<i class="far fa-dot-angry"></i>
+        <i class="fas fa-user-circle"></i>
 				${i18n('token-factions.label.factions')}
 			</a>
 		`),
@@ -136,8 +142,9 @@ export class TokenFactions {
       <div class="form-group">
         <label>${i18n('token-factions.label.factionsCustomDisable')}</label>
         <input type="checkbox"
+          data-edit="flags.${TOKEN_FACTIONS_MODULE_NAME}.${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}"
           name="flags.${TOKEN_FACTIONS_MODULE_NAME}.${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}"
-          data-dtype="Boolean" ${factionDisableValue ? 'checked' : ''}>
+          data-dtype="Boolean" ${factionDisableValue}>
       </div>`;
 
     nav
@@ -151,17 +158,25 @@ export class TokenFactions {
 		`),
       );
 
-    // nav
-    //   .parent()
-    //   .find('.tab[data-tab="factions"] input[type="checkbox"][data-edit]')
-    //   .change(config._onChangeInput.bind(config));
+    // if(!factionDisableValue){
+    //   //@ts-ignore
+    //   const token = <Token>tokenDocument?._object;
+    //   token.refresh();
+    //   await TokenFactions.updateTokenDataFaction(token.data);
+    //   token.draw();
+    // }
+
+    nav
+      .parent()
+      .find('.tab[data-tab="factions"] input[type="checkbox"][data-edit]')
+      .change(config._onChangeInput.bind(config));
     // nav
     //   .parent()
     //   .find('.tab[data-tab="factions"] input[type="color"][data-edit]')
     //   .change(config._onChangeInput.bind(config));
   }
 
-  static _applyFactions(document: TokenDocument | Actor, updateData) {
+  static _applyFactions = async function(document: TokenDocument | Actor, updateData):Promise<void> {
     // Set the disable flag
     let propertyNameDisable = `flags.${TOKEN_FACTIONS_MODULE_NAME}.${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}`;
     if (document instanceof Actor) {
@@ -170,16 +185,22 @@ export class TokenFactions {
     const factionDisableValue = getProperty(updateData, propertyNameDisable);
     if (factionDisableValue !== undefined && factionDisableValue !== null) {
       setProperty(updateData, propertyNameDisable, factionDisableValue);
-      if (document instanceof Actor) {
-        const actor = <Actor>document;
-        //@ts-ignore
-        const token = <Token>actor.token?._object;
-        token.draw();
-      } else {
-        const tokenDocument = <TokenDocument>document;
-        //@ts-ignore
-        const token = <Token>tokenDocument?._object;
-        token.draw();
+      if(!factionDisableValue){
+        if (document instanceof Actor) {
+          const actor = <Actor>document;
+          //@ts-ignore
+          const token = <Token>actor.token?._object;
+          token.refresh();
+          await TokenFactions.updateTokenDataFaction(token.data);
+          token.draw();
+        } else {
+          const tokenDocument = <TokenDocument>document;
+          //@ts-ignore
+          const token = <Token>tokenDocument?._object;
+          token.refresh();
+          await TokenFactions.updateTokenDataFaction(token.data);
+          token.draw();
+        }
       }
     }
   }
