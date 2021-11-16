@@ -201,16 +201,25 @@ export const registerSettings = function () {
   getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'borderWidth', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.borderWidth.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.borderWidth.hint'),
-    scope: 'client',
+    scope: 'world',
     type: Number,
     default: 4,
+    config: true,
+  });
+
+  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'borderGridScale', {
+    name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.borderGridScale.name'),
+    hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.borderGridScale.hint'),
+    scope: 'world',
+    type: Boolean,
+    default: false,
     config: true,
   });
 
   getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'borderOffset', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.borderOffset.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.borderOffset.hint'),
-    scope: 'client',
+    scope: 'world',
     type: Number,
     default: 0,
     config: true,
@@ -219,7 +228,7 @@ export const registerSettings = function () {
   getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'circleBorders', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.circleBorders.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.circleBorders.hint'),
-    scope: 'client',
+    scope: 'world',
     type: Boolean,
     default: false,
     config: true,
@@ -258,7 +267,7 @@ export const registerSettings = function () {
   getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'controlledColor', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.controlledColor.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.controlledColor.hint'),
-    scope: 'client',
+    scope: 'world',
     type: String,
     default: '#FF9829',
     config: true,
@@ -267,7 +276,7 @@ export const registerSettings = function () {
   getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'controlledColorEx', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.controlledColorEx.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.controlledColorEx.hint'),
-    scope: 'client',
+    scope: 'world',
     type: String,
     default: '#000000',
     config: true,
@@ -276,7 +285,7 @@ export const registerSettings = function () {
   getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'hostileColor', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.hostileColor.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.hostileColor.hint'),
-    scope: 'client',
+    scope: 'world',
     type: String,
     default: '#E72124',
     config: true,
@@ -285,7 +294,7 @@ export const registerSettings = function () {
   getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'hostileColorEx', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.hostileColorEx.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.hostileColorEx.hint'),
-    scope: 'client',
+    scope: 'world',
     type: String,
     default: '#000000',
     config: true,
@@ -294,7 +303,7 @@ export const registerSettings = function () {
   getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'friendlyColor', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.friendlyColor.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.friendlyColor.hint'),
-    scope: 'client',
+    scope: 'world',
     type: String,
     default: '#43DFDF',
     config: true,
@@ -303,7 +312,7 @@ export const registerSettings = function () {
   getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'friendlyColorEx', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.friendlyColorEx.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.friendlyColorEx.hint'),
-    scope: 'client',
+    scope: 'world',
     type: String,
     default: '#000000',
     config: true,
@@ -312,7 +321,7 @@ export const registerSettings = function () {
   getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'neutralColor', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.neutralColor.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.neutralColor.hint'),
-    scope: 'client',
+    scope: 'world',
     type: String,
     default: '#F1D836',
     config: true,
@@ -321,7 +330,7 @@ export const registerSettings = function () {
   getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'neutralColorEx', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.neutralColorEx.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.neutralColorEx.hint'),
-    scope: 'client',
+    scope: 'world',
     type: String,
     default: '#000000',
     config: true,
@@ -330,7 +339,7 @@ export const registerSettings = function () {
   getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'partyColor', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.partyColor.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.partyColor.hint'),
-    scope: 'client',
+    scope: 'world',
     type: String,
     default: '#33BC4E',
     config: true,
@@ -339,7 +348,7 @@ export const registerSettings = function () {
   getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'partyColorEx', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.partyColorEx.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.partyColorEx.hint'),
-    scope: 'client',
+    scope: 'world',
     type: String,
     default: '#000000',
     config: true,
@@ -348,7 +357,7 @@ export const registerSettings = function () {
   getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'actorFolderColorEx', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.actorFolderColorEx.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.actorFolderColorEx.hint'),
-    scope: 'client',
+    scope: 'world',
     type: String,
     default: '#000000',
     config: true,
@@ -357,7 +366,7 @@ export const registerSettings = function () {
   getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'customDispositionColorEx', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.customDispositionColorEx.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.customDispositionColorEx.hint'),
-    scope: 'client',
+    scope: 'world',
     type: String,
     default: '#000000',
     config: true,

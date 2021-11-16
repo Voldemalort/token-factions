@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.2.12
+
+- Added grid scale border setting (always from border control module)
+- Changed all scope settings from cleint to world so only the gm can modify these
 ## v0.2.11
 
 - Try to fix [Throw error & crash module: scaleBorder not registered setting ](https://github.com/p4535992/token-factions/issues/1)

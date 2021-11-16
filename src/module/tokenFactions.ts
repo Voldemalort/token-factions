@@ -594,107 +594,7 @@ export class TokenFactions {
       /*
       const fillTexture = <boolean>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'fillTexture');
       if (fillTexture) {
-        // const base = container.addChild(new PIXI.Graphics());
-        // base.alpha = baseOpacity;
-        // base
-        //   .lineStyle(0)
-        //   .beginFill(borderTextureMask.INT, 1.0)
-        //   .drawCircle(token.w / 2, token.h / 2, token.w / 2 - t)
-        //   .beginFill(0x000000, 0.25 * baseOpacity)
-        //   .drawCircle(token.w / 2, token.h / 2, token.w / 2 - t);
-
-        const borderTextureMask = borderColor;
-        borderTextureMask.EX = 0x000000;
-
-        const factionBorder = container.addChild(new PIXI.Graphics());
-        factionBorder.alpha = baseOpacity;
-
-        // Draw Hex border for size 1 tokens on a hex grid
-        const gt = CONST.GRID_TYPES;
-        const hexTypes = [gt.HEXEVENQ, gt.HEXEVENR, gt.HEXODDQ, gt.HEXODDR];
-
-        if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'circleBorders')) {
-          const p = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderOffset');
-          const h = Math.round(t / 2);
-          const o = Math.round(h / 2);
-
-          //@ts-ignore
-          factionBorder
-            .beginFill(borderTextureMask.EX, baseOpacity)
-            .drawCircle(token.w / 2, token.h / 2, token.w / 2 + t + p)
-            .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderTextureMask.EX, alpha: baseOpacity })
-            .lineStyle(t, borderTextureMask.EX, 0)
-            .endFill()
-            .lineStyle(t, borderTextureMask.EX, 0.8)
-            .drawCircle(token.w / 2, token.h / 2, token.w / 2 + t + p);
-
-          //@ts-ignore
-          factionBorder
-            .beginFill(borderTextureMask.INT, baseOpacity)
-            .drawCircle(token.w / 2, token.h / 2, token.w / 2 + h + t / 2 + p)
-            .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderTextureMask.INT, alpha: baseOpacity })
-            .lineStyle(h, borderTextureMask.INT, 0)
-            .endFill()
-            .lineStyle(h, borderTextureMask.INT, 1.0)
-            .drawCircle(token.w / 2, token.h / 2, token.w / 2 + h + t / 2 + p);
-
-        }
-        //@ts-ignore
-        else if (hexTypes.includes(getCanvas().grid?.type) && token.data.width === 1 && token.data.height === 1) {
-          const p = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderOffset');
-          const q = Math.round(p / 2);
-          //@ts-ignore
-          const polygon = getCanvas().grid?.grid?.getPolygon(-1.5 - q, -1.5 - q, token.w + 2 + p, token.h + 2 + p);
-
-          //@ts-ignore
-          factionBorder
-            .beginFill(borderTextureMask.EX, baseOpacity)
-            .drawPolygon(polygon)
-            .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderTextureMask.EX, alpha: baseOpacity })
-            .lineStyle(t, borderTextureMask.EX, 0)
-            .endFill()
-            .lineStyle(t, borderTextureMask.EX, 0.8)
-            .drawPolygon(polygon);
-
-          //@ts-ignore
-          factionBorder
-            .beginFill(borderTextureMask.INT, baseOpacity)
-            .drawPolygon(polygon)
-            .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderTextureMask.INT, alpha: baseOpacity })
-            .lineStyle(t / 2, borderTextureMask.INT, 0)
-            .endFill()
-            .lineStyle(t / 2, borderTextureMask.INT, 1.0)
-            .drawPolygon(polygon);
-
-        }
-        // Otherwise Draw Square border
-        else {
-          const p = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderOffset');
-          const q = Math.round(p / 2);
-          const h = Math.round(t / 2);
-          const o = Math.round(h / 2);
-
-          //@ts-ignore
-          factionBorder
-            .beginFill(borderTextureMask.EX, baseOpacity)
-            .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3)
-            .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderTextureMask.EX, alpha: baseOpacity })
-            .lineStyle(t, borderTextureMask.EX, 0)
-            .endFill()
-            .lineStyle(t, borderTextureMask.EX, 0.8)
-            .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3);
-
-          //@ts-ignore
-          factionBorder
-            .beginFill(borderTextureMask.INT, baseOpacity)
-            .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3)
-            .beginTextureFill({ texture: PIXI.Texture.EMPTY, color: borderTextureMask.INT, alpha: baseOpacity })
-            .lineStyle(h, borderTextureMask.INT, 0)
-            .endFill()
-            .lineStyle(h, borderTextureMask.INT, 1.0)
-            .drawRoundedRect(-o - q, -o - q, token.w + h + p, token.h + h + p, 3);
-
-        }
+        // TODO FILL TEXTURE
       }
 
       const outerRing = new PIXI.Sprite(TokenFactions.bevelGradient);
@@ -789,6 +689,9 @@ export class TokenFactions {
       t = t * 2;
     }
     const sB = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'scaleBorder');
+    const bS = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderGridScale');
+    const nBS = bS ? (<Canvas.Dimensions>getCanvas().dimensions)?.size / 100 : 1;
+
     const s = sB ? token.data.scale : 1;
     const sW = sB ? (token.w - token.w * s) / 2 : 0;
     const sH = sB ? (token.h - token.h * s) / 2 : 0;
@@ -816,9 +719,9 @@ export class TokenFactions {
           .beginFill(borderColor.EX, baseOpacity)
           .drawCircle(token.w / 2, token.h / 2, (token.w / 2) * s + t + p)
           .beginTextureFill({ texture: textureEX, color: borderColor.EX, alpha: baseOpacity })
-          .lineStyle(t, borderColor.EX, 0.8)
+          .lineStyle(t * nBS, borderColor.EX, 0.8)
           .endFill();
-        // .lineStyle(t, borderColor.EX, 0.8)
+        // .lineStyle(t*nBS, borderColor.EX, 0.8)
         // .drawCircle(token.w / 2, token.h / 2, (token.w / 2) * s + t + p);
 
         //@ts-ignore
@@ -826,17 +729,17 @@ export class TokenFactions {
           .beginFill(borderColor.INT, baseOpacity)
           .drawCircle(token.w / 2, token.h / 2, (token.w / 2) * s + h + t / 2 + p)
           .beginTextureFill({ texture: textureINT, color: borderColor.INT, alpha: baseOpacity })
-          .lineStyle(h, borderColor.INT, 1.0)
+          .lineStyle(h * nBS, borderColor.INT, 1.0)
           .endFill();
-        // .lineStyle(h, borderColor.INT, 1.0)
+        // .lineStyle(h*nBS, borderColor.INT, 1.0)
         // .drawCircle(token.w / 2, token.h / 2, (token.w / 2) * s + h + t / 2 + p);
       }
       //@ts-ignore
-      factionBorder.lineStyle(t, borderColor.EX, 0.8).drawCircle(token.w / 2, token.h / 2, token.w / 2 + t + p);
+      factionBorder.lineStyle(t * nBS, borderColor.EX, 0.8).drawCircle(token.w / 2, token.h / 2, token.w / 2 + t + p);
 
       //@ts-ignore
       factionBorder
-        .lineStyle(h, borderColor.INT, 1.0)
+        .lineStyle(h * nBS, borderColor.INT, 1.0)
         .drawCircle(token.w / 2, token.h / 2, token.w / 2 + h + t / 2 + p);
     }
     //@ts-ignore
@@ -857,9 +760,9 @@ export class TokenFactions {
           .beginFill(borderColor.EX, baseOpacity)
           .drawPolygon(polygon)
           .beginTextureFill({ texture: textureEX, color: borderColor.EX, alpha: baseOpacity })
-          .lineStyle(t, borderColor.EX, 0.8)
+          .lineStyle(t * nBS, borderColor.EX, 0.8)
           .endFill();
-        // .lineStyle(t, borderColor.EX, 0.8)
+        // .lineStyle(t*nBS, borderColor.EX, 0.8)
         // .drawPolygon(polygon);
 
         //@ts-ignore
@@ -867,16 +770,16 @@ export class TokenFactions {
           .beginFill(borderColor.INT, baseOpacity)
           .drawPolygon(polygon)
           .beginTextureFill({ texture: textureINT, color: borderColor.INT, alpha: baseOpacity })
-          .lineStyle(t / 2, borderColor.INT, 1.0)
+          .lineStyle((t * nBS) / 2, borderColor.INT, 1.0)
           .endFill();
-        // .lineStyle(t / 2, borderColor.INT, 1.0)
+        // .lineStyle(t*nBS / 2, borderColor.INT, 1.0)
         // .drawPolygon(polygon);
       }
       //@ts-ignore
-      factionBorder.lineStyle(t, borderColor.EX, 0.8).drawPolygon(polygon);
+      factionBorder.lineStyle(t * nBS, borderColor.EX, 0.8).drawPolygon(polygon);
 
       //@ts-ignore
-      factionBorder.lineStyle(t / 2, borderColor.INT, 1.0).drawPolygon(polygon);
+      factionBorder.lineStyle((t * nBS) / 2, borderColor.INT, 1.0).drawPolygon(polygon);
     }
 
     // Otherwise Draw Square border
@@ -892,9 +795,9 @@ export class TokenFactions {
           .beginFill(borderColor.EX, baseOpacity)
           .drawRoundedRect(-o - q + sW, -o - q + sH, (token.w + h) * s + p, (token.h + h) * s + p, 3)
           .beginTextureFill({ texture: textureEX, color: borderColor.EX, alpha: baseOpacity })
-          .lineStyle(t, borderColor.EX, 0.8)
+          .lineStyle(t * nBS, borderColor.EX, 0.8)
           .endFill();
-        // .lineStyle(t, borderColor.EX, 0.8)
+        // .lineStyle(t*nBS, borderColor.EX, 0.8)
         // .drawRoundedRect(-o - q + sW, -o - q + sH, (token.w + h) * s + p, (token.h + h) * s + p, 3);
 
         //@ts-ignore
@@ -902,19 +805,19 @@ export class TokenFactions {
           .beginFill(borderColor.INT, baseOpacity)
           .drawRoundedRect(-o - q + sW, -o - q + sH, (token.w + h) * s + p, (token.h + h) * s + p, 3)
           .beginTextureFill({ texture: textureINT, color: borderColor.INT, alpha: baseOpacity })
-          .lineStyle(h, borderColor.INT, 1.0)
+          .lineStyle(h * nBS, borderColor.INT, 1.0)
           .endFill();
-        // .lineStyle(h, borderColor.INT, 1.0)
+        // .lineStyle(h*nBS, borderColor.INT, 1.0)
         // .drawRoundedRect(-o - q + sW, -o - q + sH, (token.w + h) * s + p, (token.h + h) * s + p, 3);
       }
       //@ts-ignore
       factionBorder
-        .lineStyle(t, borderColor.EX, 0.8)
+        .lineStyle(t * nBS, borderColor.EX, 0.8)
         .drawRoundedRect(-o - q + sW, -o - q + sH, (token.w + h) * s + p, (token.h + h) * s + p, 3);
 
       //@ts-ignore
       factionBorder
-        .lineStyle(h, borderColor.INT, 1.0)
+        .lineStyle(h * nBS, borderColor.INT, 1.0)
         .drawRoundedRect(-o - q + sW, -o - q + sH, (token.w + h) * s + p, (token.h + h) * s + p, 3);
     }
   }

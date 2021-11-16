@@ -49,6 +49,9 @@
   "token-factions.setting.borderWidth.name": "Border Width",
   "token-factions.setting.borderWidth.hint": "Override border width",
 
+  "token-factions.setting.borderGridScale.name": "Grid Scaling",
+  "token-factions.setting.borderGridScale.hint": "Scale border width to grid size, based on 100px grid",
+
   "token-factions.setting.borderOffset.name": "Border Offset",
   "token-factions.setting.borderOffset.hint": "Customize border offset",
 
