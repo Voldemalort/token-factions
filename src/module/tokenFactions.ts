@@ -102,8 +102,8 @@ export class TokenFactions {
     //       )
     //     : relevantDocument?.getFlag(TOKEN_FACTIONS_MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE) ??
     //       false;
-    const factionDisableValue = 
-      config.object.getFlag(TOKEN_FACTIONS_MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE) 
+    const factionDisableValue =
+      config.object.getFlag(TOKEN_FACTIONS_MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE)
       ? 'checked' : '';
     /*
     const drawFramesByDefault = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'draw-frames-by-default');
@@ -233,7 +233,7 @@ export class TokenFactions {
 
   static updateTokenFaction(token: Token) {
     //@ts-ignore
-    if (token instanceof Token && token.icon && TokenFactions.bevelTexture && TokenFactions.bevelTexture.baseTexture) {
+    if (token instanceof Token) { // && token.icon && TokenFactions.bevelTexture && TokenFactions.bevelTexture.baseTexture
       //@ts-ignore
       if (!token.factions) {
         //@ts-ignore
@@ -243,11 +243,16 @@ export class TokenFactions {
       //@ts-ignore
       TokenFactions.drawBorderFaction(token, token.factions);
       //@ts-ignore
+      if(token.icon.zIndex > token.border.zIndex ){
+
+      //@ts-ignore
       token.icon.zIndex = token.border.zIndex - 1;
       //@ts-ignore
-      if (token.factions) {
+      if (token.factions.zIndex > token.icon.zIndex) {
         //@ts-ignore
         token.factions.zIndex = token.icon.zIndex - 1;
+      }
+
       }
     }
   }
@@ -464,31 +469,43 @@ export class TokenFactions {
         INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'controlledColor')).substr(1), 16),
         EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'controlledColorEx')).substr(1), 16),
         ICON: '',
+        TEXTURE_INT: PIXI.Texture.EMPTY,
+        TEXTURE_EX: PIXI.Texture.EMPTY,
       } as FactionGraphic,
       FRIENDLY: {
         INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'friendlyColor')).substr(1), 16),
         EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'friendlyColorEx')).substr(1), 16),
         ICON: '',
+        TEXTURE_INT: PIXI.Texture.EMPTY,
+        TEXTURE_EX: PIXI.Texture.EMPTY,
       } as FactionGraphic,
       NEUTRAL: {
         INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'neutralColor')).substr(1), 16),
         EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'neutralColorEx')).substr(1), 16),
         ICON: '',
+        TEXTURE_INT: PIXI.Texture.EMPTY,
+        TEXTURE_EX: PIXI.Texture.EMPTY,
       } as FactionGraphic,
       HOSTILE: {
         INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'hostileColor')).substr(1), 16),
         EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'hostileColorEx')).substr(1), 16),
         ICON: '',
+        TEXTURE_INT: PIXI.Texture.EMPTY,
+        TEXTURE_EX: PIXI.Texture.EMPTY,
       } as FactionGraphic,
       PARTY: {
         INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'partyColor')).substr(1), 16),
         EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'partyColorEx')).substr(1), 16),
         ICON: '',
+        TEXTURE_INT: PIXI.Texture.EMPTY,
+        TEXTURE_EX: PIXI.Texture.EMPTY,
       } as FactionGraphic,
       ACTOR_FOLDER_COLOR: {
         INT: parseInt(String(color).substr(1), 16),
         EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'actorFolderColorEx')).substr(1), 16),
         ICON: icon ? String(icon) : '',
+        TEXTURE_INT: PIXI.Texture.EMPTY,
+        TEXTURE_EX: PIXI.Texture.EMPTY,
       },
       CUSTOM_DISPOSITION: {
         INT: parseInt(String(color).substr(1), 16),
@@ -497,6 +514,8 @@ export class TokenFactions {
           16,
         ),
         ICON: '',
+        TEXTURE_INT: PIXI.Texture.EMPTY,
+        TEXTURE_EX: PIXI.Texture.EMPTY,
       },
     };
 
