@@ -18,6 +18,11 @@ Artwork and assets kindly provided by and used with permission of Caeora. [www.c
 
 **This is a keeping up to date of the idea of [Voldemalort](https://github.com/Voldemalort) and is project [Token Factions (original)](https://github.com/Voldemalort/token-factions) wishing him all the best possible**
 
+**Part of the code of this is module is inspired from the  wonderful work done by [kandashi](https://github.com/kandashi) with its [Border-Control](https://github.com/kandashi/Border-Control) module.
+If you want to support more modules of this kind, I invite you to go and support his patreon.**
+
+[![alt-text](https://img.shields.io/badge/-Patreon-%23ff424d?style=for-the-badge)](https://www.patreon.com/kandashi)
+
 ## NOTE: If you are a javascript developer and not a typescript developer, you can just use the javascript files under the dist folder
 
 ## Installation
