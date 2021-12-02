@@ -128,10 +128,6 @@ You can enable/disable the faction style for single token with a new hud button
 
 ![img6](./docs/feature_hud_off.png)
 
-## License
-
-This module is licensed using the MIT License, any adaptations must provide both credit and indication of changes made.
-
 # Build
 
 ## Install all packages
