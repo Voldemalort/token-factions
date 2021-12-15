@@ -10,6 +10,8 @@
 
 [![Foundry Hub Endorsements](https://img.shields.io/endpoint?logoColor=white&url=https%3A%2F%2Fwww.foundryvtt-hub.com%2Fwp-json%2Fhubapi%2Fv1%2Fpackage%2Ftoken-factions%2Fshield%2Fendorsements&style=for-the-badge)](https://www.foundryvtt-hub.com/package/token-factions/)
 
+![GitHub all releases](https://img.shields.io/github/downloads/p4535992/token-factions/total?style=for-the-badge)
+
 This module will allow you to assign tokens to factions by using the token's disposition colors, the token actor's folder color, or defining your own custom replacement colors for token dispositions.
 
 ![alt text](./docs/module-on.png?raw=true)

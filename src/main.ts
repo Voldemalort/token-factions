@@ -91,3 +91,19 @@ Hooks.once('ready', () => {
 });
 
 // Add any additional hooks if necessary
+
+Hooks.once('libChangelogsReady', function () {
+  //@ts-ignore
+  libChangelogs.register(
+    TOKEN_FACTIONS_MODULE_NAME,
+    'Add [CHANGELOGS & CONFLICTS](https://github.com/theripper93/libChangelogs) hooks for better management of the conflicts',
+    'minor',
+  );
+  //@ts-ignore
+  libChangelogs.registerConflict(
+    TOKEN_FACTIONS_MODULE_NAME,
+    'perfect-vision',
+    'There is a little incompatibility with the module [Perfect vision](https://github.com/dev7355608/perfect-vision ) but we can get along with it',
+    'minor',
+  );
+});
