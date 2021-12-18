@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.2.15
+
+- Update changelog and conflicts
+
 ## v0.2.14
 
 - Add [CHANGELOGS & CONFLICTS](https://github.com/theripper93/libChangelogs) hooks for better management of the conflicts

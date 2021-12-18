@@ -45,8 +45,6 @@ This module uses the [libWrapper](https://github.com/ruipin/fvtt-lib-wrapper) li
 
 ## Known issue
 
-- There is a little incompatibility with the module [Perfect vision](https://github.com/dev7355608/perfect-vision ) but we can get along with it
-
 - The old "BLevel" frame style not work anymore, but i'll try for the feature to make more customizable faction image, there are already may options, but i don' have time for all the others. FOR NOW JUST USE THE FLAT SETTING
 ## Configuration
 
