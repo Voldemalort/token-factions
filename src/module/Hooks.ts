@@ -83,8 +83,10 @@ export const readyHooks = async () => {
       if (
         hasProperty(data, 'flags') &&
         hasProperty(data.flags[TOKEN_FACTIONS_MODULE_NAME], `${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}`) &&
-        !getProperty(data.flags[TOKEN_FACTIONS_MODULE_NAME], `${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}`)
+        getProperty(data.flags[TOKEN_FACTIONS_MODULE_NAME], `${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}`)
       ) {
+        // DO NOTHING
+      }else{
         TokenFactions.updateTokenFaction(<TokenDocument>tokenData.token);
       }
     });
@@ -95,8 +97,10 @@ export const readyHooks = async () => {
       if (
         hasProperty(data, 'flags') &&
         hasProperty(data.flags[TOKEN_FACTIONS_MODULE_NAME], `${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}`) &&
-        !getProperty(data.flags[TOKEN_FACTIONS_MODULE_NAME], `${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}`)
+        getProperty(data.flags[TOKEN_FACTIONS_MODULE_NAME], `${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}`)
       ) {
+        // DO NOTHING
+      }else{
         TokenFactions.updateTokenFaction(tokenData);
       }
     });
@@ -179,11 +183,12 @@ export const TokenPrototypeOnUpdateHandler = function (wrapped, ...args) {
   if (
     hasProperty(args[0], 'flags') &&
     hasProperty(args[0].flags[TOKEN_FACTIONS_MODULE_NAME], `${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}`) &&
-    !getProperty(args[0].flags[TOKEN_FACTIONS_MODULE_NAME], `${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}`)
+    getProperty(args[0].flags[TOKEN_FACTIONS_MODULE_NAME], `${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}`)
   ) {
+    // DO NOTHING
+  }else{
     const token = this as Token;
     TokenFactions.updateTokenDataFaction(token.data);
-    // this.drawFactions();
   }
   return wrapped(...args);
 };
@@ -192,11 +197,12 @@ export const ActorPrototypeOnUpdateHandler = function (wrapped, ...args) {
   if (
     hasProperty(args[0], 'flags') &&
     hasProperty(args[0].flags[TOKEN_FACTIONS_MODULE_NAME], `${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}`) &&
-    !getProperty(args[0].flags[TOKEN_FACTIONS_MODULE_NAME], `${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}`)
+    getProperty(args[0].flags[TOKEN_FACTIONS_MODULE_NAME], `${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}`)
   ) {
+    // DO NOTHING
+  }else{
     const actor = this as Actor;
     TokenFactions.updateTokenDataFaction(<TokenData>actor.token?.data);
-    // this.drawFactions();
   }
   return wrapped(...args);
 };

@@ -250,14 +250,60 @@ export class TokenFactions {
       token.sortableChildren = true;
       //@ts-ignore
       TokenFactions.drawBorderFaction(token, token.factions);
+
+      // Final mangement of the z-index
       //@ts-ignore
-      if (token.icon.zIndex > token.border.zIndex) {
+      if(!token.factions){
         //@ts-ignore
-        token.icon.zIndex = token.border.zIndex - 1;
-        //@ts-ignore
-        if (token.factions.zIndex > token.icon.zIndex) {
+        if(token.icon?.zIndex ){
           //@ts-ignore
-          token.factions.zIndex = token.icon.zIndex - 1;
+          token.factions = token.icon.zIndex ;
+        }
+        if (token.zIndex) {
+          //@ts-ignore
+          token.factions = token.zIndex ;
+        }
+      }
+      //@ts-ignore
+      if(token.icon){
+        //@ts-ignore
+        if(token.border){
+          //@ts-ignore
+          if (token.icon.zIndex > token.border.zIndex) {
+            //@ts-ignore
+            token.icon.zIndex = token.border.zIndex - 1;
+            //@ts-ignore
+            if (token.factions.zIndex > token.icon.zIndex) {
+              //@ts-ignore
+              token.factions.zIndex = token.icon.zIndex - 1;
+            }
+          }
+        }else{
+          //@ts-ignore
+          if (token.factions.zIndex > token.icon.zIndex) {
+            //@ts-ignore
+            token.factions.zIndex = token.icon.zIndex - 1;
+          }
+        }
+      }else{
+        //@ts-ignore
+        if(token.border){
+          //@ts-ignore
+          if (token.zIndex > token.border.zIndex) {
+            //@ts-ignore
+            token.zIndex = token.border.zIndex - 1;
+            //@ts-ignore
+            if (token.factions.zIndex > token.zIndex) {
+              //@ts-ignore
+              token.factions.zIndex = token.zIndex - 1;
+            }
+          }
+        } else {
+          //@ts-ignore
+          if (token.factions.zIndex > token.zIndex) {
+            //@ts-ignore
+            token.factions.zIndex = token.zIndex - 1;
+          }
         }
       }
     }
