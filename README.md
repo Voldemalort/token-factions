@@ -20,6 +20,8 @@ Artwork and assets kindly provided by and used with permission of Caeora. [www.c
 
 **This is a keeping up to date of the idea of [Voldemalort](https://github.com/Voldemalort) and is project [Token Factions (original)](https://github.com/Voldemalort/token-factions) wishing him all the best possible**
 
+## Unfortunately I have some small problems (both level of the code and of personal life XD) and I will not be able to keep up with this module, if someone feels like taking charge of it let me know
+
 **Part of the code of this is module is inspired from the  wonderful work done by [kandashi](https://github.com/kandashi) with its [Border-Control](https://github.com/kandashi/Border-Control) module.
 If you want to support more modules of this kind, I invite you to go and support his patreon.**
 
@@ -46,6 +48,7 @@ This module uses the [libWrapper](https://github.com/ruipin/fvtt-lib-wrapper) li
 ## Known issue
 
 - The old "BLevel" frame style not work anymore, but i'll try for the feature to make more customizable faction image, there are already may options, but i don' have time for all the others. FOR NOW JUST USE THE FLAT SETTING
+
 ## Configuration
 
 ![alt text](./docs/default-settings.png?raw=true)
