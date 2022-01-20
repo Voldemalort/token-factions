@@ -1,7 +1,8 @@
 import { TokenData } from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs';
 import { i18n } from '../main';
-import { canvas, game, TOKEN_FACTIONS_MODULE_NAME } from './settings';
+import { TOKEN_FACTIONS_MODULE_NAME } from './settings';
 import { FactionGraphic } from './TokenFactionsModels';
+import { canvas, game } from './settings';
 
 export class TokenFactions {
   /*

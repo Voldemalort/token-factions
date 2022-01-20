@@ -1,8 +1,8 @@
 import { warn, error, debug, i18n } from '../main';
-import { canvas, game, TOKEN_FACTIONS_MODULE_NAME } from './settings';
-
+import { TOKEN_FACTIONS_MODULE_NAME } from './settings';
 import { TokenFactions } from './tokenFactions';
 import { TokenData } from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs';
+import { canvas, game } from './settings';
 
 export const readyHooks = async () => {
   Hooks.on('renderSettingsConfig', (app, el, data) => {
@@ -77,23 +77,29 @@ export const readyHooks = async () => {
       TokenFactions.updateTokensAll();
     });
 
-    // Hooks.on('updateActor', (tokenData:Actor, data) => {
-    //   // TokenFactions.updateTokenDataFaction(tokenData);
-    //   // token?.refresh();
-    //   if(hasProperty(data,'flags') &&
-    //     !hasProperty(data.flags[TOKEN_FACTIONS_MODULE_NAME],`${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}`)){
-    //     TokenFactions.updateTokenFaction(<TokenDocument>tokenData.token);
-    //   }
-    // });
+    Hooks.on('updateActor', (tokenData: Actor, data) => {
+      // TokenFactions.updateTokenDataFaction(tokenData);
+      // token?.refresh();
+      if (
+        hasProperty(data, 'flags') &&
+        hasProperty(data.flags[TOKEN_FACTIONS_MODULE_NAME], `${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}`) &&
+        !getProperty(data.flags[TOKEN_FACTIONS_MODULE_NAME], `${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}`)
+      ) {
+        TokenFactions.updateTokenFaction(<TokenDocument>tokenData.token);
+      }
+    });
 
-    // Hooks.on('updateToken', (tokenData:TokenDocument, data) => {
-    //   //TokenFactions.updateTokenDataFaction(tokenData);
-    //   // token?.refresh();
-    //   if(hasProperty(data,'flags') &&
-    //     !hasProperty(data.flags[TOKEN_FACTIONS_MODULE_NAME],`${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}`)){
-    //     TokenFactions.updateTokenFaction(tokenData);
-    //   }
-    // });
+    Hooks.on('updateToken', (tokenData: TokenDocument, data) => {
+      //TokenFactions.updateTokenDataFaction(tokenData);
+      // token?.refresh();
+      if (
+        hasProperty(data, 'flags') &&
+        hasProperty(data.flags[TOKEN_FACTIONS_MODULE_NAME], `${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}`) &&
+        !getProperty(data.flags[TOKEN_FACTIONS_MODULE_NAME], `${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}`)
+      ) {
+        TokenFactions.updateTokenFaction(tokenData);
+      }
+    });
 
     Hooks.on('updateFolder', (tokenData, data) => {
       TokenFactions.updateTokenDataFaction(tokenData);
@@ -172,7 +178,8 @@ export const TokenPrototypeDrawHandler = function (wrapped, ...args) {
 export const TokenPrototypeOnUpdateHandler = function (wrapped, ...args) {
   if (
     hasProperty(args[0], 'flags') &&
-    !hasProperty(args[0].flags[TOKEN_FACTIONS_MODULE_NAME], `${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}`)
+    hasProperty(args[0].flags[TOKEN_FACTIONS_MODULE_NAME], `${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}`) &&
+    !getProperty(args[0].flags[TOKEN_FACTIONS_MODULE_NAME], `${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}`)
   ) {
     const token = this as Token;
     TokenFactions.updateTokenDataFaction(token.data);
@@ -184,7 +191,8 @@ export const TokenPrototypeOnUpdateHandler = function (wrapped, ...args) {
 export const ActorPrototypeOnUpdateHandler = function (wrapped, ...args) {
   if (
     hasProperty(args[0], 'flags') &&
-    !hasProperty(args[0].flags[TOKEN_FACTIONS_MODULE_NAME], `${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}`)
+    hasProperty(args[0].flags[TOKEN_FACTIONS_MODULE_NAME], `${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}`) &&
+    !getProperty(args[0].flags[TOKEN_FACTIONS_MODULE_NAME], `${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}`)
   ) {
     const actor = this as Actor;
     TokenFactions.updateTokenDataFaction(<TokenData>actor.token?.data);
