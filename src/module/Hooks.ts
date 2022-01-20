@@ -1,24 +1,24 @@
 import { warn, error, debug, i18n } from '../main';
-import { getCanvas, getGame, TOKEN_FACTIONS_MODULE_NAME } from './settings';
+import { canvas, game, TOKEN_FACTIONS_MODULE_NAME } from './settings';
 
 import { TokenFactions } from './tokenFactions';
 import { TokenData } from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs';
 
 export const readyHooks = async () => {
   Hooks.on('renderSettingsConfig', (app, el, data) => {
-    const nC = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'neutralColor');
-    const fC = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'friendlyColor');
-    const hC = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'hostileColor');
-    const cC = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'controlledColor');
-    const pC = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'partyColor');
-    const nCE = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'neutralColorEx');
-    const fCE = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'friendlyColorEx');
-    const hCE = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'hostileColorEx');
-    const cCE = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'controlledColorEx');
-    const pCE = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'partyColorEx');
-    const gS = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'actorFolderColorEx');
-    const gE = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'customDispositionColorEx');
-    // const gT = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "healthGradientC");
+    const nC = game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'neutralColor');
+    const fC = game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'friendlyColor');
+    const hC = game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'hostileColor');
+    const cC = game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'controlledColor');
+    const pC = game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'partyColor');
+    const nCE = game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'neutralColorEx');
+    const fCE = game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'friendlyColorEx');
+    const hCE = game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'hostileColorEx');
+    const cCE = game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'controlledColorEx');
+    const pCE = game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'partyColorEx');
+    const gS = game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'actorFolderColorEx');
+    const gE = game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'customDispositionColorEx');
+    // const gT = game.settings.get(TOKEN_FACTIONS_MODULE_NAME, "healthGradientC");
     el.find('[name="token-factions.neutralColor"]')
       .parent()
       .append(`<input type="color" value="${nC}" data-edit="token-factions.neutralColor">`);
@@ -62,7 +62,7 @@ export const readyHooks = async () => {
     //  .append(`<input type="color"value="${gT}" data-edit="token-factions.healthGradientC">`)
   });
 
-  if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'tokenFactionsEnabled')) {
+  if (game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'tokenFactionsEnabled')) {
     // setup all the hooks
 
     Hooks.on('closeSettingsConfig', (token, data) => {
@@ -77,13 +77,23 @@ export const readyHooks = async () => {
       TokenFactions.updateTokensAll();
     });
 
-    Hooks.on('updateActor', (tokenData, data) => {
-      TokenFactions.updateTokenDataFaction(tokenData);
-    });
+    // Hooks.on('updateActor', (tokenData:Actor, data) => {
+    //   // TokenFactions.updateTokenDataFaction(tokenData);
+    //   // token?.refresh();
+    //   if(hasProperty(data,'flags') &&
+    //     !hasProperty(data.flags[TOKEN_FACTIONS_MODULE_NAME],`${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}`)){
+    //     TokenFactions.updateTokenFaction(<TokenDocument>tokenData.token);
+    //   }
+    // });
 
-    Hooks.on('updateToken', (tokenData, data) => {
-      TokenFactions.updateTokenDataFaction(tokenData);
-    });
+    // Hooks.on('updateToken', (tokenData:TokenDocument, data) => {
+    //   //TokenFactions.updateTokenDataFaction(tokenData);
+    //   // token?.refresh();
+    //   if(hasProperty(data,'flags') &&
+    //     !hasProperty(data.flags[TOKEN_FACTIONS_MODULE_NAME],`${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}`)){
+    //     TokenFactions.updateTokenFaction(tokenData);
+    //   }
+    // });
 
     Hooks.on('updateFolder', (tokenData, data) => {
       TokenFactions.updateTokenDataFaction(tokenData);
@@ -123,13 +133,13 @@ export const readyHooks = async () => {
     });
 
     Hooks.on('createToken', (data) => {
-      const token = <Token>getCanvas().tokens?.get(data._id);
+      const token = <Token>canvas.tokens?.get(data.id);
       if (!token.owner) {
         token.cursor = 'default';
       }
     });
 
-    getCanvas().tokens?.placeables.forEach((t) => {
+    canvas.tokens?.placeables.forEach((t) => {
       if (!t.owner) {
         t.cursor = 'default';
       }
@@ -160,17 +170,26 @@ export const TokenPrototypeDrawHandler = function (wrapped, ...args) {
 };
 
 export const TokenPrototypeOnUpdateHandler = function (wrapped, ...args) {
-  const token = this as Token;
-  TokenFactions.updateTokenDataFaction(token.data);
-  // this.drawFactions();
+  if (
+    hasProperty(args[0], 'flags') &&
+    !hasProperty(args[0].flags[TOKEN_FACTIONS_MODULE_NAME], `${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}`)
+  ) {
+    const token = this as Token;
+    TokenFactions.updateTokenDataFaction(token.data);
+    // this.drawFactions();
+  }
   return wrapped(...args);
 };
 
 export const ActorPrototypeOnUpdateHandler = function (wrapped, ...args) {
-  // const [data, options, userId] = args;
-  const actor = this as Actor;
-  TokenFactions.updateTokenDataFaction(<TokenData>actor.token?.data);
-  // this.drawFactions();
+  if (
+    hasProperty(args[0], 'flags') &&
+    !hasProperty(args[0].flags[TOKEN_FACTIONS_MODULE_NAME], `${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}`)
+  ) {
+    const actor = this as Actor;
+    TokenFactions.updateTokenDataFaction(<TokenData>actor.token?.data);
+    // this.drawFactions();
+  }
   return wrapped(...args);
 };
 

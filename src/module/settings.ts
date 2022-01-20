@@ -1,5 +1,8 @@
 import { debug, log, setDebugLevel, warn, i18n } from '../main';
 
+export const game = getGame();
+export const canvas = getCanvas();
+
 export const TOKEN_FACTIONS_MODULE_NAME = 'token-factions';
 
 /**
@@ -11,7 +14,7 @@ export const TOKEN_FACTIONS_MODULE_NAME = 'token-factions';
  * So you will need to deal with the fact that there might not be an initialized canvas at any point in time.
  * @returns
  */
-export function getCanvas(): Canvas {
+function getCanvas(): Canvas {
   if (!(canvas instanceof Canvas) || !canvas.ready) {
     throw new Error('Canvas Is Not Initialized');
   }
@@ -27,7 +30,7 @@ export function getCanvas(): Canvas {
  * So you will need to deal with the fact that there might not be an initialized canvas at any point in time.
  * @returns
  */
-export function getGame(): Game {
+function getGame(): Game {
   if (!(game instanceof Game)) {
     throw new Error('Game Is Not Initialized');
   }
@@ -39,7 +42,7 @@ export const registerSettings = function () {
   // TOKEN FACTIONS
   // ==========================
 
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'tokenFactionsEnabled', {
+  game.settings.register(TOKEN_FACTIONS_MODULE_NAME, 'tokenFactionsEnabled', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.tokenFactionsEnabled.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.tokenFactionsEnabled.hint'),
     default: true,
@@ -48,7 +51,7 @@ export const registerSettings = function () {
     config: true,
   });
 
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'color-from', {
+  game.settings.register(TOKEN_FACTIONS_MODULE_NAME, 'color-from', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.color-from.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.color-from.hint'),
     scope: 'world',
@@ -62,7 +65,7 @@ export const registerSettings = function () {
     },
   });
 
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'base-opacity', {
+  game.settings.register(TOKEN_FACTIONS_MODULE_NAME, 'base-opacity', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.base-opacity.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.base-opacity.hint'),
     scope: 'world',
@@ -77,7 +80,7 @@ export const registerSettings = function () {
     },
   });
 
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'fillTexture', {
+  game.settings.register(TOKEN_FACTIONS_MODULE_NAME, 'fillTexture', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.fillTexture.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.fillTexture.hint'),
     scope: 'world',
@@ -86,7 +89,7 @@ export const registerSettings = function () {
     config: true,
   });
 
-  // getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'overrideBorderGraphic', {
+  // game.settings.register(TOKEN_FACTIONS_MODULE_NAME, 'overrideBorderGraphic', {
   //   name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.overrideBorderGraphic.name'),
   //   hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.overrideBorderGraphic.hint'),
   //   scope: 'world',
@@ -99,7 +102,7 @@ export const registerSettings = function () {
   // SUB FEATURE STANDARD
   // ===============================
 
-  // getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'pixiFactionsEnabled', {
+  // game.settings.register(TOKEN_FACTIONS_MODULE_NAME, 'pixiFactionsEnabled', {
   //   name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.pixiFactionsEnabled.name'),
   //   hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.pixiFactionsEnabled.hint'),
   //   scope: 'world',
@@ -108,7 +111,7 @@ export const registerSettings = function () {
   //   config: true,
   // });
 
-  // getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'draw-frames-by-default', {
+  // game.settings.register(TOKEN_FACTIONS_MODULE_NAME, 'draw-frames-by-default', {
   //   name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.draw-frames-by-default.name'),
   //   hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.draw-frames-by-default.hint'),
   //   scope: 'world',
@@ -117,7 +120,7 @@ export const registerSettings = function () {
   //   type: Boolean,
   // });
 
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'frame-style', {
+  game.settings.register(TOKEN_FACTIONS_MODULE_NAME, 'frame-style', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.frame-style.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.frame-style.hint'),
     scope: 'world',
@@ -131,7 +134,7 @@ export const registerSettings = function () {
     },
   });
 
-  // getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'frame-width', {
+  // game.settings.register(TOKEN_FACTIONS_MODULE_NAME, 'frame-width', {
   //   name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.frame-width.name'),
   //   hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.frame-width.hint'),
   //   scope: 'world',
@@ -147,7 +150,7 @@ export const registerSettings = function () {
   // });
 
   // TODO MOVE THIS FOR BOTH THE FEATURE ????
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'frame-opacity', {
+  game.settings.register(TOKEN_FACTIONS_MODULE_NAME, 'frame-opacity', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.frame-opacity.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.frame-opacity.hint'),
     scope: 'world',
@@ -166,7 +169,7 @@ export const registerSettings = function () {
   // SUB FEATURE ALTERNATIVE BORDER
   // ===============================
 
-  // getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'borderFactionsEnabled', {
+  // game.settings.register(TOKEN_FACTIONS_MODULE_NAME, 'borderFactionsEnabled', {
   //   name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.borderFactionsEnabled.name'),
   //   hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.borderFactionsEnabled.hint'),
   //   scope: 'world',
@@ -175,7 +178,7 @@ export const registerSettings = function () {
   //   config: true,
   // });
 
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'removeBorders', {
+  game.settings.register(TOKEN_FACTIONS_MODULE_NAME, 'removeBorders', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.removeBorders.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.removeBorders.hint'),
     scope: 'world',
@@ -189,7 +192,7 @@ export const registerSettings = function () {
     config: true,
   });
 
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'permanentBorder', {
+  game.settings.register(TOKEN_FACTIONS_MODULE_NAME, 'permanentBorder', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.permanentBorder.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.permanentBorder.hint'),
     default: false,
@@ -198,7 +201,7 @@ export const registerSettings = function () {
     config: true,
   });
 
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'borderWidth', {
+  game.settings.register(TOKEN_FACTIONS_MODULE_NAME, 'borderWidth', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.borderWidth.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.borderWidth.hint'),
     scope: 'world',
@@ -207,7 +210,7 @@ export const registerSettings = function () {
     config: true,
   });
 
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'borderGridScale', {
+  game.settings.register(TOKEN_FACTIONS_MODULE_NAME, 'borderGridScale', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.borderGridScale.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.borderGridScale.hint'),
     scope: 'world',
@@ -216,7 +219,7 @@ export const registerSettings = function () {
     config: true,
   });
 
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'borderOffset', {
+  game.settings.register(TOKEN_FACTIONS_MODULE_NAME, 'borderOffset', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.borderOffset.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.borderOffset.hint'),
     scope: 'world',
@@ -225,7 +228,7 @@ export const registerSettings = function () {
     config: true,
   });
 
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'circleBorders', {
+  game.settings.register(TOKEN_FACTIONS_MODULE_NAME, 'circleBorders', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.circleBorders.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.circleBorders.hint'),
     scope: 'world',
@@ -234,7 +237,7 @@ export const registerSettings = function () {
     config: true,
   });
 
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'scaleBorder', {
+  game.settings.register(TOKEN_FACTIONS_MODULE_NAME, 'scaleBorder', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.scaleBorder.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.scaleBorder.hint'),
     scope: 'world',
@@ -243,7 +246,7 @@ export const registerSettings = function () {
     config: true,
   });
 
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'enableHud', {
+  game.settings.register(TOKEN_FACTIONS_MODULE_NAME, 'enableHud', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.enableHud.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.enableHud.hint'),
     scope: 'world',
@@ -251,7 +254,7 @@ export const registerSettings = function () {
     default: true,
     config: true,
   });
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'hudPos', {
+  game.settings.register(TOKEN_FACTIONS_MODULE_NAME, 'hudPos', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.hudPos.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.hudPos.hint'),
     scope: 'world',
@@ -264,7 +267,7 @@ export const registerSettings = function () {
     config: true,
   });
 
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'controlledColor', {
+  game.settings.register(TOKEN_FACTIONS_MODULE_NAME, 'controlledColor', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.controlledColor.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.controlledColor.hint'),
     scope: 'world',
@@ -273,7 +276,7 @@ export const registerSettings = function () {
     config: true,
   });
 
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'controlledColorEx', {
+  game.settings.register(TOKEN_FACTIONS_MODULE_NAME, 'controlledColorEx', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.controlledColorEx.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.controlledColorEx.hint'),
     scope: 'world',
@@ -282,7 +285,7 @@ export const registerSettings = function () {
     config: true,
   });
 
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'hostileColor', {
+  game.settings.register(TOKEN_FACTIONS_MODULE_NAME, 'hostileColor', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.hostileColor.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.hostileColor.hint'),
     scope: 'world',
@@ -291,7 +294,7 @@ export const registerSettings = function () {
     config: true,
   });
 
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'hostileColorEx', {
+  game.settings.register(TOKEN_FACTIONS_MODULE_NAME, 'hostileColorEx', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.hostileColorEx.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.hostileColorEx.hint'),
     scope: 'world',
@@ -300,7 +303,7 @@ export const registerSettings = function () {
     config: true,
   });
 
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'friendlyColor', {
+  game.settings.register(TOKEN_FACTIONS_MODULE_NAME, 'friendlyColor', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.friendlyColor.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.friendlyColor.hint'),
     scope: 'world',
@@ -309,7 +312,7 @@ export const registerSettings = function () {
     config: true,
   });
 
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'friendlyColorEx', {
+  game.settings.register(TOKEN_FACTIONS_MODULE_NAME, 'friendlyColorEx', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.friendlyColorEx.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.friendlyColorEx.hint'),
     scope: 'world',
@@ -318,7 +321,7 @@ export const registerSettings = function () {
     config: true,
   });
 
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'neutralColor', {
+  game.settings.register(TOKEN_FACTIONS_MODULE_NAME, 'neutralColor', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.neutralColor.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.neutralColor.hint'),
     scope: 'world',
@@ -327,7 +330,7 @@ export const registerSettings = function () {
     config: true,
   });
 
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'neutralColorEx', {
+  game.settings.register(TOKEN_FACTIONS_MODULE_NAME, 'neutralColorEx', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.neutralColorEx.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.neutralColorEx.hint'),
     scope: 'world',
@@ -336,7 +339,7 @@ export const registerSettings = function () {
     config: true,
   });
 
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'partyColor', {
+  game.settings.register(TOKEN_FACTIONS_MODULE_NAME, 'partyColor', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.partyColor.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.partyColor.hint'),
     scope: 'world',
@@ -345,7 +348,7 @@ export const registerSettings = function () {
     config: true,
   });
 
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'partyColorEx', {
+  game.settings.register(TOKEN_FACTIONS_MODULE_NAME, 'partyColorEx', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.partyColorEx.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.partyColorEx.hint'),
     scope: 'world',
@@ -354,7 +357,7 @@ export const registerSettings = function () {
     config: true,
   });
 
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'actorFolderColorEx', {
+  game.settings.register(TOKEN_FACTIONS_MODULE_NAME, 'actorFolderColorEx', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.actorFolderColorEx.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.actorFolderColorEx.hint'),
     scope: 'world',
@@ -363,7 +366,7 @@ export const registerSettings = function () {
     config: true,
   });
 
-  getGame().settings.register(TOKEN_FACTIONS_MODULE_NAME, 'customDispositionColorEx', {
+  game.settings.register(TOKEN_FACTIONS_MODULE_NAME, 'customDispositionColorEx', {
     name: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.customDispositionColorEx.name'),
     hint: i18n(TOKEN_FACTIONS_MODULE_NAME + '.setting.customDispositionColorEx.hint'),
     scope: 'world',

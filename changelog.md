@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.2.16
+
+- Some update
+
 ## v0.2.15
 
 - Update changelog and conflicts

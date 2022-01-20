@@ -1,6 +1,6 @@
 import { TokenData } from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs';
 import { i18n } from '../main';
-import { getCanvas, getGame, TOKEN_FACTIONS_MODULE_NAME } from './settings';
+import { canvas, game, TOKEN_FACTIONS_MODULE_NAME } from './settings';
 import { FactionGraphic } from './TokenFactionsModels';
 
 export class TokenFactions {
@@ -54,21 +54,21 @@ export class TokenFactions {
 
   static async onInit() {
     TokenFactions.defaultColors = {
-      'party-member': getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'partyColor'), //'#33bc4e',
-      'party-npc': getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'partyColor'), //'#33bc4e',
-      'friendly-npc': getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'friendlyColor'), //'#43dfdf',
-      'neutral-npc': getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'neutralColor'), //'#f1d836',
-      'hostile-npc': getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'hostileColor'), //'#e72124',
+      'party-member': game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'partyColor'), //'#33bc4e',
+      'party-npc': game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'partyColor'), //'#33bc4e',
+      'friendly-npc': game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'friendlyColor'), //'#43dfdf',
+      'neutral-npc': game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'neutralColor'), //'#f1d836',
+      'hostile-npc': game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'hostileColor'), //'#e72124',
 
-      'controlled-npc': getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'controlledColor'),
-      'neutral-external-npc': getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'neutralColorEx'),
-      'friendly-external-npc': getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'friendlyColorEx'),
-      'hostile-external-npc': getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'hostileColorEx'),
-      'controlled-external-npc': getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'controlledColorEx'),
-      'party-external-member': getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'partyColorEx'),
-      'party-external-npc': getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'partyColorEx'),
-      //'target-npc' :  getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "targetColor"),
-      //'target-external-npc' :  getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, "targetColorEx"),
+      'controlled-npc': game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'controlledColor'),
+      'neutral-external-npc': game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'neutralColorEx'),
+      'friendly-external-npc': game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'friendlyColorEx'),
+      'hostile-external-npc': game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'hostileColorEx'),
+      'controlled-external-npc': game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'controlledColorEx'),
+      'party-external-member': game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'partyColorEx'),
+      'party-external-npc': game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'partyColorEx'),
+      //'target-npc' :  game.settings.get(TOKEN_FACTIONS_MODULE_NAME, "targetColor"),
+      //'target-external-npc' :  game.settings.get(TOKEN_FACTIONS_MODULE_NAME, "targetColorEx"),
     };
 
     TokenFactions.dispositions = Object.keys(TokenFactions.defaultColors);
@@ -77,7 +77,7 @@ export class TokenFactions {
     TokenFactions.bevelTexture = await loadTexture(`modules/${TOKEN_FACTIONS_MODULE_NAME}/assets/bevel-texture.png`);
   }
 
-  static renderTokenConfig = async function(config, html) {
+  static renderTokenConfig = async function (config, html) {
     const tokenDocument = config.object as TokenDocument;
     // const factions = token.factions;
     // let skipDraw = tokenDocument.getFlag(
@@ -87,7 +87,7 @@ export class TokenFactions {
     // if(!skipDraw){
     //   skipDraw = false;
     // }
-    if(!getGame().user?.isGM){
+    if (!game.user?.isGM) {
       return;
     }
     if (!html) {
@@ -102,11 +102,14 @@ export class TokenFactions {
     //       )
     //     : relevantDocument?.getFlag(TOKEN_FACTIONS_MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE) ??
     //       false;
-    const factionDisableValue =
-      config.object.getFlag(TOKEN_FACTIONS_MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE)
-      ? 'checked' : '';
+    const factionDisableValue = config.object.getFlag(
+      TOKEN_FACTIONS_MODULE_NAME,
+      TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE,
+    )
+      ? 'checked'
+      : '';
     /*
-    const drawFramesByDefault = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'draw-frames-by-default');
+    const drawFramesByDefault = game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'draw-frames-by-default');
     const drawFrameOverride = token.getFlag(
       TOKEN_FACTIONS_MODULE_NAME,
       TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DRAW_FRAME,
@@ -174,9 +177,9 @@ export class TokenFactions {
     //   .parent()
     //   .find('.tab[data-tab="factions"] input[type="color"][data-edit]')
     //   .change(config._onChangeInput.bind(config));
-  }
+  };
 
-  static _applyFactions = async function(document: TokenDocument | Actor, updateData):Promise<void> {
+  static _applyFactions = async function (document: TokenDocument | Actor, updateData): Promise<void> {
     // Set the disable flag
     let propertyNameDisable = `flags.${TOKEN_FACTIONS_MODULE_NAME}.${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}`;
     if (document instanceof Actor) {
@@ -185,30 +188,30 @@ export class TokenFactions {
     const factionDisableValue = getProperty(updateData, propertyNameDisable);
     if (factionDisableValue !== undefined && factionDisableValue !== null) {
       setProperty(updateData, propertyNameDisable, factionDisableValue);
-      if(!factionDisableValue){
+      if (!factionDisableValue) {
         if (document instanceof Actor) {
           const actor = <Actor>document;
           //@ts-ignore
           const token = <Token>actor.token?._object;
-          token.refresh();
+          // token.refresh();
           await TokenFactions.updateTokenDataFaction(token.data);
-          token.draw();
+          // token.draw();
         } else {
           const tokenDocument = <TokenDocument>document;
           //@ts-ignore
           const token = <Token>tokenDocument?._object;
-          token.refresh();
+          // token.refresh();
           await TokenFactions.updateTokenDataFaction(token.data);
-          token.draw();
+          // token.draw();
         }
       }
     }
-  }
+  };
 
   static async updateTokenDataFaction(tokenData: TokenData): Promise<any> {
     let tokens: Token[];
     try {
-      tokens = <Token[]>getCanvas().tokens?.placeables;
+      tokens = <Token[]>canvas.tokens?.placeables;
     } catch (e) {
       return;
     }
@@ -220,7 +223,7 @@ export class TokenFactions {
     }
 
     if (tokenData?._id) {
-      const token = getCanvas().tokens?.placeables.find((tokenPlaceable) => tokenPlaceable.id === tokenData._id);
+      const token = canvas.tokens?.placeables.find((tokenPlaceable) => tokenPlaceable.id === tokenData._id);
       if (token) {
         tokens = [token];
       }
@@ -231,9 +234,13 @@ export class TokenFactions {
     });
   }
 
-  static updateTokenFaction(token: Token) {
+  static updateTokenFaction(token: Token | TokenDocument): Token {
+    if (token instanceof TokenDocument) {
+      token = <Token>(<TokenDocument>token)?.object;
+    }
     //@ts-ignore
-    if (token instanceof Token) { // && token.icon && TokenFactions.bevelTexture && TokenFactions.bevelTexture.baseTexture
+    if (token instanceof Token) {
+      // && token.icon && TokenFactions.bevelTexture && TokenFactions.bevelTexture.baseTexture
       //@ts-ignore
       if (!token.factions) {
         //@ts-ignore
@@ -243,30 +250,29 @@ export class TokenFactions {
       //@ts-ignore
       TokenFactions.drawBorderFaction(token, token.factions);
       //@ts-ignore
-      if(token.icon.zIndex > token.border.zIndex ){
-
-      //@ts-ignore
-      token.icon.zIndex = token.border.zIndex - 1;
-      //@ts-ignore
-      if (token.factions.zIndex > token.icon.zIndex) {
+      if (token.icon.zIndex > token.border.zIndex) {
         //@ts-ignore
-        token.factions.zIndex = token.icon.zIndex - 1;
-      }
-
+        token.icon.zIndex = token.border.zIndex - 1;
+        //@ts-ignore
+        if (token.factions.zIndex > token.icon.zIndex) {
+          //@ts-ignore
+          token.factions.zIndex = token.icon.zIndex - 1;
+        }
       }
     }
+    return token;
   }
 
   // START NEW MANAGE
 
   static AddBorderToggle(app, html, data) {
-    if (!getGame().user?.isGM) {
+    if (!game.user?.isGM) {
       return;
     }
-    if (!getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'enableHud')) {
+    if (!game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'enableHud')) {
       return;
     }
-    const buttonPos = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'hudPos');
+    const buttonPos = game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'hudPos');
     const borderButton = `<div class="control-icon factionBorder ${
       app.object.getFlag(TOKEN_FACTIONS_MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE) ? 'active' : ''
     }" title="Toggle Faction Border"> <i class="fas fa-angry"></i></div>`;
@@ -346,13 +352,13 @@ export class TokenFactions {
   }
 
   static refreshAll() {
-    getCanvas().tokens?.placeables.forEach((t) => t.draw());
+    canvas.tokens?.placeables.forEach((t) => t.draw());
   }
 
   // ADDED
 
   static async updateTokensAll() {
-    getCanvas().tokens?.placeables.forEach((tokenDoc: Token) => {
+    canvas.tokens?.placeables.forEach((tokenDoc: Token) => {
       TokenFactions.updateTokensBorder(tokenDoc.data);
     });
   }
@@ -360,10 +366,10 @@ export class TokenFactions {
   private static async updateTokensBorder(tokenData) {
     const currentTokenID = tokenData?.id ? tokenData?.id : tokenData?._id;
     const tokens: TokenDocument[] = [];
-    const tokenDoc: TokenDocument = <TokenDocument>getCanvas().tokens?.get(currentTokenID)?.document;
+    const tokenDoc: TokenDocument = <TokenDocument>canvas.tokens?.get(currentTokenID)?.document;
     if (!tokenDoc) {
-      const actorID = currentTokenID; // getGame().actors?.get(currentTokenID)?.id;
-      const scene = getGame().scenes?.get(<string>getGame().user?.viewedScene);
+      const actorID = currentTokenID; // game.actors?.get(currentTokenID)?.id;
+      const scene = game.scenes?.get(<string>game.user?.viewedScene);
       if (scene) {
         scene.data.tokens.forEach((tokenTmp) => {
           if (<boolean>(tokenTmp.actor && tokenTmp.actor.id === actorID)) {
@@ -378,8 +384,8 @@ export class TokenFactions {
     tokens.forEach((tokenDoc) => {
       if (tokenDoc) {
         const tokenID = tokenDoc.id;
-        const sceneID = <string>(<Token>getCanvas().tokens?.get(<string>tokenDoc.id)).scene.id;
-        const specifiedScene = getGame().scenes?.get(sceneID);
+        const sceneID = <string>(<Token>canvas.tokens?.get(<string>tokenDoc.id)).scene.id;
+        const specifiedScene = game.scenes?.get(sceneID);
         if (specifiedScene) {
           if (!specifiedScene) {
             return;
@@ -390,7 +396,7 @@ export class TokenFactions {
         }
         if (!tokenDoc) {
           let foundToken: TokenDocument | null = null;
-          getGame().scenes?.find((sceneTmp) => {
+          game.scenes?.find((sceneTmp) => {
             // getTokenForScene(scene, tokenID);
             if (!sceneTmp) {
               foundToken = null;
@@ -441,7 +447,7 @@ export class TokenFactions {
   }
 
   private static colorBorderFaction(token: Token): FactionGraphic {
-    const colorFrom = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'color-from');
+    const colorFrom = game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'color-from');
     let color;
     let icon;
     if (colorFrom === 'token-disposition') {
@@ -460,59 +466,56 @@ export class TokenFactions {
       // TODO PUT SOME NEW FLAG ON THE TOKEN
       const disposition = TokenFactions.dispositionKey(token);
       if (disposition) {
-        color = <string>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, `custom-${disposition}-color`);
+        color = <string>game.settings.get(TOKEN_FACTIONS_MODULE_NAME, `custom-${disposition}-color`);
       }
     }
 
     const overrides = {
       CONTROLLED: {
-        INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'controlledColor')).substr(1), 16),
-        EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'controlledColorEx')).substr(1), 16),
+        INT: parseInt(String(game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'controlledColor')).substr(1), 16),
+        EX: parseInt(String(game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'controlledColorEx')).substr(1), 16),
         ICON: '',
         TEXTURE_INT: PIXI.Texture.EMPTY,
         TEXTURE_EX: PIXI.Texture.EMPTY,
       } as FactionGraphic,
       FRIENDLY: {
-        INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'friendlyColor')).substr(1), 16),
-        EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'friendlyColorEx')).substr(1), 16),
+        INT: parseInt(String(game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'friendlyColor')).substr(1), 16),
+        EX: parseInt(String(game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'friendlyColorEx')).substr(1), 16),
         ICON: '',
         TEXTURE_INT: PIXI.Texture.EMPTY,
         TEXTURE_EX: PIXI.Texture.EMPTY,
       } as FactionGraphic,
       NEUTRAL: {
-        INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'neutralColor')).substr(1), 16),
-        EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'neutralColorEx')).substr(1), 16),
+        INT: parseInt(String(game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'neutralColor')).substr(1), 16),
+        EX: parseInt(String(game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'neutralColorEx')).substr(1), 16),
         ICON: '',
         TEXTURE_INT: PIXI.Texture.EMPTY,
         TEXTURE_EX: PIXI.Texture.EMPTY,
       } as FactionGraphic,
       HOSTILE: {
-        INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'hostileColor')).substr(1), 16),
-        EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'hostileColorEx')).substr(1), 16),
+        INT: parseInt(String(game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'hostileColor')).substr(1), 16),
+        EX: parseInt(String(game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'hostileColorEx')).substr(1), 16),
         ICON: '',
         TEXTURE_INT: PIXI.Texture.EMPTY,
         TEXTURE_EX: PIXI.Texture.EMPTY,
       } as FactionGraphic,
       PARTY: {
-        INT: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'partyColor')).substr(1), 16),
-        EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'partyColorEx')).substr(1), 16),
+        INT: parseInt(String(game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'partyColor')).substr(1), 16),
+        EX: parseInt(String(game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'partyColorEx')).substr(1), 16),
         ICON: '',
         TEXTURE_INT: PIXI.Texture.EMPTY,
         TEXTURE_EX: PIXI.Texture.EMPTY,
       } as FactionGraphic,
       ACTOR_FOLDER_COLOR: {
         INT: parseInt(String(color).substr(1), 16),
-        EX: parseInt(String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'actorFolderColorEx')).substr(1), 16),
+        EX: parseInt(String(game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'actorFolderColorEx')).substr(1), 16),
         ICON: icon ? String(icon) : '',
         TEXTURE_INT: PIXI.Texture.EMPTY,
         TEXTURE_EX: PIXI.Texture.EMPTY,
       },
       CUSTOM_DISPOSITION: {
         INT: parseInt(String(color).substr(1), 16),
-        EX: parseInt(
-          String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'customDispositionColorEx')).substr(1),
-          16,
-        ),
+        EX: parseInt(String(game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'customDispositionColorEx')).substr(1), 16),
         ICON: '',
         TEXTURE_INT: PIXI.Texture.EMPTY,
         TEXTURE_EX: PIXI.Texture.EMPTY,
@@ -525,11 +528,11 @@ export class TokenFactions {
       //if (token._controlled) return overrides.CONTROLLED;
       //@ts-ignore
       //else if (token._hover || game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'permanentBorder')) {
-      const disPath = isNewerVersion(getGame().data.version, '0.8.0') ? CONST.TOKEN_DISPOSITIONS : TOKEN_DISPOSITIONS;
+      const disPath = isNewerVersion(game.data.version, '0.8.0') ? CONST.TOKEN_DISPOSITIONS : TOKEN_DISPOSITIONS;
       //@ts-ignore
       const d = parseInt(token.data.disposition);
       //@ts-ignore
-      if (!getGame().user?.isGM && token.owner) borderColor = overrides.CONTROLLED;
+      if (!game.user?.isGM && token.owner) borderColor = overrides.CONTROLLED;
       //@ts-ignore
       else if (token.actor?.hasPlayerOwner) borderColor = overrides.PARTY;
       else if (d === disPath.FRIENDLY) borderColor = overrides.FRIENDLY;
@@ -553,7 +556,7 @@ export class TokenFactions {
 
     container.children.forEach((c) => c.clear());
 
-    // let factionBorder = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'overrideBorderGraphic')
+    // let factionBorder = game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'overrideBorderGraphic')
     // //@ts-ignore
     // ? token.border
     // //@ts-ignore
@@ -566,7 +569,7 @@ export class TokenFactions {
     if (!borderColor.INT || Number.isNaN(borderColor.INT)) {
       return;
     }
-    switch (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'removeBorders')) {
+    switch (game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'removeBorders')) {
       case '0':
         break;
       case '1':
@@ -600,7 +603,7 @@ export class TokenFactions {
     //@ts-ignore
     let factionBorder = container.addChild(new PIXI.Graphics());
 
-    const frameStyle = String(getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'frame-style'));
+    const frameStyle = String(game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'frame-style'));
 
     token.sortableChildren = true;
 
@@ -609,7 +612,7 @@ export class TokenFactions {
       if (!factionBorder) {
         factionBorder = container.addChild(new PIXI.Graphics());
       }
-      const fillTexture = <boolean>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'fillTexture');
+      const fillTexture = <boolean>game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'fillTexture');
       TokenFactions.drawBorder(token, borderColor, factionBorder, fillTexture);
     } else if (frameStyle == TokenFactions.TOKEN_FACTIONS_FRAME_STYLE.BELEVELED) {
       // frameStyle === 'bevelled'
@@ -617,7 +620,7 @@ export class TokenFactions {
         factionBorder = container.addChild(new PIXI.Graphics());
       }
 
-      const fillTexture = <boolean>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'fillTexture');
+      const fillTexture = <boolean>game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'fillTexture');
       // const ringTexture = new PIXI.Sprite(TokenFactions.bevelTexture);
       // ringTexture.tint = borderColor.INT;
       // ringTexture.alpha = <number>frameOpacity;
@@ -632,7 +635,7 @@ export class TokenFactions {
       // ringTexture.mask = factionBorder;
 
       /*
-      const fillTexture = <boolean>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'fillTexture');
+      const fillTexture = <boolean>game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'fillTexture');
       if (fillTexture) {
         // TODO FILL TEXTURE
       }
@@ -710,7 +713,7 @@ export class TokenFactions {
       if (!factionBorder) {
         factionBorder = container.addChild(new PIXI.Graphics());
       }
-      const fillTexture = <boolean>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'fillTexture');
+      const fillTexture = <boolean>game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'fillTexture');
       TokenFactions.drawBorder(token, borderColor, factionBorder, fillTexture);
     }
   }
@@ -721,23 +724,22 @@ export class TokenFactions {
     factionBorder: PIXI.Graphics,
     fillTexture: boolean,
   ) {
-    let t =
-      <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderWidth') || CONFIG.Canvas.objectBorderThickness;
+    let t = <number>game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderWidth') || CONFIG.Canvas.objectBorderThickness;
 
     //@ts-ignore
-    if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'permanentBorder') && token._controlled) {
+    if (game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'permanentBorder') && token._controlled) {
       t = t * 2;
     }
-    const sB = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'scaleBorder');
-    const bS = getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderGridScale');
-    const nBS = bS ? (<Canvas.Dimensions>getCanvas().dimensions)?.size / 100 : 1;
+    const sB = game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'scaleBorder');
+    const bS = game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderGridScale');
+    const nBS = bS ? (<Canvas.Dimensions>canvas.dimensions)?.size / 100 : 1;
 
     const s = sB ? token.data.scale : 1;
     const sW = sB ? (token.w - token.w * s) / 2 : 0;
     const sH = sB ? (token.h - token.h * s) / 2 : 0;
 
-    const frameOpacity = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'frame-opacity') || 0.5;
-    const baseOpacity = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'base-opacity') || 0.5;
+    const frameOpacity = <number>game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'frame-opacity') || 0.5;
+    const baseOpacity = <number>game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'base-opacity') || 0.5;
 
     const textureINT = borderColor.TEXTURE_INT || PIXI.Texture.EMPTY; //await PIXI.Texture.fromURL(<string>token.data.img) || PIXI.Texture.EMPTY;
     const textureEX = borderColor.TEXTURE_EX || PIXI.Texture.EMPTY;
@@ -748,8 +750,8 @@ export class TokenFactions {
     const gt = CONST.GRID_TYPES;
     const hexTypes = [gt.HEXEVENQ, gt.HEXEVENR, gt.HEXODDQ, gt.HEXODDR];
 
-    if (getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'circleBorders')) {
-      const p = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderOffset');
+    if (game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'circleBorders')) {
+      const p = <number>game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderOffset');
       const h = Math.round(t / 2);
       const o = Math.round(h / 2);
 
@@ -783,11 +785,11 @@ export class TokenFactions {
         .drawCircle(token.w / 2, token.h / 2, token.w / 2 + h + t / 2 + p);
     }
     //@ts-ignore
-    else if (hexTypes.includes(getCanvas().grid?.type) && token.data.width === 1 && token.data.height === 1) {
-      const p = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderOffset');
+    else if (hexTypes.includes(canvas.grid?.type) && token.data.width === 1 && token.data.height === 1) {
+      const p = <number>game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderOffset');
       const q = Math.round(p / 2);
       //@ts-ignore
-      const polygon = getCanvas().grid?.grid?.getPolygon(
+      const polygon = canvas.grid?.grid?.getPolygon(
         -1.5 - q + sW,
         -1.5 - q + sH,
         (token.w + 2) * s + p,
@@ -824,7 +826,7 @@ export class TokenFactions {
 
     // Otherwise Draw Square border
     else {
-      const p = <number>getGame().settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderOffset');
+      const p = <number>game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'borderOffset');
       const q = Math.round(p / 2);
       const h = Math.round(t / 2);
       const o = Math.round(h / 2);
