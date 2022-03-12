@@ -46,40 +46,9 @@ export const setDebugLevel = (debugText: string) => {
 /* ------------------------------------ */
 /* Initialize module					*/
 /* ------------------------------------ */
-Hooks.once('init', async () => {
+Hooks.once('init', () => {
   console.log(`${TOKEN_FACTIONS_MODULE_NAME} | Initializing ${TOKEN_FACTIONS_MODULE_NAME}`);
 
-  // Register custom module settings
-  registerSettings();
-
-  initHooks();
-  // Assign custom classes and constants here
-
-  // Register custom module settings
-  //registerSettings();
-  //fetchParams();
-
-  // Preload Handlebars templates
-  await preloadTemplates();
-  // Register custom sheets (if any)
-});
-
-/* ------------------------------------ */
-/* Setup module							*/
-/* ------------------------------------ */
-Hooks.once('setup', function () {
-  // Do anything after initialization but before ready
-  // setupModules();
-
-  registerSettings();
-
-  // setupHooks();
-});
-
-/* ------------------------------------ */
-/* When ready							*/
-/* ------------------------------------ */
-Hooks.once('ready', () => {
   // Do anything once the module is ready
   if (!game.modules.get('lib-wrapper')?.active && game.user?.isGM) {
     ui.notifications?.error(
@@ -88,8 +57,49 @@ Hooks.once('ready', () => {
     return;
   }
 
+  // Register custom module settings
+  registerSettings();
+
+  initHooks();
   readyHooks();
+
+  // Assign custom classes and constants here
+
+  // Register custom module settings
+  //registerSettings();
+  //fetchParams();
+
+  // Preload Handlebars templates
+  // await preloadTemplates();
+  // Register custom sheets (if any)
 });
+
+// /* ------------------------------------ */
+// /* Setup module							*/
+// /* ------------------------------------ */
+// Hooks.once('setup', function () {
+//   // Do anything after initialization but before ready
+//   // setupModules();
+
+//   registerSettings();
+
+//   // setupHooks();
+// });
+
+// /* ------------------------------------ */
+// /* When ready							*/
+// /* ------------------------------------ */
+// Hooks.once('ready', () => {
+//   // Do anything once the module is ready
+//   if (!game.modules.get('lib-wrapper')?.active && game.user?.isGM) {
+//     ui.notifications?.error(
+//       `The '${TOKEN_FACTIONS_MODULE_NAME}' module requires to install and activate the 'libWrapper' module.`,
+//     );
+//     return;
+//   }
+
+//   readyHooks();
+// });
 
 // Add any additional hooks if necessary
 

@@ -4,7 +4,7 @@ import { TokenFactions } from './tokenFactions';
 import { TokenData } from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs';
 import { canvas, game } from './settings';
 
-export const readyHooks = async () => {
+export const readyHooks = () => {
   Hooks.on('renderSettingsConfig', (app, el, data) => {
     const nC = game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'neutralColor');
     const fC = game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'friendlyColor');
