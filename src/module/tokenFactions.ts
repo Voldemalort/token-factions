@@ -575,7 +575,7 @@ export class TokenFactions {
       //if (token._controlled) return overrides.CONTROLLED;
       //@ts-ignore
       //else if (token._hover || game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'permanentBorder')) {
-      const disPath = isNewerVersion(game.data.version, '0.8.0') ? CONST.TOKEN_DISPOSITIONS : TOKEN_DISPOSITIONS;
+      const disPath = isNewerVersion(game.version ?? game.data.version, '0.8.0') ? CONST.TOKEN_DISPOSITIONS : TOKEN_DISPOSITIONS;
       //@ts-ignore
       const d = parseInt(token.data.disposition);
       //@ts-ignore
