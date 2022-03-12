@@ -648,7 +648,10 @@ export class TokenFactions {
     }
 
     //@ts-ignore
-    let factionBorder = container.addChild(new PIXI.Graphics());
+    container.border = container.border ?? new PIXI.Graphics();
+
+    //@ts-ignore
+    let factionBorder = container.border;
 
     const frameStyle = String(game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'frame-style'));
 
@@ -656,16 +659,10 @@ export class TokenFactions {
 
     if (frameStyle == TokenFactions.TOKEN_FACTIONS_FRAME_STYLE.FLAT) {
       // frameStyle === 'flat'
-      if (!factionBorder) {
-        factionBorder = container.addChild(new PIXI.Graphics());
-      }
       const fillTexture = <boolean>game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'fillTexture');
       TokenFactions.drawBorder(token, borderColor, factionBorder, fillTexture);
     } else if (frameStyle == TokenFactions.TOKEN_FACTIONS_FRAME_STYLE.BELEVELED) {
       // frameStyle === 'bevelled'
-      if (!factionBorder) {
-        factionBorder = container.addChild(new PIXI.Graphics());
-      }
 
       const fillTexture = <boolean>game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'fillTexture');
       // const ringTexture = new PIXI.Sprite(TokenFactions.bevelTexture);
@@ -757,9 +754,6 @@ export class TokenFactions {
       */
       //}else if(frameStyle == TOKEN_FACTIONS_FRAME_STYLE.BORDER){
     } else {
-      if (!factionBorder) {
-        factionBorder = container.addChild(new PIXI.Graphics());
-      }
       const fillTexture = <boolean>game.settings.get(TOKEN_FACTIONS_MODULE_NAME, 'fillTexture');
       TokenFactions.drawBorder(token, borderColor, factionBorder, fillTexture);
     }
