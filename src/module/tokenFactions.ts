@@ -243,7 +243,7 @@ export class TokenFactions {
     if (token instanceof Token) {
       // && token.icon && TokenFactions.bevelTexture && TokenFactions.bevelTexture.baseTexture
       //@ts-ignore
-      if (!token.factions) {
+      if (!token.factions || token.factions.destroyed) {
         //@ts-ignore
         token.factions = token.addChildAt(new PIXI.Container(), 0);
       }
@@ -475,7 +475,7 @@ export class TokenFactions {
       // }
 
       //@ts-ignore
-      if (!token.factions) {
+      if (!token.factions || token.factions.destroyed) {
         //@ts-ignore
         token.factions = token.addChildAt(new PIXI.Container(), 0);
       }
