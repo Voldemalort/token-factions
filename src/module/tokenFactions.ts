@@ -325,9 +325,12 @@ export class TokenFactions {
     if (!game.settings.get(CONSTANTS.MODULE_NAME, 'enableHud')) {
       return;
     }
+    if (!app?.object?.document) {
+      return;
+    }
     const buttonPos = game.settings.get(CONSTANTS.MODULE_NAME, 'hudPos');
     const borderButton = `<div class="control-icon factionBorder ${
-      app.object.getFlag(CONSTANTS.MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE) ? 'active' : ''
+      app.object.document.getFlag(CONSTANTS.MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE) ? 'active' : ''
     }" title="Toggle Faction Border"> <i class="fas fa-angry"></i></div>`;
     const Pos = html.find(buttonPos);
     Pos.append(borderButton);
