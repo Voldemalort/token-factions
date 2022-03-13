@@ -14,45 +14,20 @@
 // Import TypeScript modules
 import { registerSettings } from './module/settings';
 import { preloadTemplates } from './module/preloadTemplates';
-import { TOKEN_FACTIONS_MODULE_NAME } from './module/settings';
-import { initHooks, readyHooks } from './module/Hooks';
+import { initHooks, readyHooks } from './module/module';
 import { game } from './module/settings';
-
-export let debugEnabled = 0;
-// 0 = none, warnings = 1, debug = 2, all = 3
-export const debug = (...args) => {
-  if (debugEnabled > 1) console.log(`DEBUG:${TOKEN_FACTIONS_MODULE_NAME} | `, ...args);
-};
-export const log = (...args) => console.log(`${TOKEN_FACTIONS_MODULE_NAME} | `, ...args);
-export const warn = (...args) => {
-  if (debugEnabled > 0) console.warn(`${TOKEN_FACTIONS_MODULE_NAME} | `, ...args);
-};
-export const error = (...args) => console.error(`${TOKEN_FACTIONS_MODULE_NAME} | `, ...args);
-export const timelog = (...args) => warn(`${TOKEN_FACTIONS_MODULE_NAME} | `, Date.now(), ...args);
-
-export const i18n = (key) => {
-  return game.i18n.localize(key);
-};
-export const i18nFormat = (key, data = {}) => {
-  return game.i18n.format(key, data);
-};
-
-export const setDebugLevel = (debugText: string) => {
-  debugEnabled = { none: 0, warn: 1, debug: 2, all: 3 }[debugText] || 0;
-  // 0 = none, warnings = 1, debug = 2, all = 3
-  if (debugEnabled >= 3) CONFIG.debug.hooks = true;
-};
+import CONSTANTS from './module/constants';
 
 /* ------------------------------------ */
 /* Initialize module					*/
 /* ------------------------------------ */
 Hooks.once('init', () => {
-  console.log(`${TOKEN_FACTIONS_MODULE_NAME} | Initializing ${TOKEN_FACTIONS_MODULE_NAME}`);
+  console.log(`${CONSTANTS.MODULE_NAME} | Initializing ${CONSTANTS.MODULE_NAME}`);
 
   // Do anything once the module is ready
   if (!game.modules.get('lib-wrapper')?.active && game.user?.isGM) {
     ui.notifications?.error(
-      `The '${TOKEN_FACTIONS_MODULE_NAME}' module requires to install and activate the 'libWrapper' module.`,
+      `The '${CONSTANTS.MODULE_NAME}' module requires to install and activate the 'libWrapper' module.`,
     );
     return;
   }
@@ -93,7 +68,7 @@ Hooks.once('init', () => {
 //   // Do anything once the module is ready
 //   if (!game.modules.get('lib-wrapper')?.active && game.user?.isGM) {
 //     ui.notifications?.error(
-//       `The '${TOKEN_FACTIONS_MODULE_NAME}' module requires to install and activate the 'libWrapper' module.`,
+//       `The '${CONSTANTS.MODULE_NAME}' module requires to install and activate the 'libWrapper' module.`,
 //     );
 //     return;
 //   }
@@ -105,5 +80,5 @@ Hooks.once('init', () => {
 
 Hooks.once('libChangelogsReady', function () {
   //@ts-ignore
-  libChangelogs.register(TOKEN_FACTIONS_MODULE_NAME, 'Update changelog and conflicts', 'minor');
+  libChangelogs.register(CONSTANTS.MODULE_NAME, '- Some bug fix courtesy of @dev7355608 ', 'minor');
 });

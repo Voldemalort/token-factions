@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.2.17
+
+- Some bug fix courtesy of @dev7355608 
+
 ## v0.2.16
 
 - Some update
