@@ -330,7 +330,9 @@ export class TokenFactions {
     }
     const buttonPos = game.settings.get(CONSTANTS.MODULE_NAME, 'hudPos');
     const borderButton = `<div class="control-icon factionBorder ${
-      app.object.document.getFlag(CONSTANTS.MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE) ? 'active' : ''
+      app.object.document.getFlag(CONSTANTS.MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE)
+        ? 'active'
+        : ''
     }" title="Toggle Faction Border"> <i class="fas fa-angry"></i></div>`;
     const Pos = html.find(buttonPos);
     Pos.append(borderButton);
@@ -654,14 +656,10 @@ export class TokenFactions {
       return;
     }
 
-    // TODO waiting for review https://github.com/p4535992/token-factions/pull/11/files
-    /*
     //@ts-ignore
-    container.border = container.border ?? new PIXI.Graphics();
+    container.border = container.border ?? container.addChild(new PIXI.Graphics());
     //@ts-ignore
     const factionBorder = container.border;
-    */
-    const factionBorder = container.addChild(new PIXI.Graphics());
 
     const frameStyle = String(game.settings.get(CONSTANTS.MODULE_NAME, 'frame-style'));
 
