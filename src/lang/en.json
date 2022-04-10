@@ -61,10 +61,10 @@
   "token-factions.setting.hudEnable.name": "Token Faction HUD element",
   "token-factions.setting.hudEnable.hint": "Add Token HUD element to disable/enable borderstoken faction",
 
-  "token-factions.setting.hudColumn.name" : "HUD Column",
+  "token-factions.setting.hudColumn.name": "HUD Column",
   "token-factions.setting.hudColumn.hint": "Which HUD column to place the button in",
 
-  "token-factions.setting.hudTopBottom.name" : "HUD Top/Bottom",
+  "token-factions.setting.hudTopBottom.name": "HUD Top/Bottom",
   "token-factions.setting.hudTopBottom.hint": "Where to place the button in the column",
 
   "token-factions.setting.circularNameplate.name": "Circular Nameplates",

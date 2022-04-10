@@ -340,11 +340,11 @@ export class TokenFactions {
     */
     const settingHudColClass = <string>game.settings.get(CONSTANTS.MODULE_NAME, 'hudColumn') ?? '.right';
     const settingHudTopBottomClass = <string>game.settings.get(CONSTANTS.MODULE_NAME, 'hudTopBottom') ?? 'bottom';
-  
+
     const buttonPos = '.' + settingHudColClass.toLowerCase();
-  
+
     const col = html.find(buttonPos);
-    if (settingHudTopBottomClass === 'top') {
+    if (settingHudTopBottomClass.toLowerCase() === 'top') {
       col.prepend(borderButton);
     } else {
       col.append(borderButton);
@@ -453,7 +453,7 @@ export class TokenFactions {
       tokens.push(tokenDoc);
     }
 
-    tokens.forEach((tokenDoc:TokenDocument) => {
+    tokens.forEach((tokenDoc: TokenDocument) => {
       if (tokenDoc) {
         const tokenID = tokenDoc.id;
         const sceneID = <string>(<Token>canvas.tokens?.get(<string>tokenDoc.id)).scene.id;

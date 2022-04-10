@@ -116,7 +116,7 @@ export function buildButton(html, tooltip, iconClass) {
   const buttonPos = '.' + settingHudColClass.toLowerCase();
 
   const col = html.find(buttonPos);
-  if (settingHudTopBottomClass === 'top') {
+  if (settingHudTopBottomClass.toLowerCase() === 'top') {
     col.prepend(button);
   } else {
     col.append(button);
