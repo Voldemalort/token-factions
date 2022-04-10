@@ -1,7 +1,6 @@
 import { warn, error, debug, i18n } from './lib/lib';
 import { TokenFactions } from './tokenFactions';
-import { TokenData } from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs';
-import { canvas, game } from './settings';
+import type{ TokenData } from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs';
 import CONSTANTS from './constants';
 
 export const readyHooks = () => {

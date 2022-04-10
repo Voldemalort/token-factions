@@ -58,11 +58,14 @@
   "token-factions.setting.circleBorders.name": "Circular Borders",
   "token-factions.setting.circleBorders.hint": " ",
 
-  "token-factions.setting.enableHud.name": "Border HUD element",
-  "token-factions.setting.enableHud.hint": "Add Token HUD element to disable/enable borders",
+  "token-factions.setting.hudEnable.name": "Token Faction HUD element",
+  "token-factions.setting.hudEnable.hint": "Add Token HUD element to disable/enable borderstoken faction",
 
-  "token-factions.setting.hudPos.name": "Border Control HUD Position",
-  "token-factions.setting.hudPos.hint": " ",
+  "token-factions.setting.hudColumn.name" : "HUD Column",
+  "token-factions.setting.hudColumn.hint": "Which HUD column to place the button in",
+
+  "token-factions.setting.hudTopBottom.name" : "HUD Top/Bottom",
+  "token-factions.setting.hudTopBottom.hint": "Where to place the button in the column",
 
   "token-factions.setting.circularNameplate.name": "Circular Nameplates",
   "token-factions.setting.circularNameplate.hint": "Requires a refresh",

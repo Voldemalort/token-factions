@@ -1,41 +1,6 @@
 import { debug, log, warn, i18n } from './lib/lib';
 import CONSTANTS from './constants';
 
-export const game = getGame();
-export const canvas = getCanvas();
-
-/**
- * Because typescript doesn’t know when in the lifecycle of foundry your code runs, we have to assume that the
- * canvas is potentially not yet initialized, so it’s typed as declare let canvas: Canvas | {ready: false}.
- * That’s why you get errors when you try to access properties on canvas other than ready.
- * In order to get around that, you need to type guard canvas.
- * Also be aware that this will become even more important in 0.8.x because a „no canvas“ mode is being introduced there.
- * So you will need to deal with the fact that there might not be an initialized canvas at any point in time.
- * @returns
- */
-function getCanvas(): Canvas {
-  if (!(canvas instanceof Canvas) || !canvas.ready) {
-    throw new Error('Canvas Is Not Initialized');
-  }
-  return canvas;
-}
-
-/**
- * Because typescript doesn't know when in the lifecycle of foundry your code runs, we have to assume that the
- * canvas is potentially not yet initialized, so it's typed as declare let canvas: Canvas | {ready: false}.
- * That's why you get errors when you try to access properties on canvas other than ready.
- * In order to get around that, you need to type guard canvas.
- * Also be aware that this will become even more important in 0.8.x because no canvas mode is being introduced there.
- * So you will need to deal with the fact that there might not be an initialized canvas at any point in time.
- * @returns
- */
-function getGame(): Game {
-  if (!(game instanceof Game)) {
-    throw new Error('Game Is Not Initialized');
-  }
-  return game;
-}
-
 export const registerSettings = function () {
   // ==========================
   // TOKEN FACTIONS
@@ -57,7 +22,7 @@ export const registerSettings = function () {
     config: true,
     default: 'token-disposition',
     type: String,
-    choices: {
+    choices: <any>{
       'token-disposition': i18n(CONSTANTS.MODULE_NAME + '.setting.color-from.opt.token-disposition'),
       'actor-folder-color': i18n(CONSTANTS.MODULE_NAME + '.setting.color-from.opt.actor-folder-color'),
       'custom-disposition': i18n(CONSTANTS.MODULE_NAME + '.setting.color-from.opt.custom-disposition'),
@@ -126,7 +91,7 @@ export const registerSettings = function () {
     config: true,
     default: 'flat',
     type: String,
-    choices: {
+    choices: <any>{
       flat: i18n(CONSTANTS.MODULE_NAME + '.setting.frame-style.opt.flat'),
       beveled: i18n(CONSTANTS.MODULE_NAME + '.setting.frame-style.opt.beveled'),
       // border: i18n(CONSTANTS.MODULE_NAME + '.setting.frame-style.opt.border'),
@@ -182,7 +147,7 @@ export const registerSettings = function () {
     hint: i18n(CONSTANTS.MODULE_NAME + '.setting.removeBorders.hint'),
     scope: 'world',
     type: String,
-    choices: {
+    choices: <any>{
       0: 'None',
       1: 'Non Owned',
       2: 'All',
@@ -245,25 +210,41 @@ export const registerSettings = function () {
     config: true,
   });
 
-  game.settings.register(CONSTANTS.MODULE_NAME, 'enableHud', {
-    name: i18n(CONSTANTS.MODULE_NAME + '.setting.enableHud.name'),
-    hint: i18n(CONSTANTS.MODULE_NAME + '.setting.enableHud.hint'),
+  game.settings.register(CONSTANTS.MODULE_NAME, 'hudEnable', {
+    name: i18n(CONSTANTS.MODULE_NAME + '.setting.hudEnable.name'),
+    hint: i18n(CONSTANTS.MODULE_NAME + '.setting.hudEnable.hint'),
     scope: 'world',
     type: Boolean,
     default: true,
     config: true,
   });
-  game.settings.register(CONSTANTS.MODULE_NAME, 'hudPos', {
-    name: i18n(CONSTANTS.MODULE_NAME + '.setting.hudPos.name'),
-    hint: i18n(CONSTANTS.MODULE_NAME + '.setting.hudPos.hint'),
+
+  /** Which column should the button be placed on */
+  game.settings.register(CONSTANTS.MODULE_NAME, 'hudColumn', {
+    name: i18n(`${CONSTANTS.MODULE_NAME}.setting.hudColumn.name`),
+    hint: i18n(`${CONSTANTS.MODULE_NAME}.setting.hudColumn.hint`),
     scope: 'world',
-    type: String,
-    default: '.right',
-    choices: {
-      '.right': 'Right',
-      '.left': 'Left',
-    },
     config: true,
+    type: String,
+    default: 'Right',
+    choices: <any>{
+      Left: 'Left',
+      Right: 'Right',
+    },
+  });
+
+  /** Whether the button should be placed on the top or bottom of the column */
+  game.settings.register(CONSTANTS.MODULE_NAME, 'hudTopBottom', {
+    name: i18n(`${CONSTANTS.MODULE_NAME}.setting.hudTopBottom.name`),
+    hint: i18n(`${CONSTANTS.MODULE_NAME}.setting.hudTopBottom.hint`),
+    scope: 'world',
+    config: true,
+    type: String,
+    default: 'Bottom',
+    choices: <any>{
+      Top: 'Top',
+      Bottom: 'Bottom',
+    },
   });
 
   game.settings.register(CONSTANTS.MODULE_NAME, 'controlledColor', {

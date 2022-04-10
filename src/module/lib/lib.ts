@@ -1,5 +1,4 @@
 import CONSTANTS from '../constants';
-import { canvas, game } from '../settings';
 
 // =============================
 // Module Generic function
@@ -105,3 +104,23 @@ export function isStringEquals(stringToCheck1: string, stringToCheck2: string, s
     return stringToCheck1 === stringToCheck2;
   }
 }
+/*
+export function buildButton(html, tooltip, iconClass) {
+  const iconClass = 'fas fa-wind'; // TODO customize icon ???
+  const button = $(
+    `<div class="control-icon ${CONSTANTS.MODULE_NAME}" title="${tooltip}"><i class="${iconClass}"></i></div>`,
+  );
+  const settingHudColClass = <string>game.settings.get(CONSTANTS.MODULE_NAME, 'hudColumn') ?? '.left';
+  const settingHudTopBottomClass = <string>game.settings.get(CONSTANTS.MODULE_NAME, 'hudTopBottom') ?? 'top';
+
+  const buttonPos = '.' + settingHudColClass.toLowerCase();
+
+  const col = html.find(buttonPos);
+  if (settingHudTopBottomClass === 'top') {
+    col.prepend(button);
+  } else {
+    col.append(button);
+  }
+  return button;
+}
+*/

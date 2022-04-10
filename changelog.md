@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.2.18
+
+- Some bug fix and some new module setting
+
 ## v0.2.17
 
 - Some bug fix courtesy of @dev7355608 

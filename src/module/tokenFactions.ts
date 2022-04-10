@@ -1,7 +1,6 @@
-import { TokenData } from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs';
+import type { TokenData } from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs';
 import { i18n } from './lib/lib';
 import { FactionGraphic } from './TokenFactionsModels';
-import { canvas, game } from './settings';
 import CONSTANTS from './constants';
 
 export class TokenFactions {
@@ -322,20 +321,35 @@ export class TokenFactions {
     if (!game.user?.isGM) {
       return;
     }
-    if (!game.settings.get(CONSTANTS.MODULE_NAME, 'enableHud')) {
+    if (!game.settings.get(CONSTANTS.MODULE_NAME, 'hudEnable')) {
       return;
     }
     if (!app?.object?.document) {
       return;
     }
-    const buttonPos = game.settings.get(CONSTANTS.MODULE_NAME, 'hudPos');
+
     const borderButton = `<div class="control-icon factionBorder ${
       app.object.document.getFlag(CONSTANTS.MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE)
         ? 'active'
         : ''
     }" title="Toggle Faction Border"> <i class="fas fa-angry"></i></div>`;
+    /*
+    const buttonPos = game.settings.get(CONSTANTS.MODULE_NAME, 'hudPos');
     const Pos = html.find(buttonPos);
     Pos.append(borderButton);
+    */
+    const settingHudColClass = <string>game.settings.get(CONSTANTS.MODULE_NAME, 'hudColumn') ?? '.right';
+    const settingHudTopBottomClass = <string>game.settings.get(CONSTANTS.MODULE_NAME, 'hudTopBottom') ?? 'bottom';
+  
+    const buttonPos = '.' + settingHudColClass.toLowerCase();
+  
+    const col = html.find(buttonPos);
+    if (settingHudTopBottomClass === 'top') {
+      col.prepend(borderButton);
+    } else {
+      col.append(borderButton);
+    }
+
     html.find('.factionBorder').click(this.ToggleBorder.bind(app));
   }
 
@@ -376,9 +390,9 @@ export class TokenFactions {
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     return result
       ? {
-          r: parseInt(result[1], 16),
-          g: parseInt(result[2], 16),
-          b: parseInt(result[3], 16),
+          r: parseInt(<string>result[1], 16),
+          g: parseInt(<string>result[2], 16),
+          b: parseInt(<string>result[3], 16),
         }
       : null;
   }
@@ -439,7 +453,7 @@ export class TokenFactions {
       tokens.push(tokenDoc);
     }
 
-    tokens.forEach((tokenDoc) => {
+    tokens.forEach((tokenDoc:TokenDocument) => {
       if (tokenDoc) {
         const tokenID = tokenDoc.id;
         const sceneID = <string>(<Token>canvas.tokens?.get(<string>tokenDoc.id)).scene.id;

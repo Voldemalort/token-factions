@@ -15,7 +15,6 @@
 import { registerSettings } from './module/settings';
 import { preloadTemplates } from './module/preloadTemplates';
 import { initHooks, readyHooks } from './module/module';
-import { game } from './module/settings';
 import CONSTANTS from './module/constants';
 
 /* ------------------------------------ */
@@ -80,5 +79,5 @@ Hooks.once('init', () => {
 
 Hooks.once('libChangelogsReady', function () {
   //@ts-ignore
-  libChangelogs.register(CONSTANTS.MODULE_NAME, '- Some bug fix courtesy of @dev7355608 ', 'minor');
+  libChangelogs.register(CONSTANTS.MODULE_NAME, '- Some bug fix and some new module setting', 'minor');
 });
