@@ -29,10 +29,10 @@ export const readyHooks = () => {
       .append(`<input type="color" value="${hC}" data-edit="token-factions.hostileColor">`);
     el.find('[name="token-factions.controlledColor"]')
       .parent()
-      .append(`<input type="color"value="${cC}" data-edit="token-factions.controlledColor">`);
+      .append(`<input type="color" value="${cC}" data-edit="token-factions.controlledColor">`);
     el.find('[name="token-factions.partyColor"]')
       .parent()
-      .append(`<input type="color"value="${pC}" data-edit="token-factions.partyColor">`);
+      .append(`<input type="color" value="${pC}" data-edit="token-factions.partyColor">`);
 
     el.find('[name="token-factions.neutralColorEx"]')
       .parent()
@@ -45,20 +45,20 @@ export const readyHooks = () => {
       .append(`<input type="color" value="${hCE}" data-edit="token-factions.hostileColorEx">`);
     el.find('[name="token-factions.controlledColorEx"]')
       .parent()
-      .append(`<input type="color"value="${cCE}" data-edit="token-factions.controlledColorEx">`);
+      .append(`<input type="color" value="${cCE}" data-edit="token-factions.controlledColorEx">`);
     el.find('[name="token-factions.partyColorEx"]')
       .parent()
-      .append(`<input type="color"value="${pCE}" data-edit="token-factions.partyColorEx">`);
+      .append(`<input type="color" value="${pCE}" data-edit="token-factions.partyColorEx">`);
 
     el.find('[name="token-factions.actorFolderColorEx"]')
       .parent()
-      .append(`<input type="color"value="${gS}" data-edit="token-factions.actorFolderColorEx">`);
+      .append(`<input type="color" value="${gS}" data-edit="token-factions.actorFolderColorEx">`);
     el.find('[name="token-factions.customDispositionColorEx"]')
       .parent()
-      .append(`<input type="color"value="${gE}" data-edit="token-factions.customDispositionColorEx">`);
+      .append(`<input type="color" value="${gE}" data-edit="token-factions.customDispositionColorEx">`);
     // el.find('[name="token-factions.healthGradientC"]')
     //  .parent()
-    //  .append(`<input type="color"value="${gT}" data-edit="token-factions.healthGradientC">`)
+    //  .append(`<input type="color" value="${gT}" data-edit="token-factions.healthGradientC">`)
   });
 
   if (game.settings.get(CONSTANTS.MODULE_NAME, 'tokenFactionsEnabled')) {
