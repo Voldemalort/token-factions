@@ -79,5 +79,9 @@ Hooks.once('init', () => {
 
 Hooks.once('libChangelogsReady', function () {
   //@ts-ignore
-  libChangelogs.register(CONSTANTS.MODULE_NAME, '- Some bug fix and some new module setting', 'minor');
+  libChangelogs.register(CONSTANTS.MODULE_NAME, 
+  `
+  - Bug fix: [[BUG] "Circular Borders" doesn't scale with "Scale Borders"](https://github.com/p4535992/token-factions/issues/13)
+  `, 
+  'minor');
 });

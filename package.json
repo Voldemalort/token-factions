@@ -3,12 +3,8 @@
   "name": "token-factions",
   "title": "Generate token bases based on token disposition or actor folder color.",
   "description": "Generate token bases based on token disposition or actor folder color.",
-  "version": "0.2.18",
-  "main": "module.js",
-  "repository": {
-    "type": "git",
-    "url": "git@github-voldemalort:Voldemalort/token-factions.git"
-  },
+  "version": "0.2.19",
+  "main": "main.js",
   "scripts": {
     "package": "gulp package",
     "build": "gulp build && gulp link",
@@ -22,7 +18,7 @@
   "author": "",
   "license": "",
   "devDependencies": {
-    "@league-of-foundry-developers/foundry-vtt-types": "^9.255.3",
+    "@league-of-foundry-developers/foundry-vtt-types": "^9.268.0",
     "@types/jquery": "^3.5.14",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",

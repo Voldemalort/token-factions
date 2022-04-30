@@ -822,9 +822,9 @@ export class TokenFactions {
         //@ts-ignore
         factionBorder
           .beginFill(borderColor.EX, baseOpacity)
+          .lineStyle(t * nBS, borderColor.EX, 0.8)
           .drawCircle(token.w / 2, token.h / 2, (token.w / 2) * s + t + p)
           .beginTextureFill({ texture: textureEX, color: borderColor.EX, alpha: baseOpacity })
-          .lineStyle(t * nBS, borderColor.EX, 0.8)
           .endFill();
         // .lineStyle(t*nBS, borderColor.EX, 0.8)
         // .drawCircle(token.w / 2, token.h / 2, (token.w / 2) * s + t + p);
@@ -832,20 +832,22 @@ export class TokenFactions {
         //@ts-ignore
         factionBorder
           .beginFill(borderColor.INT, baseOpacity)
+          .lineStyle(h * nBS, borderColor.INT, 1.0)
           .drawCircle(token.w / 2, token.h / 2, (token.w / 2) * s + h + t / 2 + p)
           .beginTextureFill({ texture: textureINT, color: borderColor.INT, alpha: baseOpacity })
-          .lineStyle(h * nBS, borderColor.INT, 1.0)
           .endFill();
         // .lineStyle(h*nBS, borderColor.INT, 1.0)
         // .drawCircle(token.w / 2, token.h / 2, (token.w / 2) * s + h + t / 2 + p);
       }
       //@ts-ignore
-      factionBorder.lineStyle(t * nBS, borderColor.EX, 0.8).drawCircle(token.w / 2, token.h / 2, token.w / 2 + t + p);
+      factionBorder
+        .lineStyle(t * nBS, borderColor.EX, 0.8)
+        .drawCircle(token.w / 2, token.h / 2, (token.w / 2) * s + t + p);
 
       //@ts-ignore
       factionBorder
         .lineStyle(h * nBS, borderColor.INT, 1.0)
-        .drawCircle(token.w / 2, token.h / 2, token.w / 2 + h + t / 2 + p);
+        .drawCircle(token.w / 2, token.h / 2, (token.w / 2) * s + h + t / 2 + p);
     }
     //@ts-ignore
     else if (hexTypes.includes(canvas.grid?.type) && token.data.width === 1 && token.data.height === 1) {
@@ -863,9 +865,9 @@ export class TokenFactions {
         //@ts-ignore
         factionBorder
           .beginFill(borderColor.EX, baseOpacity)
+          .lineStyle(t * nBS, borderColor.EX, 0.8)
           .drawPolygon(polygon)
           .beginTextureFill({ texture: textureEX, color: borderColor.EX, alpha: baseOpacity })
-          .lineStyle(t * nBS, borderColor.EX, 0.8)
           .endFill();
         // .lineStyle(t*nBS, borderColor.EX, 0.8)
         // .drawPolygon(polygon);
@@ -873,9 +875,9 @@ export class TokenFactions {
         //@ts-ignore
         factionBorder
           .beginFill(borderColor.INT, baseOpacity)
+          .lineStyle((t * nBS) / 2, borderColor.INT, 1.0)
           .drawPolygon(polygon)
           .beginTextureFill({ texture: textureINT, color: borderColor.INT, alpha: baseOpacity })
-          .lineStyle((t * nBS) / 2, borderColor.INT, 1.0)
           .endFill();
         // .lineStyle(t*nBS / 2, borderColor.INT, 1.0)
         // .drawPolygon(polygon);
@@ -898,9 +900,9 @@ export class TokenFactions {
         //@ts-ignore
         factionBorder
           .beginFill(borderColor.EX, baseOpacity)
+          .lineStyle(t * nBS, borderColor.EX, 0.8)
           .drawRoundedRect(-o - q + sW, -o - q + sH, (token.w + h) * s + p, (token.h + h) * s + p, 3)
           .beginTextureFill({ texture: textureEX, color: borderColor.EX, alpha: baseOpacity })
-          .lineStyle(t * nBS, borderColor.EX, 0.8)
           .endFill();
         // .lineStyle(t*nBS, borderColor.EX, 0.8)
         // .drawRoundedRect(-o - q + sW, -o - q + sH, (token.w + h) * s + p, (token.h + h) * s + p, 3);
@@ -908,9 +910,9 @@ export class TokenFactions {
         //@ts-ignore
         factionBorder
           .beginFill(borderColor.INT, baseOpacity)
+          .lineStyle(h * nBS, borderColor.INT, 1.0)
           .drawRoundedRect(-o - q + sW, -o - q + sH, (token.w + h) * s + p, (token.h + h) * s + p, 3)
           .beginTextureFill({ texture: textureINT, color: borderColor.INT, alpha: baseOpacity })
-          .lineStyle(h * nBS, borderColor.INT, 1.0)
           .endFill();
         // .lineStyle(h*nBS, borderColor.INT, 1.0)
         // .drawRoundedRect(-o - q + sW, -o - q + sH, (token.w + h) * s + p, (token.h + h) * s + p, 3);
