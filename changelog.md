@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### v0.2.20
+
+- Little bug fix on hud feature position
+
 ### v0.2.19
 
 - Bug fix: [[BUG] "Circular Borders" doesn't scale with "Scale Borders"](https://github.com/p4535992/token-factions/issues/13)

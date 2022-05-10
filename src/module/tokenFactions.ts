@@ -338,7 +338,7 @@ export class TokenFactions {
     const Pos = html.find(buttonPos);
     Pos.append(borderButton);
     */
-    const settingHudColClass = <string>game.settings.get(CONSTANTS.MODULE_NAME, 'hudColumn') ?? '.right';
+    const settingHudColClass = <string>game.settings.get(CONSTANTS.MODULE_NAME, 'hudColumn') ?? 'right';
     const settingHudTopBottomClass = <string>game.settings.get(CONSTANTS.MODULE_NAME, 'hudTopBottom') ?? 'bottom';
 
     const buttonPos = '.' + settingHudColClass.toLowerCase();

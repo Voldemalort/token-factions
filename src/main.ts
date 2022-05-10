@@ -81,7 +81,7 @@ Hooks.once('libChangelogsReady', function () {
   //@ts-ignore
   libChangelogs.register(CONSTANTS.MODULE_NAME, 
   `
-  - Bug fix: [[BUG] "Circular Borders" doesn't scale with "Scale Borders"](https://github.com/p4535992/token-factions/issues/13)
+  - Little bug fix on hud feature position
   `, 
   'minor');
 });
