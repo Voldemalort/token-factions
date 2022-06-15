@@ -359,12 +359,19 @@ export class TokenFactions {
       CONSTANTS.MODULE_NAME,
       TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE,
     );
+
+    for (const token of <Token[]>canvas.tokens?.controlled) {
+      //@ts-ignore
+      await token.document.setFlag(CONSTANTS.MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE, !border);
+    }
+    /*
     //@ts-ignore
     await this.object.document.setFlag(
       CONSTANTS.MODULE_NAME,
       TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE,
       !border,
     );
+    */
     event.currentTarget.classList.toggle('active', !border);
     //@ts-ignore
     // TokenFactions.updateToken(this.object);

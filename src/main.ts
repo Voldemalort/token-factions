@@ -14,8 +14,10 @@
 // Import TypeScript modules
 import { registerSettings } from './module/settings';
 import { preloadTemplates } from './module/preloadTemplates';
-import { initHooks, readyHooks } from './module/module';
+import { initHooks, readyHooks, setupHooks } from './module/module';
 import CONSTANTS from './module/constants';
+import type API from './module/api';
+import { error } from './module/lib/lib';
 
 /* ------------------------------------ */
 /* Initialize module					*/
@@ -25,17 +27,16 @@ Hooks.once('init', () => {
 
   // Do anything once the module is ready
   if (!game.modules.get('lib-wrapper')?.active && game.user?.isGM) {
-    ui.notifications?.error(
-      `The '${CONSTANTS.MODULE_NAME}' module requires to install and activate the 'libWrapper' module.`,
-    );
-    return;
+    let word = 'install and activate';
+    if (game.modules.get('lib-wrapper')) word = 'activate';
+    throw error(`Requires the 'libWrapper' module. Please ${word} it.`);
   }
 
   // Register custom module settings
   registerSettings();
 
   initHooks();
-  readyHooks();
+  //readyHooks();
 
   // Assign custom classes and constants here
 
@@ -48,40 +49,65 @@ Hooks.once('init', () => {
   // Register custom sheets (if any)
 });
 
-// /* ------------------------------------ */
-// /* Setup module							*/
-// /* ------------------------------------ */
-// Hooks.once('setup', function () {
-//   // Do anything after initialization but before ready
-//   // setupModules();
+/* ------------------------------------ */
+/* Setup module							*/
+/* ------------------------------------ */
+Hooks.once('setup', function () {
+  // Do anything after initialization but before ready
+  //setupModules();
 
-//   registerSettings();
+  setupHooks();
 
-//   // setupHooks();
-// });
+  //registerSettings();
+});
 
-// /* ------------------------------------ */
-// /* When ready							*/
-// /* ------------------------------------ */
-// Hooks.once('ready', () => {
-//   // Do anything once the module is ready
-//   if (!game.modules.get('lib-wrapper')?.active && game.user?.isGM) {
-//     ui.notifications?.error(
-//       `The '${CONSTANTS.MODULE_NAME}' module requires to install and activate the 'libWrapper' module.`,
-//     );
-//     return;
-//   }
-
-//   readyHooks();
-// });
+/* ------------------------------------ */
+/* When ready							*/
+/* ------------------------------------ */
+Hooks.once('ready', () => {
+  // Do anything once the module is ready
+  readyHooks();
+});
 
 // Add any additional hooks if necessary
 
-Hooks.once('libChangelogsReady', function () {
-  //@ts-ignore
-  libChangelogs.register(CONSTANTS.MODULE_NAME, 
-  `
-  - Little bug fix on hud feature position
-  `, 
-  'minor');
-});
+export interface TokenFactionsModuleData {
+  api: typeof API;
+  socket: any;
+}
+
+/**
+ * Initialization helper, to set API.
+ * @param api to set to game module.
+ */
+export function setApi(api: typeof API): void {
+  const data = game.modules.get(CONSTANTS.MODULE_NAME) as unknown as TokenFactionsModuleData;
+  data.api = api;
+}
+
+/**
+ * Returns the set API.
+ * @returns Api from games module.
+ */
+export function getApi(): typeof API {
+  const data = game.modules.get(CONSTANTS.MODULE_NAME) as unknown as TokenFactionsModuleData;
+  return data.api;
+}
+
+/**
+ * Initialization helper, to set Socket.
+ * @param socket to set to game module.
+ */
+export function setSocket(socket: any): void {
+  const data = game.modules.get(CONSTANTS.MODULE_NAME) as unknown as TokenFactionsModuleData;
+  data.socket = socket;
+}
+
+/*
+ * Returns the set socket.
+ * @returns Socket from games module.
+ */
+export function getSocket() {
+  const data = game.modules.get(CONSTANTS.MODULE_NAME) as unknown as TokenFactionsModuleData;
+  return data.socket;
+}

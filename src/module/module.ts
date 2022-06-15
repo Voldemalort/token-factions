@@ -2,8 +2,13 @@ import { warn, error, debug, i18n } from './lib/lib';
 import { TokenFactions } from './tokenFactions';
 import type { TokenData } from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs';
 import CONSTANTS from './constants';
+import { setApi } from '../main';
+import API from './api';
 
-export const readyHooks = () => {
+export const initHooks = async () => {
+  warn('Init Hooks processing');
+  TokenFactions.onInit();
+
   Hooks.on('renderSettingsConfig', (app, el, data) => {
     const nC = game.settings.get(CONSTANTS.MODULE_NAME, 'neutralColor');
     const fC = game.settings.get(CONSTANTS.MODULE_NAME, 'friendlyColor');
@@ -146,13 +151,12 @@ export const readyHooks = () => {
   }
 };
 
-// export const setupHooks = async () => {
+export const setupHooks = async (): Promise<void> => {
+  setApi(API);
+};
 
-// };
-
-export const initHooks = async () => {
-  warn('Init Hooks processing');
-  TokenFactions.onInit();
+export const readyHooks = () => {
+  // DO NOTHING
 };
 
 export const TokenPrototypeRefreshHandler = function (wrapped, ...args) {

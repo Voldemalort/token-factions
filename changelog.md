@@ -1,5 +1,10 @@
 # CHANGELOG
 
+### v0.2.21
+
+- Bug fix [Toggle Border for Multiple Tokens at Once](https://github.com/p4535992/token-factions/issues/14)
+- Add some API functions for enable and disable border
+
 ### v0.2.20
 
 - Little bug fix on hud feature position

@@ -131,6 +131,27 @@ You can enable/disable the faction style for single token with a new hud button
 
 ![img6](./docs/feature_hud_off.png)
 
+# API
+
+### async game.modules.get('token-factions').api.disableDrawBorderFactionsFromTokens(tokenIdsOrNames:string[]) ⇒ <code>Promise&lt;void&gt;
+
+### async game.modules.get('token-factions').api.disableDrawBorderFactionsFromToken(tokenIdOrName:string) ⇒ <code>Promise&lt;void&gt;
+
+### async game.modules.get('token-factions').api.enableDrawBorderFactionsFromTokens(tokenIdsOrNames:string[]) ⇒ <code>Promise&lt;void&gt;
+
+### async game.modules.get('token-factions').api.enableDrawBorderFactionsFromToken(tokenIdOrName:string) ⇒ <code>Promise&lt;void&gt;
+
+A method to calculate the weight (the one from the module filters) on the actor
+
+**Returns**: <code>number</code>
+
+| Param | Type | Description | Default |
+| --- | --- | --- | --- |
+| actorIdOrName | <code>string</code> | The actor id or name (if founded) | <code>undefined</code> |
+
+
+
+
 # Build
 
 ## Install all packages
