@@ -133,21 +133,49 @@ You can enable/disable the faction style for single token with a new hud button
 
 # API
 
-### async game.modules.get('token-factions').api.disableDrawBorderFactionsFromTokens(tokenIdsOrNames:string[]) ⇒ <code>Promise&lt;void&gt;
+### async game.modules.get('token-factions').api.disableDrawBorderFactionsFromTokens(tokenIdsOrNames:string[]) ⇒ <code>Promise&lt;void&gt;</code>
 
-### async game.modules.get('token-factions').api.disableDrawBorderFactionsFromToken(tokenIdOrName:string) ⇒ <code>Promise&lt;void&gt;
+A method to disable the draw border factions on a array of tokens on the canvas founded by id or name
 
-### async game.modules.get('token-factions').api.enableDrawBorderFactionsFromTokens(tokenIdsOrNames:string[]) ⇒ <code>Promise&lt;void&gt;
-
-### async game.modules.get('token-factions').api.enableDrawBorderFactionsFromToken(tokenIdOrName:string) ⇒ <code>Promise&lt;void&gt;
-
-A method to calculate the weight (the one from the module filters) on the actor
-
-**Returns**: <code>number</code>
+**Returns**: <code>Promise&lt;void&gt;</code>
 
 | Param | Type | Description | Default |
 | --- | --- | --- | --- |
-| actorIdOrName | <code>string</code> | The actor id or name (if founded) | <code>undefined</code> |
+| tokenIdsOrNames | <code>string[]</code> | The array of token ids or names (if founded) | <code>undefined</code> |
+
+### async game.modules.get('token-factions').api.disableDrawBorderFactionsFromToken(tokenIdOrName:string) ⇒ <code>Promise&lt;void&gt;</code>
+
+
+A method to disable the draw border factions on a token founded by id or name
+
+**Returns**: <code>Promise&lt;void&gt;</code>
+
+| Param | Type | Description | Default |
+| --- | --- | --- | --- |
+| tokenIdOrName | <code>string</code> | The token id or name (if founded) | <code>undefined</code> |
+
+
+### async game.modules.get('token-factions').api.enableDrawBorderFactionsFromTokens(tokenIdsOrNames:string[]) ⇒ <code>Promise&lt;void&gt;</code>
+
+A method to enable the draw border factions on a array of tokens on the canvas founded by id or name
+
+**Returns**: <code>Promise&lt;void&gt;</code>
+
+| Param | Type | Description | Default |
+| --- | --- | --- | --- |
+| tokenIdsOrNames | <code>string[]</code> | The array of token ids or names (if founded) | <code>undefined</code> |
+
+
+### async game.modules.get('token-factions').api.enableDrawBorderFactionsFromToken(tokenIdOrName:string) ⇒ <code>Promise&lt;void&gt;</code>
+
+
+A method to enable the draw border factions on a token founded by id or name
+
+**Returns**: <code>Promise&lt;void&gt;</code>
+
+| Param | Type | Description | Default |
+| --- | --- | --- | --- |
+| tokenIdOrName | <code>string</code> | The token id or name (if founded) | <code>undefined</code> |
 
 
 
