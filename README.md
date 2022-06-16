@@ -125,7 +125,8 @@ Setting this value to anything lower than 1 will allow the map background or tok
 
 ### Enable/Disable the faction on the single token on the canvas
 
-You can enable/disable the faction style for single token with a new hud button
+- Left click: You can enable/disable the faction style for single token with a new hud button
+- Right click: Open a dialog for customize the border color
 
 ![img7](./docs/custom-picker-color-token.gif)
 
