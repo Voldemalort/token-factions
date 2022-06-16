@@ -3,7 +3,7 @@
   "name": "token-factions",
   "title": "Generate token bases based on token disposition or actor folder color.",
   "description": "Generate token bases based on token disposition or actor folder color.",
-  "version": "0.2.21",
+  "version": "0.2.22",
   "main": "main.js",
   "scripts": {
     "package": "gulp package",

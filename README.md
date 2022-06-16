@@ -127,9 +127,7 @@ Setting this value to anything lower than 1 will allow the map background or tok
 
 You can enable/disable the faction style for single token with a new hud button
 
-![img5](./docs/feature_hud_on.png)
-
-![img6](./docs/feature_hud_off.png)
+![img7](./docs/custom-picker-color-token.gif)
 
 # API
 

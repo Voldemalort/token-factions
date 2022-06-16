@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### v0.2.22
+
+- NEW FEATURE: Add custom color picker for every single token
+
 ### v0.2.21
 
 - Bug fix [Toggle Border for Multiple Tokens at Once](https://github.com/p4535992/token-factions/issues/14)

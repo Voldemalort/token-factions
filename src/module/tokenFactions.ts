@@ -20,6 +20,10 @@ export class TokenFactions {
     FACTION_DRAW_FRAME: 'factionDrawFrame', //'draw-frame',
     FACTION_DISABLE: 'factionDisable', // 'disable'
     // FACTION_NO_BORDER: 'factionNoBorder', // noBorder
+    FACTION_CUSTOM_COLOR_INT: 'factionCustomColorInt',
+    FACTION_CUSTOM_COLOR_EXT: 'factionCustomColorExt',
+    FACTION_CUSTOM_FRAME_OPACITY: 'factionCustomFrameOpacity',
+    FACTION_CUSTOM_BASE_OPACITY: 'factionCustomBaseOpacity',
   };
 
   static TOKEN_FACTIONS_FRAME_STYLE = {
@@ -112,25 +116,23 @@ export class TokenFactions {
     )
       ? 'checked'
       : '';
-    /*
-    const drawFramesByDefault = game.settings.get(CONSTANTS.MODULE_NAME, 'draw-frames-by-default');
-    const drawFrameOverride = token.getFlag(
-      CONSTANTS.MODULE_NAME,
-      TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DRAW_FRAME,
-    );
-    const drawFrame = drawFrameOverride === undefined ? drawFramesByDefault : drawFrameOverride;
-    const checked = drawFrame ? ' checked="checked"' : '';
 
-    html.find('input[name="mirrorY"]').parent().after(`\
-      <div class="form-group">
-        <label>Disable Faction Disposition Visualization</label>
-        <input type="checkbox" name="flags.${CONSTANTS.MODULE_NAME}.${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}" data-dtype="Boolean"${isDisabled}>
-      </div>
-        <div class="form-group">
-          <label>Overlay A Faction-Based Frame</label>
-          <input type="checkbox" name="flags.${CONSTANTS.MODULE_NAME}.${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DRAW_FRAME}" data-dtype="Boolean"${checked}>
-        </div>`);
-    */
+    const currentCustomColorTokenInt =
+      config.object.getFlag(CONSTANTS.MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_CUSTOM_COLOR_INT) ||
+      '#000000';
+
+    const currentCustomColorTokenExt =
+      config.object.getFlag(CONSTANTS.MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_CUSTOM_COLOR_EXT) ||
+      '#000000';
+
+    const currentCustomColorTokenFrameOpacity =
+      config.object.getFlag(CONSTANTS.MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_CUSTOM_FRAME_OPACITY) ||
+      0.5;
+
+    const currentCustomColorTokenBaseOpacity =
+      config.object.getFlag(CONSTANTS.MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_CUSTOM_BASE_OPACITY) ||
+      0.5;
+
     // Expand the width
     config.position.width = 540;
     config.setPosition(config.position);
@@ -152,7 +154,38 @@ export class TokenFactions {
           data-edit="flags.${CONSTANTS.MODULE_NAME}.${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}"
           name="flags.${CONSTANTS.MODULE_NAME}.${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE}"
           data-dtype="Boolean" ${factionDisableValue}>
-      </div>`;
+      </div>
+      <div class="form-group">
+        <label>${i18n('token-factions.label.factionsCustomColorTokenInt')}</label>
+        <input type="color"
+          data-edit="flags.${CONSTANTS.MODULE_NAME}.${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_CUSTOM_COLOR_INT}"
+          name="flags.${CONSTANTS.MODULE_NAME}.${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_CUSTOM_COLOR_INT}"
+          data-dtype="String" value="${currentCustomColorTokenInt}"></input>
+      </div>
+      <div class="form-group">
+        <label>${i18n('token-factions.label.factionsCustomColorTokenExt')}</label>
+        <input type="color"
+          data-edit="flags.${CONSTANTS.MODULE_NAME}.${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_CUSTOM_COLOR_EXT}"
+          name="flags.${CONSTANTS.MODULE_NAME}.${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_CUSTOM_COLOR_EXT}"
+          data-dtype="String" value="${currentCustomColorTokenExt}"></input>
+      </div>
+      <div class="form-group">
+        <label>${i18n('token-factions.label.factionsCustomColorTokenFrameOpacity')}</label>
+        <input type="number"
+          min="0" max="1" step="0.1"
+          data-edit="flags.${CONSTANTS.MODULE_NAME}.${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_CUSTOM_FRAME_OPACITY}"
+          name="flags.${CONSTANTS.MODULE_NAME}.${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_CUSTOM_FRAME_OPACITY}"
+          data-dtype="Number" value="${currentCustomColorTokenFrameOpacity}"></input>
+      </div>
+      <div class="form-group">
+        <label>${i18n('token-factions.label.factionsCustomColorTokenBaseOpacity')}</label>
+        <input type="number"
+          min="0" max="1" step="0.1"
+          data-edit="flags.${CONSTANTS.MODULE_NAME}.${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_CUSTOM_BASE_OPACITY}"
+          name="flags.${CONSTANTS.MODULE_NAME}.${TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_CUSTOM_BASE_OPACITY}"
+          data-dtype="Number" value="${currentCustomColorTokenBaseOpacity}"></input>
+      </div>
+    `;
 
     nav
       .parent()
@@ -328,11 +361,17 @@ export class TokenFactions {
       return;
     }
 
-    const borderButton = `<div class="control-icon factionBorder ${
-      app.object.document.getFlag(CONSTANTS.MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE)
-        ? 'active'
-        : ''
-    }" title="Toggle Faction Border"> <i class="fas fa-angry"></i></div>`;
+    const factionDisableFlag = app.object.document.getFlag(
+      CONSTANTS.MODULE_NAME,
+      TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE,
+    );
+
+    const borderButton = `
+    <div class="control-icon factionBorder 
+      ${factionDisableFlag ? 'active' : ''}" 
+      title="Toggle Faction Border"> <i class="fas fa-angry"></i>
+    </div>`;
+
     /*
     const buttonPos = game.settings.get(CONSTANTS.MODULE_NAME, 'hudPos');
     const Pos = html.find(buttonPos);
@@ -351,30 +390,154 @@ export class TokenFactions {
     }
 
     html.find('.factionBorder').click(this.ToggleBorder.bind(app));
+    html.find('.factionBorder').contextmenu(this.ToggleCustomBorder.bind(app));
   }
 
   static async ToggleBorder(event) {
     //@ts-ignore
-    const border = this.object.document.getFlag(
+    const borderIsDisabled = this.object.document.getFlag(
       CONSTANTS.MODULE_NAME,
       TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE,
     );
 
     for (const token of <Token[]>canvas.tokens?.controlled) {
       //@ts-ignore
-      await token.document.setFlag(CONSTANTS.MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE, !border);
+      await token.document.setFlag(
+        CONSTANTS.MODULE_NAME,
+        TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE,
+        !borderIsDisabled,
+      );
+      if (borderIsDisabled) {
+        await token.document.unsetFlag(
+          CONSTANTS.MODULE_NAME,
+          TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_CUSTOM_COLOR_INT,
+        );
+        await token.document.unsetFlag(
+          CONSTANTS.MODULE_NAME,
+          TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_CUSTOM_COLOR_EXT,
+        );
+        await token.document.unsetFlag(
+          CONSTANTS.MODULE_NAME,
+          TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_CUSTOM_FRAME_OPACITY,
+        );
+        await token.document.unsetFlag(
+          CONSTANTS.MODULE_NAME,
+          TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_CUSTOM_BASE_OPACITY,
+        );
+      }
     }
-    /*
+
+    event.currentTarget.classList.toggle('active', !borderIsDisabled);
+  }
+
+  static async ToggleCustomBorder(event) {
     //@ts-ignore
-    await this.object.document.setFlag(
-      CONSTANTS.MODULE_NAME,
-      TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE,
-      !border,
-    );
-    */
-    event.currentTarget.classList.toggle('active', !border);
-    //@ts-ignore
-    // TokenFactions.updateToken(this.object);
+    const tokenTmp = <Token>this.object;
+
+    const currentCustomColorTokenInt =
+      tokenTmp.document.getFlag(CONSTANTS.MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_CUSTOM_COLOR_INT) ||
+      '#000000';
+
+    const currentCustomColorTokenExt =
+      tokenTmp.document.getFlag(CONSTANTS.MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_CUSTOM_COLOR_EXT) ||
+      '#000000';
+
+    const currentCustomColorTokenFrameOpacity =
+      tokenTmp.document.getFlag(
+        CONSTANTS.MODULE_NAME,
+        TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_CUSTOM_FRAME_OPACITY,
+      ) || 0.5;
+
+    const currentCustomColorTokenBaseOpacity =
+      tokenTmp.document.getFlag(
+        CONSTANTS.MODULE_NAME,
+        TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_CUSTOM_BASE_OPACITY,
+      ) || 0.5;
+
+    const dialogContent = `
+      <div class="form-group">
+        <label>${i18n('token-factions.label.factionsCustomColorTokenInt')}</label>
+        <input type="color" 
+          value="${currentCustomColorTokenInt}" 
+          data-edit="token-factions.currentCustomColorTokenInt"></input>
+      </div>
+      <div class="form-group">
+        <label>${i18n('token-factions.label.factionsCustomColorTokenExt')}</label>
+        <input type="color" 
+          value="${currentCustomColorTokenExt}" 
+          data-edit="token-factions.currentCustomColorTokenExt"></input>
+      </div>
+      <div class="form-group">
+        <label>${i18n('token-factions.label.factionsCustomColorTokenFrameOpacity')}</label>
+        <input type="number"
+          min="0" max="1" step="0.1"
+          value="${currentCustomColorTokenFrameOpacity}" 
+          data-edit="token-factions.currentCustomColorTokenFrameOpacity"></input>
+      </div>
+      <div class="form-group">
+        <label>${i18n('token-factions.label.factionsCustomColorTokenBaseOpacity')}</label>
+        <input type="number"
+          min="0" max="1" step="0.1"
+          value="${currentCustomColorTokenBaseOpacity}" 
+          data-edit="token-factions.currentCustomColorTokenBaseOpacity"></input>
+      </div>
+      `;
+
+    const d = new Dialog({
+      title: i18n('token-factions.label.chooseCustomColorToken'),
+      content: dialogContent,
+      buttons: {
+        yes: {
+          label: i18n('token-factions.label.applyCustomColor'),
+          callback: async (html: JQuery<HTMLElement>) => {
+            const newCurrentCustomColorTokenInt = <string>(
+              $(<HTMLElement>html.find(`input[data-edit='token-factions.currentCustomColorTokenInt']`)[0]).val()
+            );
+            const newCurrentCustomColorTokenExt = <string>(
+              $(<HTMLElement>html.find(`input[data-edit='token-factions.currentCustomColorTokenExt']`)[0]).val()
+            );
+            const newCurrentCustomColorTokenFrameOpacity = <string>(
+              $(
+                <HTMLElement>html.find(`input[data-edit='token-factions.currentCustomColorTokenFrameOpacity']`)[0],
+              ).val()
+            );
+            const newCurrentCustomColorTokenBaseOpacity = <string>(
+              $(<HTMLElement>html.find(`input[data-edit='token-factions.currentCustomColorTokenBaseOpacity']`)[0]).val()
+            );
+            for (const token of <Token[]>canvas.tokens?.controlled) {
+              token.document.setFlag(
+                CONSTANTS.MODULE_NAME,
+                TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_CUSTOM_COLOR_INT,
+                newCurrentCustomColorTokenInt,
+              );
+              token.document.setFlag(
+                CONSTANTS.MODULE_NAME,
+                TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_CUSTOM_COLOR_EXT,
+                newCurrentCustomColorTokenExt,
+              );
+              token.document.setFlag(
+                CONSTANTS.MODULE_NAME,
+                TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_CUSTOM_FRAME_OPACITY,
+                newCurrentCustomColorTokenFrameOpacity,
+              );
+              token.document.setFlag(
+                CONSTANTS.MODULE_NAME,
+                TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_CUSTOM_BASE_OPACITY,
+                newCurrentCustomColorTokenBaseOpacity,
+              );
+            }
+          },
+        },
+        no: {
+          label: i18n('token-factions.label.doNothing'),
+          callback: (html) => {
+            // Do nothing
+          },
+        },
+      },
+      default: 'no',
+    });
+    d.render(true);
   }
 
   private static clamp(value, max, min) {
@@ -547,6 +710,25 @@ export class TokenFactions {
       if (disposition) {
         color = <string>game.settings.get(CONSTANTS.MODULE_NAME, `custom-${disposition}-color`);
       }
+    }
+
+    const currentCustomColorTokenInt = token.document.getFlag(
+      CONSTANTS.MODULE_NAME,
+      TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_CUSTOM_COLOR_INT,
+    );
+    const currentCustomColorTokenExt = token.document.getFlag(
+      CONSTANTS.MODULE_NAME,
+      TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_CUSTOM_COLOR_EXT,
+    );
+
+    if (currentCustomColorTokenInt && currentCustomColorTokenInt != '#000000') {
+      return {
+        INT: parseInt(String(currentCustomColorTokenInt).substr(1), 16),
+        EX: parseInt(String(currentCustomColorTokenExt).substr(1), 16),
+        ICON: '',
+        TEXTURE_INT: PIXI.Texture.EMPTY,
+        TEXTURE_EX: PIXI.Texture.EMPTY,
+      } as FactionGraphic;
     }
 
     const overrides = {
@@ -808,8 +990,22 @@ export class TokenFactions {
     const sW = sB ? (token.w - token.w * s) / 2 : 0;
     const sH = sB ? (token.h - token.h * s) / 2 : 0;
 
-    const frameOpacity = <number>game.settings.get(CONSTANTS.MODULE_NAME, 'frame-opacity') || 0.5;
-    const baseOpacity = <number>game.settings.get(CONSTANTS.MODULE_NAME, 'base-opacity') || 0.5;
+    let frameOpacity = <number>game.settings.get(CONSTANTS.MODULE_NAME, 'frame-opacity') || 0.5;
+    let baseOpacity = <number>game.settings.get(CONSTANTS.MODULE_NAME, 'base-opacity') || 0.5;
+
+    const customFrameOpacity = <number>(
+      token.document.getFlag(CONSTANTS.MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_CUSTOM_FRAME_OPACITY)
+    );
+    const customBaseOpacity = <number>(
+      token.document.getFlag(CONSTANTS.MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_CUSTOM_BASE_OPACITY)
+    );
+
+    if (customFrameOpacity && customFrameOpacity != 0.5) {
+      frameOpacity = customFrameOpacity;
+    }
+    if (customBaseOpacity && customBaseOpacity != 0.5) {
+      baseOpacity = customBaseOpacity;
+    }
 
     const textureINT = borderColor.TEXTURE_INT || PIXI.Texture.EMPTY; //await PIXI.Texture.fromURL(<string>token.data.img) || PIXI.Texture.EMPTY;
     const textureEX = borderColor.TEXTURE_EX || PIXI.Texture.EMPTY;

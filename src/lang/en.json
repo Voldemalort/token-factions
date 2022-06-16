@@ -126,5 +126,13 @@
 
   "token-factions.label.factions": "Factions",
   "token-factions.label.factionsCustomDisable": "Disable Faction Disposition",
-  "token-factions.label.factionsCustomColor": "Custom color faction"
+  "token-factions.label.factionsCustomColorTokenInt": "Custom color token (INT)",
+  "token-factions.label.factionsCustomColorTokenExt": "Custom color token (EXT)",
+  "token-factions.label.factionsCustomColorTokenFrameOpacity": "Custom color token Frame Opacity",
+  "token-factions.label.factionsCustomColorTokenBaseOpacity": "Custom color token Base Opacity",
+  "token-factions.label.factionsCustomColor": "Custom color faction",
+
+  "token-factions.label.chooseCustomColorToken": "Choose toogle border faction color",
+  "token-factions.label.applyCustomColor": "Apply custom color",
+  "token-factions.label.doNothing": "Do nothing"
 }
