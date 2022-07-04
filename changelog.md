@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### v0.2.23
+
+- Update API for better integration with other modules
+
 ### v0.2.22
 
 - NEW FEATURE: Add custom color picker for every single token

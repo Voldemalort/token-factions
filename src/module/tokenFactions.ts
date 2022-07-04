@@ -367,8 +367,8 @@ export class TokenFactions {
     );
 
     const borderButton = `
-    <div class="control-icon factionBorder 
-      ${factionDisableFlag ? 'active' : ''}" 
+    <div class="control-icon factionBorder
+      ${factionDisableFlag ? 'active' : ''}"
       title="Toggle Faction Border"> <i class="fas fa-angry"></i>
     </div>`;
 
@@ -457,28 +457,28 @@ export class TokenFactions {
     const dialogContent = `
       <div class="form-group">
         <label>${i18n('token-factions.label.factionsCustomColorTokenInt')}</label>
-        <input type="color" 
-          value="${currentCustomColorTokenInt}" 
+        <input type="color"
+          value="${currentCustomColorTokenInt}"
           data-edit="token-factions.currentCustomColorTokenInt"></input>
       </div>
       <div class="form-group">
         <label>${i18n('token-factions.label.factionsCustomColorTokenExt')}</label>
-        <input type="color" 
-          value="${currentCustomColorTokenExt}" 
+        <input type="color"
+          value="${currentCustomColorTokenExt}"
           data-edit="token-factions.currentCustomColorTokenExt"></input>
       </div>
       <div class="form-group">
         <label>${i18n('token-factions.label.factionsCustomColorTokenFrameOpacity')}</label>
         <input type="number"
           min="0" max="1" step="0.1"
-          value="${currentCustomColorTokenFrameOpacity}" 
+          value="${currentCustomColorTokenFrameOpacity}"
           data-edit="token-factions.currentCustomColorTokenFrameOpacity"></input>
       </div>
       <div class="form-group">
         <label>${i18n('token-factions.label.factionsCustomColorTokenBaseOpacity')}</label>
         <input type="number"
           min="0" max="1" step="0.1"
-          value="${currentCustomColorTokenBaseOpacity}" 
+          value="${currentCustomColorTokenBaseOpacity}"
           data-edit="token-factions.currentCustomColorTokenBaseOpacity"></input>
       </div>
       `;
@@ -688,7 +688,7 @@ export class TokenFactions {
     return;
   }
 
-  private static colorBorderFaction(token: Token): FactionGraphic {
+  public static colorBorderFaction(token: Token): FactionGraphic {
     const colorFrom = game.settings.get(CONSTANTS.MODULE_NAME, 'color-from');
     let color;
     let icon;
@@ -712,11 +712,11 @@ export class TokenFactions {
       }
     }
 
-    const currentCustomColorTokenInt = token.document.getFlag(
+    const currentCustomColorTokenInt = <string>token.document.getFlag(
       CONSTANTS.MODULE_NAME,
       TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_CUSTOM_COLOR_INT,
     );
-    const currentCustomColorTokenExt = token.document.getFlag(
+    const currentCustomColorTokenExt = <string>token.document.getFlag(
       CONSTANTS.MODULE_NAME,
       TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_CUSTOM_COLOR_EXT,
     );
@@ -728,6 +728,8 @@ export class TokenFactions {
         ICON: '',
         TEXTURE_INT: PIXI.Texture.EMPTY,
         TEXTURE_EX: PIXI.Texture.EMPTY,
+        INT_S: String(currentCustomColorTokenInt),
+        EX_S: String(currentCustomColorTokenExt),
       } as FactionGraphic;
     }
 
@@ -738,6 +740,8 @@ export class TokenFactions {
         ICON: '',
         TEXTURE_INT: PIXI.Texture.EMPTY,
         TEXTURE_EX: PIXI.Texture.EMPTY,
+        INT_S: String(game.settings.get(CONSTANTS.MODULE_NAME, 'controlledColor')),
+        EX_S: String(game.settings.get(CONSTANTS.MODULE_NAME, 'controlledColorEx')),
       } as FactionGraphic,
       FRIENDLY: {
         INT: parseInt(String(game.settings.get(CONSTANTS.MODULE_NAME, 'friendlyColor')).substr(1), 16),
@@ -745,6 +749,8 @@ export class TokenFactions {
         ICON: '',
         TEXTURE_INT: PIXI.Texture.EMPTY,
         TEXTURE_EX: PIXI.Texture.EMPTY,
+        INT_S: String(game.settings.get(CONSTANTS.MODULE_NAME, 'friendlyColor')),
+        EX_S: String(game.settings.get(CONSTANTS.MODULE_NAME, 'friendlyColorEx')),
       } as FactionGraphic,
       NEUTRAL: {
         INT: parseInt(String(game.settings.get(CONSTANTS.MODULE_NAME, 'neutralColor')).substr(1), 16),
@@ -752,6 +758,8 @@ export class TokenFactions {
         ICON: '',
         TEXTURE_INT: PIXI.Texture.EMPTY,
         TEXTURE_EX: PIXI.Texture.EMPTY,
+        INT_S: String(game.settings.get(CONSTANTS.MODULE_NAME, 'neutralColor')),
+        EX_S: String(game.settings.get(CONSTANTS.MODULE_NAME, 'neutralColorEx')),
       } as FactionGraphic,
       HOSTILE: {
         INT: parseInt(String(game.settings.get(CONSTANTS.MODULE_NAME, 'hostileColor')).substr(1), 16),
@@ -759,6 +767,8 @@ export class TokenFactions {
         ICON: '',
         TEXTURE_INT: PIXI.Texture.EMPTY,
         TEXTURE_EX: PIXI.Texture.EMPTY,
+        INT_S: String(game.settings.get(CONSTANTS.MODULE_NAME, 'hostileColor')),
+        EX_S: String(game.settings.get(CONSTANTS.MODULE_NAME, 'hostileColorEx')),
       } as FactionGraphic,
       PARTY: {
         INT: parseInt(String(game.settings.get(CONSTANTS.MODULE_NAME, 'partyColor')).substr(1), 16),
@@ -766,6 +776,8 @@ export class TokenFactions {
         ICON: '',
         TEXTURE_INT: PIXI.Texture.EMPTY,
         TEXTURE_EX: PIXI.Texture.EMPTY,
+        INT_S: String(game.settings.get(CONSTANTS.MODULE_NAME, 'partyColor')),
+        EX_S: String(game.settings.get(CONSTANTS.MODULE_NAME, 'partyColorEx')),
       } as FactionGraphic,
       ACTOR_FOLDER_COLOR: {
         INT: parseInt(String(color).substr(1), 16),
@@ -773,6 +785,8 @@ export class TokenFactions {
         ICON: icon ? String(icon) : '',
         TEXTURE_INT: PIXI.Texture.EMPTY,
         TEXTURE_EX: PIXI.Texture.EMPTY,
+        INT_S: String(color),
+        EX_S: String(game.settings.get(CONSTANTS.MODULE_NAME, 'actorFolderColorEx')),
       },
       CUSTOM_DISPOSITION: {
         INT: parseInt(String(color).substr(1), 16),
@@ -780,6 +794,8 @@ export class TokenFactions {
         ICON: '',
         TEXTURE_INT: PIXI.Texture.EMPTY,
         TEXTURE_EX: PIXI.Texture.EMPTY,
+        INT_S: String(color),
+        EX_S: String(game.settings.get(CONSTANTS.MODULE_NAME, 'customDispositionColorEx')),
       },
     };
 

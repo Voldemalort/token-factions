@@ -132,6 +132,17 @@ Setting this value to anything lower than 1 will allow the map background or tok
 
 # API
 
+
+### game.modules.get('token-factions').api.retrieveBorderFactionsColorFromToken(tokenIdOrName:string) ⇒ <code>string</code>
+
+A method to retrieve the string color hex border of a token on the canvas founded by id or name
+
+**Returns**: <code>string</code>
+
+| Param | Type | Description | Default |
+| --- | --- | --- | --- |
+| tokenIdOrName | <code>string</code> | The oken id or name (if founded) | <code>#000000</code> |
+
 ### async game.modules.get('token-factions').api.disableDrawBorderFactionsFromTokens(tokenIdsOrNames:string[]) ⇒ <code>Promise&lt;void&gt;</code>
 
 A method to disable the draw border factions on a array of tokens on the canvas founded by id or name
