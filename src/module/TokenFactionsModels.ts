@@ -5,5 +5,5 @@ export class FactionGraphic {
   TEXTURE_INT: PIXI.Texture;
   TEXTURE_EX: PIXI.Texture;
   INT_S: string;
-  EX_S:string;
+  EX_S: string;
 }

@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### v0.2.24
+
+- Bug fix wrong async function on API method
+
 ### v0.2.23
 
 - Update API for better integration with other modules

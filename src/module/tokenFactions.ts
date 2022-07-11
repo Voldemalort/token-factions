@@ -712,13 +712,11 @@ export class TokenFactions {
       }
     }
 
-    const currentCustomColorTokenInt = <string>token.document.getFlag(
-      CONSTANTS.MODULE_NAME,
-      TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_CUSTOM_COLOR_INT,
+    const currentCustomColorTokenInt = <string>(
+      token.document.getFlag(CONSTANTS.MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_CUSTOM_COLOR_INT)
     );
-    const currentCustomColorTokenExt = <string>token.document.getFlag(
-      CONSTANTS.MODULE_NAME,
-      TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_CUSTOM_COLOR_EXT,
+    const currentCustomColorTokenExt = <string>(
+      token.document.getFlag(CONSTANTS.MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_CUSTOM_COLOR_EXT)
     );
 
     if (currentCustomColorTokenInt && currentCustomColorTokenInt != '#000000') {

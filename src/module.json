@@ -2,7 +2,7 @@
   "name": "token-factions",
   "title": "Token Factions",
   "description": "Generate token bases based on token disposition or actor folder color.",
-  "version": "0.2.23",
+  "version": "0.2.24",
   "author": "Voldemalort, p4535992",
   "authors": [
     {
@@ -66,8 +66,8 @@
   "url": "https://github.com/p4535992/token-factions",
   "manifest": "https://github.com/p4535992/token-factions/releases/latest/download/module.json",
   "download": "https://github.com/p4535992/token-factions/releases/latest/download/module.zip",
-  "readme": "https://github.com/p4535992/token-factions/blob/v0.2.23/README.md",
-  "changelog": "https://github.com/p4535992/token-factions/blob/v0.2.23/changelog.md",
+  "readme": "https://github.com/p4535992/token-factions/blob/v0.2.24/README.md",
+  "changelog": "https://github.com/p4535992/token-factions/blob/v0.2.24/changelog.md",
   "bugs": "https://github.com/p4535992/token-factions/issues",
   "allowBugReporter": true,
   "dependencies": [

@@ -14,7 +14,7 @@ const API = {
     const token = canvas.tokens?.placeables.find((t) => {
       return isStringEquals(t.id, tokenIdOrName) || isStringEquals(t.name, tokenIdOrName);
     });
-    if(!token){
+    if (!token) {
       warn(`No token is been found with reference '${tokenIdOrName}'`, true);
       return;
     }
@@ -32,7 +32,7 @@ const API = {
     const token = canvas.tokens?.placeables.find((t) => {
       return isStringEquals(t.id, tokenIdOrName) || isStringEquals(t.name, tokenIdOrName);
     });
-    if(!token){
+    if (!token) {
       warn(`No token is been found with reference '${tokenIdOrName}'`, true);
       return;
     }
@@ -40,15 +40,14 @@ const API = {
     await token.document.setFlag(CONSTANTS.MODULE_NAME, TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_DISABLE, false);
   },
 
-
-  async retrieveBorderFactionsColorFromToken(tokenIdOrName:string): string {
+  async retrieveBorderFactionsColorFromToken(tokenIdOrName: string): Promise<string> {
     const token = canvas.tokens?.placeables.find((t) => {
       return isStringEquals(t.id, tokenIdOrName) || isStringEquals(t.name, tokenIdOrName);
     });
 
     const factionGraphicDefaultS = '#000000';
 
-    if(!token){
+    if (!token) {
       warn(`No token is been found with reference '${tokenIdOrName}'`, true);
       return factionGraphicDefaultS;
     }
@@ -62,7 +61,7 @@ const API = {
       return factionGraphicDefaultS;
     }
     switch (game.settings.get(CONSTANTS.MODULE_NAME, 'removeBorders')) {
-      case '0':{
+      case '0': {
         break;
       }
       case '1': {
@@ -91,7 +90,7 @@ const API = {
       return factionGraphicDefaultS;
     }
     return borderColor.INT_S;
-  }
+  },
 };
 
 export default API;
