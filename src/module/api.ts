@@ -41,7 +41,7 @@ const API = {
   },
 
 
-  retrieveBorderFactionsColorFromToken(tokenIdOrName:string): string {
+  async retrieveBorderFactionsColorFromToken(tokenIdOrName:string): string {
     const token = canvas.tokens?.placeables.find((t) => {
       return isStringEquals(t.id, tokenIdOrName) || isStringEquals(t.name, tokenIdOrName);
     });
