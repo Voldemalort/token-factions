@@ -1,8 +1,8 @@
 # CHANGELOG
 
-### v0.3.0
+### v0.3.0-1
 
-- Upgrade for fvtt10
+- BETA Upgrade for fvtt10
 
 ### v0.2.24
 
