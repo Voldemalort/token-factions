@@ -12,12 +12,12 @@
 // Import JavaScript modules
 
 // Import TypeScript modules
-import { registerSettings } from './module/settings';
-import { preloadTemplates } from './module/preloadTemplates';
-import { initHooks, readyHooks, setupHooks } from './module/module';
-import CONSTANTS from './module/constants';
-import type API from './module/api';
-import { error } from './module/lib/lib';
+import { registerSettings } from './scripts/settings';
+import { preloadTemplates } from './scripts/preloadTemplates';
+import { initHooks, readyHooks, setupHooks } from './scripts/module';
+import CONSTANTS from './scripts/constants';
+import type API from './scripts/api';
+import { error } from './scripts/lib/lib';
 
 /* ------------------------------------ */
 /* Initialize module					*/
