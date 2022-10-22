@@ -103,7 +103,7 @@ This option renders the frame in a flat color.
 
 ![alt text](./docs/flat-frame-style.png?raw=true)
 
-#### [REMOVED] Beveled
+#### [ON DEVELOPING] Beveled
 
 This option renders the frame in a beveled style typically seen surrounding round tokens.
 

@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### v0.3.0
+
+- Upgrade for fvtt10
+
 ### v0.2.24
 
 - Bug fix wrong async function on API method

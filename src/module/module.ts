@@ -1,6 +1,5 @@
 import { warn, error, debug, i18n } from './lib/lib';
 import { TokenFactions } from './tokenFactions';
-import type { TokenData } from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs';
 import CONSTANTS from './constants';
 import { setApi } from '../main';
 import API from './api';
@@ -160,14 +159,14 @@ export const readyHooks = () => {
 };
 
 export const TokenPrototypeRefreshHandler = function (wrapped, ...args) {
-  const tokenData = this as TokenData;
+  const tokenData = this as TokenDocument;
   TokenFactions.updateTokenDataFaction(tokenData);
   return wrapped(...args);
 };
 
 export const TokenPrototypeDrawHandler = function (wrapped, ...args) {
   const token = this as Token;
-  TokenFactions.updateTokenDataFaction(token.data);
+  TokenFactions.updateTokenDataFaction(token.document);
   // this.drawFactions();
   return wrapped(...args);
 };
@@ -181,7 +180,7 @@ export const TokenPrototypeOnUpdateHandler = function (wrapped, ...args) {
     // DO NOTHING
   } else {
     const token = this as Token;
-    TokenFactions.updateTokenDataFaction(token.data);
+    TokenFactions.updateTokenDataFaction(token.document);
   }
   return wrapped(...args);
 };
@@ -195,7 +194,8 @@ export const ActorPrototypeOnUpdateHandler = function (wrapped, ...args) {
     // DO NOTHING
   } else {
     const actor = this as Actor;
-    TokenFactions.updateTokenDataFaction(<TokenData>actor.token?.data);
+    //@ts-ignore
+    TokenFactions.updateTokenDataFaction(actor.prototypeToken.document);
   }
   return wrapped(...args);
 };
@@ -204,7 +204,7 @@ export const ActorPrototypeOnUpdateHandler = function (wrapped, ...args) {
 //   //@ts-ignore
 //   const token: Token = this as Token;
 //   //@ts-ignore
-//   TokenFactions.updateTokenDataFaction(token.data);
+//   TokenFactions.updateTokenDataFaction(token.document);
 //   return;
 //   // return wrapped(args);
 // };
@@ -212,12 +212,12 @@ export const ActorPrototypeOnUpdateHandler = function (wrapped, ...args) {
 // export const TokenPrototypeGetBorderColorHandler = function (wrapped, ...args) {
 //   //@ts-ignore
 //   const token: Token = this as Token;
-//   return TokenFactions.updateTokenDataFaction(token.data);
+//   return TokenFactions.updateTokenDataFaction(token.document);
 //   //return wrapped(args);
 // };
 
 //@ts-ignore
 // Token.prototype.drawFactions = function () {
 //   const token = this as Token;
-//   TokenFactions.updateTokenDataFaction(token.data);
+//   TokenFactions.updateTokenDataFaction(token.document);
 // };
