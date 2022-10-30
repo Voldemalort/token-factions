@@ -1,5 +1,10 @@
 # CHANGELOG
 
+### 0.3.3
+
+- Bug fix: [[BUG] Scale Border Feature doesn't work](https://github.com/p4535992/foundryvtt-token-factions/issues/20)
+- bUG FIX: [[BUG] The module doesnt work on Foundry V10](https://github.com/p4535992/foundryvtt-token-factions/issues/18)
+
 ### v0.3.0-1-2
 
 - BETA Upgrade for fvtt10
