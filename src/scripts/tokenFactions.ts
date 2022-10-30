@@ -901,6 +901,10 @@ export class TokenFactions {
 			debug(`No token is founded or passed`);
 			return;
 		}
+		if (token.x === 0 && token.y === 0) {
+			debug(`No token is founded or passed`);
+			return;
+		}
 
 		// OLD FVTT 9
 		//@ts-ignore
@@ -950,13 +954,6 @@ export class TokenFactions {
 			return;
 		}
 
-		// OLD FVTT 9
-
-		//@ts-ignore
-		container.border = container.border ?? container.addChild(new PIXI.Graphics());
-		//@ts-ignore
-		const factionBorder = container.border;
-
 		const frameStyle = String(game.settings.get(CONSTANTS.MODULE_NAME, "frame-style"));
 
 		// token.sortableChildren = true;
@@ -964,6 +961,10 @@ export class TokenFactions {
 
 		if (frameStyle == TokenFactions.TOKEN_FACTIONS_FRAME_STYLE.FLAT) {
 			// frameStyle === 'flat'
+			//@ts-ignore
+			container.border = container.border ?? container.addChild(new PIXI.Graphics());
+			//@ts-ignore
+			const factionBorder = container.border;
 			const fillTexture = <boolean>game.settings.get(CONSTANTS.MODULE_NAME, "fillTexture");
 			TokenFactions.drawBorder(token, borderColor, factionBorder, fillTexture);
 		} else if (frameStyle == TokenFactions.TOKEN_FACTIONS_FRAME_STYLE.BELEVELED) {
@@ -1033,7 +1034,7 @@ export class TokenFactions {
 
 			const outerRing = TokenFactions.drawGradient(token, borderColor.INT, TokenFactions.bevelGradient);
 			const innerRing = TokenFactions.drawGradient(token, borderColor.INT, TokenFactions.bevelGradient);
-			const ringTexture = TokenFactions.drawTexture(borderColor.INT, TokenFactions.bevelTexture);
+			const ringTexture = TokenFactions.drawTexture(token, borderColor.INT, TokenFactions.bevelTexture);
 			const outerRingMask = new PIXI.Graphics();
 			const innerRingMask = new PIXI.Graphics();
 			const ringTextureMask = new PIXI.Graphics();
@@ -1046,19 +1047,22 @@ export class TokenFactions {
 			innerRing.angle = 180;
 
 			outerRingMask
-				.lineStyle(frameWidth / 2, 0xffffff, 1.0, 0)
+				.lineStyle(h * nBS, borderColor.EX, 1.0)
 				.beginFill(0xffffff, 0.0)
-				.drawCircle(token.w / 2, token.h / 2, token.w / 2);
+				.drawCircle(token.w / 2, token.h / 2, token.w / 2)
+				.endFill();
 
 			innerRingMask
-				.lineStyle(frameWidth / 2, 0xffffff, 1.0, 0)
+				.lineStyle(h * nBS, borderColor.EX, 1.0)
 				.beginFill(0xffffff, 0.0)
-				.drawCircle(token.w / 2, token.h / 2, token.w / 2 - frameWidth / 2);
+				.drawCircle(token.w / 2, token.h / 2, token.w / 2 - frameWidth / 2)
+				.endFill();
 
 			ringTextureMask
-				.lineStyle(frameWidth, 0xffffff, 1.0, 0)
+				.lineStyle(h * nBS, borderColor.EX, 1.0)
 				.beginFill(0xffffff, 0.0)
-				.drawCircle(token.w / 2, token.h / 2, token.w / 2);
+				.drawCircle(token.w / 2, token.h / 2, token.w / 2)
+				.endFill();
 
 			container.addChild(outerRing);
 			container.addChild(outerRingMask);
@@ -1148,6 +1152,10 @@ export class TokenFactions {
       */
 			//}else if(frameStyle == TOKEN_FACTIONS_FRAME_STYLE.BORDER){
 		} else {
+			//@ts-ignore
+			container.border = container.border ?? container.addChild(new PIXI.Graphics());
+			//@ts-ignore
+			const factionBorder = container.border;
 			const fillTexture = <boolean>game.settings.get(CONSTANTS.MODULE_NAME, "fillTexture");
 			TokenFactions.drawBorder(token, borderColor, factionBorder, fillTexture);
 		}
@@ -1236,12 +1244,14 @@ export class TokenFactions {
 			//@ts-ignore
 			factionBorder
 				.lineStyle(t * nBS, borderColor.EX, 0.8)
-				.drawCircle(token.w / 2, token.h / 2, (token.w / 2) * s + t + p);
+				.drawCircle(token.x + token.w / 2, token.y + token.h / 2, (token.w / 2) * s + t + p);
+			// .drawCircle(token.w / 2, token.h / 2, (token.w / 2) * s + t + p);
 
 			//@ts-ignore
 			factionBorder
 				.lineStyle(h * nBS, borderColor.INT, 1.0)
-				.drawCircle(token.w / 2, token.h / 2, (token.w / 2) * s + h + t / 2 + p);
+				.drawCircle(token.x + token.w / 2, token.y + token.h / 2, (token.w / 2) * s + h + t / 2 + p);
+			// .drawCircle(token.w / 2, token.h / 2, (token.w / 2) * s + h + t / 2 + p);
 		}
 		//@ts-ignore
 		else if (hexTypes.includes(canvas.grid?.type) && token.width === 1 && token.height === 1) {
@@ -1343,17 +1353,21 @@ export class TokenFactions {
 		bg.width = token.w;
 		bg.height = token.h;
 		bg.tint = color;
+		// bg.x = token.x;
+		// bg.y = token.y;
 
 		return bg;
 	}
 
-	private static drawTexture(color, bevelTexture) {
+	private static drawTexture(token, color, bevelTexture) {
 		const bg = new PIXI.Sprite(bevelTexture);
 
 		bg.anchor.set(0.0, 0.0);
 		bg.width = 400;
 		bg.height = 400;
 		bg.tint = color;
+		// bg.x = token.x;
+		// bg.y = token.y;
 
 		return bg;
 	}
