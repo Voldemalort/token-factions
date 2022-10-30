@@ -968,20 +968,109 @@ export class TokenFactions {
 			TokenFactions.drawBorder(token, borderColor, factionBorder, fillTexture);
 		} else if (frameStyle == TokenFactions.TOKEN_FACTIONS_FRAME_STYLE.BELEVELED) {
 			// frameStyle === 'bevelled'
-
 			const fillTexture = <boolean>game.settings.get(CONSTANTS.MODULE_NAME, "fillTexture");
+			const frameWidth =
+				<number>canvas.grid?.grid?.w *
+				<number>(<any>game.settings.get(CONSTANTS.MODULE_NAME, "borderWidth") / 100);
+
+			// BASE CONFIG
+			let t =
+				<number>game.settings.get(CONSTANTS.MODULE_NAME, "borderWidth") || CONFIG.Canvas.objectBorderThickness;
+			const p = <number>game.settings.get(CONSTANTS.MODULE_NAME, "borderOffset");
+			//@ts-ignore
+			if (game.settings.get(CONSTANTS.MODULE_NAME, "permanentBorder") && token._controlled) {
+				t = t * 2;
+			}
+			const sB = game.settings.get(CONSTANTS.MODULE_NAME, "scaleBorder");
+			const bS = game.settings.get(CONSTANTS.MODULE_NAME, "borderGridScale");
+			const nBS = bS ? (<Canvas.Dimensions>canvas.dimensions)?.size / 100 : 1;
+			//@ts-ignore
+			const s = sB ? token.document.scale : 1;
+			const sW = sB ? (token.w - token.w * s) / 2 : 0;
+			const sH = sB ? (token.h - token.h * s) / 2 : 0;
+
+			let frameOpacity = <number>game.settings.get(CONSTANTS.MODULE_NAME, "frame-opacity") || 0.5;
+			let baseOpacity = <number>game.settings.get(CONSTANTS.MODULE_NAME, "base-opacity") || 0.5;
+
+			const customFrameOpacity = <number>(
+				token.document.getFlag(
+					CONSTANTS.MODULE_NAME,
+					TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_CUSTOM_FRAME_OPACITY
+				)
+			);
+			const customBaseOpacity = <number>(
+				token.document.getFlag(
+					CONSTANTS.MODULE_NAME,
+					TokenFactions.TOKEN_FACTIONS_FLAGS.FACTION_CUSTOM_BASE_OPACITY
+				)
+			);
+
+			if (customFrameOpacity && customFrameOpacity != 0.5) {
+				frameOpacity = customFrameOpacity;
+			}
+			if (customBaseOpacity && customBaseOpacity != 0.5) {
+				baseOpacity = customBaseOpacity;
+			}
+
+			const textureINT = borderColor.TEXTURE_INT || PIXI.Texture.EMPTY; //await PIXI.Texture.fromURL(<string>token.document.texture.src) || PIXI.Texture.EMPTY;
+			const textureEX = borderColor.TEXTURE_EX || PIXI.Texture.EMPTY;
+
+			const h = Math.round(t / 2);
+			const o = Math.round(h / 2);
+
 			// const ringTexture = new PIXI.Sprite(TokenFactions.bevelTexture);
 			// ringTexture.tint = borderColor.INT;
 			// ringTexture.alpha = <number>frameOpacity;
 			// container.addChild(ringTexture);
 			// const factionBorder = new PIXI.Graphics();
-
+			/*
 			const borderColorBeleveled = borderColor;
 			borderColorBeleveled.TEXTURE_INT = TokenFactions.bevelTexture;
 			borderColorBeleveled.TEXTURE_EX = TokenFactions.bevelGradient;
 			TokenFactions.drawBorder(token, borderColorBeleveled, factionBorder, fillTexture);
-
+			*/
 			// ringTexture.mask = factionBorder;
+
+			const outerRing = TokenFactions.drawGradient(token, borderColor.INT, TokenFactions.bevelGradient);
+			const innerRing = TokenFactions.drawGradient(token, borderColor.INT, TokenFactions.bevelGradient);
+			const ringTexture = TokenFactions.drawTexture(borderColor.INT, TokenFactions.bevelTexture);
+			const outerRingMask = new PIXI.Graphics();
+			const innerRingMask = new PIXI.Graphics();
+			const ringTextureMask = new PIXI.Graphics();
+
+			outerRing.alpha = frameOpacity;
+			innerRing.alpha = frameOpacity;
+			ringTexture.alpha = frameOpacity;
+
+			innerRing.pivot.set(1000.0, 1000.0);
+			innerRing.angle = 180;
+
+			outerRingMask
+				.lineStyle(frameWidth / 2, 0xffffff, 1.0, 0)
+				.beginFill(0xffffff, 0.0)
+				.drawCircle(token.w / 2, token.h / 2, token.w / 2);
+
+			innerRingMask
+				.lineStyle(frameWidth / 2, 0xffffff, 1.0, 0)
+				.beginFill(0xffffff, 0.0)
+				.drawCircle(token.w / 2, token.h / 2, token.w / 2 - frameWidth / 2);
+
+			ringTextureMask
+				.lineStyle(frameWidth, 0xffffff, 1.0, 0)
+				.beginFill(0xffffff, 0.0)
+				.drawCircle(token.w / 2, token.h / 2, token.w / 2);
+
+			container.addChild(outerRing);
+			container.addChild(outerRingMask);
+			outerRing.mask = outerRingMask;
+
+			container.addChild(innerRing);
+			container.addChild(innerRingMask);
+			innerRing.mask = innerRingMask;
+
+			container.addChild(ringTexture);
+			container.addChild(ringTextureMask);
+			ringTexture.mask = ringTextureMask;
 
 			/*
       const fillTexture = <boolean>game.settings.get(CONSTANTS.MODULE_NAME, 'fillTexture');
@@ -1126,7 +1215,7 @@ export class TokenFactions {
 				factionBorder
 					.beginFill(borderColor.EX, baseOpacity)
 					.lineStyle(t * nBS, borderColor.EX, 0.8)
-					.drawCircle(token.x + (token.w / 2), token.y + (token.h / 2), (token.w / 2) * s + t + p)
+					.drawCircle(token.x + token.w / 2, token.y + token.h / 2, (token.w / 2) * s + t + p)
 					// .drawCircle(token.w / 2, token.h / 2, (token.w / 2) * s + t + p)
 					.beginTextureFill({ texture: textureEX, color: borderColor.EX, alpha: baseOpacity })
 					.endFill();
@@ -1137,7 +1226,7 @@ export class TokenFactions {
 				factionBorder
 					.beginFill(borderColor.INT, baseOpacity)
 					.lineStyle(h * nBS, borderColor.INT, 1.0)
-					.drawCircle(token.x + (token.w / 2), token.y + (token.h / 2), (token.w / 2) * s + h + t / 2 + p)
+					.drawCircle(token.x + token.w / 2, token.y + token.h / 2, (token.w / 2) * s + h + t / 2 + p)
 					// .drawCircle(token.w / 2, token.h / 2, (token.w / 2) * s + h + t / 2 + p)
 					.beginTextureFill({ texture: textureINT, color: borderColor.INT, alpha: baseOpacity })
 					.endFill();
@@ -1245,5 +1334,27 @@ export class TokenFactions {
 			//@ts-ignore
 			factionBorder?.clear();
 		}
+	}
+
+	private static drawGradient(token, color, bevelGradient) {
+		const bg = new PIXI.Sprite(bevelGradient);
+
+		bg.anchor.set(0.0, 0.0);
+		bg.width = token.w;
+		bg.height = token.h;
+		bg.tint = color;
+
+		return bg;
+	}
+
+	private static drawTexture(color, bevelTexture) {
+		const bg = new PIXI.Sprite(bevelTexture);
+
+		bg.anchor.set(0.0, 0.0);
+		bg.width = 400;
+		bg.height = 400;
+		bg.tint = color;
+
+		return bg;
 	}
 }
