@@ -1,4 +1,4 @@
-import { i18n } from "./lib/lib";
+import { debug, i18n } from "./lib/lib";
 import { FactionGraphic } from "./TokenFactionsModels";
 import CONSTANTS from "./constants";
 
@@ -278,71 +278,94 @@ export class TokenFactions {
 		if (token instanceof TokenDocument) {
 			token = <Token>(<TokenDocument>token)?.object;
 		}
+		// OLD FVTT 9
+		/*
+		//@ts-ignore
+		if (!token.factions || token.factions.destroyed) {
+			//@ts-ignore
+			token.factions = token.addChildAt(new PIXI.Container(), 0);
+		}
+		token.sortableChildren = true;
+		// token.sortDirty = true;
+		*/
+
+		//@ts-ignore
+		if (!canvas.grid.faction) {
+			//@ts-ignore
+			canvas.grid.faction = new PIXI.Graphics();
+			//@ts-ignore
+			canvas.grid.addChild(canvas.grid.faction);
+		}
+		//@ts-ignore
+		if (!canvas.grid.faction.geometry) {
+			//@ts-ignore
+			canvas.grid.removeChild(canvas.grid.faction);
+			//@ts-ignore
+			canvas.grid.faction = new PIXI.Graphics();
+			//@ts-ignore
+			canvas.grid.addChild(canvas.grid.faction);
+		}
+		//@ts-ignore
+		let factionBorder: PIXI.Graphics = canvas.grid.faction;
+		factionBorder.clear();
+
 		//@ts-ignore
 		if (token instanceof Token) {
-			// && token.mesh && TokenFactions.bevelTexture && TokenFactions.bevelTexture.baseTexture
 			//@ts-ignore
-			if (!token.factions || token.factions.destroyed) {
-				//@ts-ignore
-				token.factions = token.addChildAt(new PIXI.Container(), 0);
-			}
-			token.sortableChildren = true;
-			// token.sortDirty = true;
-			//@ts-ignore
-			TokenFactions.drawBorderFaction(token, token.factions);
+			TokenFactions.drawBorderFaction(token, factionBorder);
 
 			// Final mangement of the z-index
 			//@ts-ignore
-			if (!token.factions) {
+			if (!factionBorder) {
 				//@ts-ignore
 				if (token.mesh?.zIndex) {
 					//@ts-ignore
-					token.factions = token.mesh.zIndex;
+					factionBorder.zIndex = token.mesh.zIndex;
 				}
 				if (token.zIndex) {
 					//@ts-ignore
-					token.factions = token.zIndex;
+					factionBorder.zIndex = token.zIndex;
 				}
 			}
 			//@ts-ignore
 			if (token.mesh) {
 				//@ts-ignore
-				if (token.border) {
+				if (factionBorder) {
 					//@ts-ignore
-					if (token.mesh.zIndex >= token.border.zIndex) {
+					if (token.mesh.zIndex >= factionBorder.zIndex) {
 						//@ts-ignore
-						token.mesh.zIndex = token.border.zIndex - 1;
+						token.mesh.zIndex = factionBorder.zIndex - 1;
 						//@ts-ignore
-						if (token.factions.zIndex >= token.mesh.zIndex) {
+						if (factionBorder.zIndex >= token.mesh.zIndex) {
 							//@ts-ignore
-							token.factions.zIndex = token.mesh.zIndex - 1;
+							factionBorder.zIndex = token.mesh.zIndex - 1;
 						}
 					}
 				} else {
 					//@ts-ignore
-					if (token.factions.zIndex >= token.mesh.zIndex) {
+					if (factionBorder.zIndex >= token.mesh.zIndex) {
 						//@ts-ignore
-						token.factions.zIndex = token.mesh.zIndex - 1;
+						factionBorder.zIndex = token.mesh.zIndex - 1;
 					}
 				}
 			} else {
 				//@ts-ignore
-				if (token.border) {
+				if (factionBorder) {
 					//@ts-ignore
-					if (token.zIndex >= token.border.zIndex) {
+					if (token.zIndex >= factionBorder.zIndex) {
 						//@ts-ignore
-						token.zIndex = token.border.zIndex - 1;
+						token.zIndex = factionBorder.zIndex - 1;
 						//@ts-ignore
-						if (token.factions.zIndex >= token.zIndex) {
+						if (factionBorder.zIndex >= token.zIndex) {
 							//@ts-ignore
-							token.factions.zIndex = token.zIndex - 1;
+							factionBorder.zIndex = token.zIndex - 1;
 						}
 					}
 				} else {
 					//@ts-ignore
-					if (token.factions.zIndex >= token.zIndex) {
+					if (factionBorder.zIndex >= token.zIndex) {
 						//@ts-ignore
-						token.factions.zIndex = token.zIndex - 1;
+						factionBorder.zIndex = token.zIndex - 1;
 					}
 				}
 			}
@@ -686,30 +709,43 @@ export class TokenFactions {
 			// TokenDocument to Token
 			//@ts-ignore
 			const token: Token = tokenDoc._object;
-			// //@ts-ignore
-			// if (!token.factionFrame) {
-			//   //@ts-ignore
-			//   token.factionFrame = token.addChildAt(new PIXI.Container(), token.getChildIndex(token.mesh) + 1);
-			// } else {
-			//   //@ts-ignore
-			//   token.factionFrame.removeChildren().forEach((c) => c.destroy());
-			// }
 
 			//@ts-ignore
-			if (!token.factions || token.factions.destroyed) {
+			if (!canvas.grid.faction) {
 				//@ts-ignore
-				token.factions = token.addChildAt(new PIXI.Container(), 0);
+				canvas.grid.faction = new PIXI.Graphics();
+				//@ts-ignore
+				canvas.grid.addChild(canvas.grid.faction);
 			}
+			// OLD FVTT 9
+			/*
 			token.sortableChildren = true;
 			// token.sortDirty = true;
+			*/
+
 			//@ts-ignore
-			TokenFactions.drawBorderFaction(token, token.factions);
-			//@ts-ignore
-			token.mesh.zIndex = token.border.zIndex - 1;
-			//@ts-ignore
-			if (token.factions) {
+			if (!canvas.grid.faction.geometry) {
 				//@ts-ignore
-				token.factions.zIndex = token.mesh.zIndex - 1;
+				canvas.grid.removeChild(canvas.grid.faction);
+				//@ts-ignore
+				canvas.grid.faction = new PIXI.Graphics();
+				//@ts-ignore
+				canvas.grid.addChild(canvas.grid.faction);
+			}
+			//@ts-ignore
+			let factionBorder: PIXI.Graphics = canvas.grid.faction;
+			factionBorder.clear();
+
+			//@ts-ignore
+			TokenFactions.drawBorderFaction(token, factionBorder);
+
+			//@ts-ignore
+			token.mesh.zIndex = factionBorder.zIndex - 1;
+
+			//@ts-ignore
+			if (factionBorder) {
+				//@ts-ignore
+				factionBorder.zIndex = token.mesh.zIndex - 1;
 			}
 		});
 		return;
@@ -856,17 +892,19 @@ export class TokenFactions {
 		return borderColor;
 	}
 
-	private static async drawBorderFaction(token: Token, container: PIXI.Container): Promise<void> {
+	private static async drawBorderFaction(token: Token, factionBorder: PIXI.Graphics): Promise<void> {
+		if (!factionBorder) {
+			debug(`No factionBorder is founded or passed`);
+			return;
+		}
+		if (!token) {
+			debug(`No token is founded or passed`);
+			return;
+		}
+
+		// OLD FVTT 9
 		//@ts-ignore
-		//container.removeChildren().forEach((c) => c.destroy());
-
-		container.children.forEach((c) => c.clear());
-
-		// let factionBorder = game.settings.get(CONSTANTS.MODULE_NAME, 'overrideBorderGraphic')
-		// //@ts-ignore
-		// ? token.border
-		// //@ts-ignore
-		// : token.factionFrame;
+		// factionBorder.children.forEach((c) => c.clear());
 
 		const borderColor = TokenFactions.colorBorderFaction(token);
 		if (!borderColor) {
@@ -912,14 +950,17 @@ export class TokenFactions {
 			return;
 		}
 
+		// OLD FVTT 9
+		/*
 		//@ts-ignore
 		container.border = container.border ?? container.addChild(new PIXI.Graphics());
 		//@ts-ignore
 		const factionBorder = container.border;
+		*/
 
 		const frameStyle = String(game.settings.get(CONSTANTS.MODULE_NAME, "frame-style"));
 
-		token.sortableChildren = true;
+		// token.sortableChildren = true;
 		// token.sortDirty = true;
 
 		if (frameStyle == TokenFactions.TOKEN_FACTIONS_FRAME_STYLE.FLAT) {
@@ -1189,6 +1230,15 @@ export class TokenFactions {
 			factionBorder
 				.lineStyle(h * nBS, borderColor.INT, 1.0)
 				.drawRoundedRect(-o - q + sW, -o - q + sH, (token.w + h) * s + p, (token.h + h) * s + p, 3);
+		}
+	}
+
+	public static clearGridFaction() {
+		//@ts-ignore
+		const factionBorder = canvas?.grid?.faction;
+		if (factionBorder && !factionBorder._destroyed) {
+			//@ts-ignore
+			factionBorder?.clear();
 		}
 	}
 }
