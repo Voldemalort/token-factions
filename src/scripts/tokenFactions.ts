@@ -292,7 +292,7 @@ export class TokenFactions {
 		//@ts-ignore
 		if (!canvas.grid.faction) {
 			//@ts-ignore
-			canvas.grid.faction = new PIXI.Graphics();
+			canvas.grid.faction = new PIXI.Container();
 			//@ts-ignore
 			canvas.grid.addChild(canvas.grid.faction);
 		}
@@ -301,13 +301,13 @@ export class TokenFactions {
 			//@ts-ignore
 			canvas.grid.removeChild(canvas.grid.faction);
 			//@ts-ignore
-			canvas.grid.faction = new PIXI.Graphics();
+			canvas.grid.faction = new PIXI.Container();
 			//@ts-ignore
 			canvas.grid.addChild(canvas.grid.faction);
 		}
 		//@ts-ignore
-		let factionBorder: PIXI.Graphics = canvas.grid.faction;
-		factionBorder.clear();
+		let factionBorder: PIXI.Container = canvas.grid.faction;
+		// factionBorder.clear();
 
 		//@ts-ignore
 		if (token instanceof Token) {
@@ -713,7 +713,7 @@ export class TokenFactions {
 			//@ts-ignore
 			if (!canvas.grid.faction) {
 				//@ts-ignore
-				canvas.grid.faction = new PIXI.Graphics();
+				canvas.grid.faction = new PIXI.Container();
 				//@ts-ignore
 				canvas.grid.addChild(canvas.grid.faction);
 			}
@@ -728,13 +728,13 @@ export class TokenFactions {
 				//@ts-ignore
 				canvas.grid.removeChild(canvas.grid.faction);
 				//@ts-ignore
-				canvas.grid.faction = new PIXI.Graphics();
+				canvas.grid.faction = new PIXI.Container();
 				//@ts-ignore
 				canvas.grid.addChild(canvas.grid.faction);
 			}
 			//@ts-ignore
-			let factionBorder: PIXI.Graphics = canvas.grid.faction;
-			factionBorder.clear();
+			let factionBorder: PIXI.Container = canvas.grid.faction;
+			// factionBorder.clear();
 
 			//@ts-ignore
 			TokenFactions.drawBorderFaction(token, factionBorder);
@@ -892,11 +892,11 @@ export class TokenFactions {
 		return borderColor;
 	}
 
-	private static async drawBorderFaction(token: Token, factionBorder: PIXI.Graphics): Promise<void> {
-		if (!factionBorder) {
-			debug(`No factionBorder is founded or passed`);
-			return;
-		}
+	private static async drawBorderFaction(token: Token, container: PIXI.Graphics): Promise<void> {
+		// if (!factionBorder) {
+		// 	debug(`No factionBorder is founded or passed`);
+		// 	return;
+		// }
 		if (!token) {
 			debug(`No token is founded or passed`);
 			return;
@@ -904,7 +904,7 @@ export class TokenFactions {
 
 		// OLD FVTT 9
 		//@ts-ignore
-		// factionBorder.children.forEach((c) => c.clear());
+		container.children.forEach((c) => c.clear());
 
 		const borderColor = TokenFactions.colorBorderFaction(token);
 		if (!borderColor) {
@@ -951,12 +951,11 @@ export class TokenFactions {
 		}
 
 		// OLD FVTT 9
-		/*
+
 		//@ts-ignore
 		container.border = container.border ?? container.addChild(new PIXI.Graphics());
 		//@ts-ignore
 		const factionBorder = container.border;
-		*/
 
 		const frameStyle = String(game.settings.get(CONSTANTS.MODULE_NAME, "frame-style"));
 
@@ -1072,7 +1071,7 @@ export class TokenFactions {
 		fillTexture: boolean
 	) {
 		let t = <number>game.settings.get(CONSTANTS.MODULE_NAME, "borderWidth") || CONFIG.Canvas.objectBorderThickness;
-
+		const p = <number>game.settings.get(CONSTANTS.MODULE_NAME, "borderOffset");
 		//@ts-ignore
 		if (game.settings.get(CONSTANTS.MODULE_NAME, "permanentBorder") && token._controlled) {
 			t = t * 2;
@@ -1118,7 +1117,7 @@ export class TokenFactions {
 		const hexTypes = [gt.HEXEVENQ, gt.HEXEVENR, gt.HEXODDQ, gt.HEXODDR];
 
 		if (game.settings.get(CONSTANTS.MODULE_NAME, "circleBorders")) {
-			const p = <number>game.settings.get(CONSTANTS.MODULE_NAME, "borderOffset");
+			// const p = <number>game.settings.get(CONSTANTS.MODULE_NAME, "borderOffset");
 			const h = Math.round(t / 2);
 			const o = Math.round(h / 2);
 
@@ -1127,7 +1126,8 @@ export class TokenFactions {
 				factionBorder
 					.beginFill(borderColor.EX, baseOpacity)
 					.lineStyle(t * nBS, borderColor.EX, 0.8)
-					.drawCircle(token.w / 2, token.h / 2, (token.w / 2) * s + t + p)
+					.drawCircle(token.x + (token.w / 2), token.y + (token.h / 2), (token.w / 2) * s + t + p)
+					// .drawCircle(token.w / 2, token.h / 2, (token.w / 2) * s + t + p)
 					.beginTextureFill({ texture: textureEX, color: borderColor.EX, alpha: baseOpacity })
 					.endFill();
 				// .lineStyle(t*nBS, borderColor.EX, 0.8)
@@ -1137,7 +1137,8 @@ export class TokenFactions {
 				factionBorder
 					.beginFill(borderColor.INT, baseOpacity)
 					.lineStyle(h * nBS, borderColor.INT, 1.0)
-					.drawCircle(token.w / 2, token.h / 2, (token.w / 2) * s + h + t / 2 + p)
+					.drawCircle(token.x + (token.w / 2), token.y + (token.h / 2), (token.w / 2) * s + h + t / 2 + p)
+					// .drawCircle(token.w / 2, token.h / 2, (token.w / 2) * s + h + t / 2 + p)
 					.beginTextureFill({ texture: textureINT, color: borderColor.INT, alpha: baseOpacity })
 					.endFill();
 				// .lineStyle(h*nBS, borderColor.INT, 1.0)
@@ -1155,7 +1156,7 @@ export class TokenFactions {
 		}
 		//@ts-ignore
 		else if (hexTypes.includes(canvas.grid?.type) && token.width === 1 && token.height === 1) {
-			const p = <number>game.settings.get(CONSTANTS.MODULE_NAME, "borderOffset");
+			// const p = <number>game.settings.get(CONSTANTS.MODULE_NAME, "borderOffset");
 			const q = Math.round(p / 2);
 			//@ts-ignore
 			const polygon = canvas.grid?.grid?.getPolygon(
@@ -1195,7 +1196,7 @@ export class TokenFactions {
 
 		// Otherwise Draw Square border
 		else {
-			const p = <number>game.settings.get(CONSTANTS.MODULE_NAME, "borderOffset");
+			// const p = <number>game.settings.get(CONSTANTS.MODULE_NAME, "borderOffset");
 			const q = Math.round(p / 2);
 			const h = Math.round(t / 2);
 			const o = Math.round(h / 2);
@@ -1205,7 +1206,8 @@ export class TokenFactions {
 				factionBorder
 					.beginFill(borderColor.EX, baseOpacity)
 					.lineStyle(t * nBS, borderColor.EX, 0.8)
-					.drawRoundedRect(-o - q + sW, -o - q + sH, (token.w + h) * s + p, (token.h + h) * s + p, 3)
+					.drawRoundedRect(token.x, token.y, token.w, token.h, 3)
+					// .drawRoundedRect(-o - q + sW, -o - q + sH, (token.w + h) * s + p, (token.h + h) * s + p, 3)
 					.beginTextureFill({ texture: textureEX, color: borderColor.EX, alpha: baseOpacity })
 					.endFill();
 				// .lineStyle(t*nBS, borderColor.EX, 0.8)
@@ -1215,7 +1217,8 @@ export class TokenFactions {
 				factionBorder
 					.beginFill(borderColor.INT, baseOpacity)
 					.lineStyle(h * nBS, borderColor.INT, 1.0)
-					.drawRoundedRect(-o - q + sW, -o - q + sH, (token.w + h) * s + p, (token.h + h) * s + p, 3)
+					.drawRoundedRect(token.x, token.y, token.w, token.h, 3)
+					// .drawRoundedRect(-o - q + sW, -o - q + sH, (token.w + h) * s + p, (token.h + h) * s + p, 3)
 					.beginTextureFill({ texture: textureINT, color: borderColor.INT, alpha: baseOpacity })
 					.endFill();
 				// .lineStyle(h*nBS, borderColor.INT, 1.0)
@@ -1224,12 +1227,14 @@ export class TokenFactions {
 			//@ts-ignore
 			factionBorder
 				.lineStyle(t * nBS, borderColor.EX, 0.8)
-				.drawRoundedRect(-o - q + sW, -o - q + sH, (token.w + h) * s + p, (token.h + h) * s + p, 3);
+				.drawRoundedRect(token.x, token.y, token.w, token.h, 3);
+			// .drawRoundedRect(-o - q + sW, -o - q + sH, (token.w + h) * s + p, (token.h + h) * s + p, 3);
 
 			//@ts-ignore
 			factionBorder
 				.lineStyle(h * nBS, borderColor.INT, 1.0)
-				.drawRoundedRect(-o - q + sW, -o - q + sH, (token.w + h) * s + p, (token.h + h) * s + p, 3);
+				.drawRoundedRect(token.x, token.y, token.w, token.h, 3);
+			// .drawRoundedRect(-o - q + sW, -o - q + sH, (token.w + h) * s + p, (token.h + h) * s + p, 3);
 		}
 	}
 
