@@ -986,9 +986,11 @@ export class TokenFactions {
 			const bS = game.settings.get(CONSTANTS.MODULE_NAME, "borderGridScale");
 			const nBS = bS ? (<Canvas.Dimensions>canvas.dimensions)?.size / 100 : 1;
 			//@ts-ignore
-			const s = sB ? token.document.scale : 1;
-			const sW = sB ? (token.w - token.w * s) / 2 : 0;
-			const sH = sB ? (token.h - token.h * s) / 2 : 0;
+			const sX = sB ? token.document.texture.scaleX : 1;
+			//@ts-ignore
+			const sY = sB ? token.document.texture.scaleY : 1;
+			const sW = sB ? (token.w - token.w * sX) / 2 : 0;
+			const sH = sB ? (token.h - token.h * sY) / 2 : 0;
 
 			let frameOpacity = <number>game.settings.get(CONSTANTS.MODULE_NAME, "frame-opacity") || 0.5;
 			let baseOpacity = <number>game.settings.get(CONSTANTS.MODULE_NAME, "base-opacity") || 0.5;
@@ -1177,9 +1179,11 @@ export class TokenFactions {
 		const bS = game.settings.get(CONSTANTS.MODULE_NAME, "borderGridScale");
 		const nBS = bS ? (<Canvas.Dimensions>canvas.dimensions)?.size / 100 : 1;
 		//@ts-ignore
-		const s = sB ? token.document.scale : 1;
-		const sW = sB ? (token.w - token.w * s) / 2 : 0;
-		const sH = sB ? (token.h - token.h * s) / 2 : 0;
+		const sX = sB ? token.document.texture.scaleX : 1;
+		//@ts-ignore
+		const sY = sB ? token.document.texture.scaleY : 1;
+		const sW = sB ? (token.w - token.w * sX) / 2 : 0;
+		const sH = sB ? (token.h - token.h * sY) / 2 : 0;
 
 		let frameOpacity = <number>game.settings.get(CONSTANTS.MODULE_NAME, "frame-opacity") || 0.5;
 		let baseOpacity = <number>game.settings.get(CONSTANTS.MODULE_NAME, "base-opacity") || 0.5;
@@ -1223,7 +1227,7 @@ export class TokenFactions {
 				factionBorder
 					.beginFill(borderColor.EX, baseOpacity)
 					.lineStyle(t * nBS, borderColor.EX, 0.8)
-					.drawCircle(token.x + token.w / 2, token.y + token.h / 2, (token.w / 2) * s + t + p)
+					.drawCircle(token.x + token.w / 2, token.y + token.h / 2, (token.w / 2) * sX + t + p)
 					// .drawCircle(token.w / 2, token.h / 2, (token.w / 2) * s + t + p)
 					.beginTextureFill({ texture: textureEX, color: borderColor.EX, alpha: baseOpacity })
 					.endFill();
@@ -1234,7 +1238,7 @@ export class TokenFactions {
 				factionBorder
 					.beginFill(borderColor.INT, baseOpacity)
 					.lineStyle(h * nBS, borderColor.INT, 1.0)
-					.drawCircle(token.x + token.w / 2, token.y + token.h / 2, (token.w / 2) * s + h + t / 2 + p)
+					.drawCircle(token.x + token.w / 2, token.y + token.h / 2, (token.w / 2) * sX + h + t / 2 + p)
 					// .drawCircle(token.w / 2, token.h / 2, (token.w / 2) * s + h + t / 2 + p)
 					.beginTextureFill({ texture: textureINT, color: borderColor.INT, alpha: baseOpacity })
 					.endFill();
@@ -1244,13 +1248,13 @@ export class TokenFactions {
 			//@ts-ignore
 			factionBorder
 				.lineStyle(t * nBS, borderColor.EX, 0.8)
-				.drawCircle(token.x + token.w / 2, token.y + token.h / 2, (token.w / 2) * s + t + p);
+				.drawCircle(token.x + token.w / 2, token.y + token.h / 2, (token.w / 2) * sX + t + p);
 			// .drawCircle(token.w / 2, token.h / 2, (token.w / 2) * s + t + p);
 
 			//@ts-ignore
 			factionBorder
 				.lineStyle(h * nBS, borderColor.INT, 1.0)
-				.drawCircle(token.x + token.w / 2, token.y + token.h / 2, (token.w / 2) * s + h + t / 2 + p);
+				.drawCircle(token.x + token.w / 2, token.y + token.h / 2, (token.w / 2) * sX + h + t / 2 + p);
 			// .drawCircle(token.w / 2, token.h / 2, (token.w / 2) * s + h + t / 2 + p);
 		}
 		//@ts-ignore
@@ -1261,8 +1265,8 @@ export class TokenFactions {
 			const polygon = canvas.grid?.grid?.getPolygon(
 				-1.5 - q + sW,
 				-1.5 - q + sH,
-				(token.w + 2) * s + p,
-				(token.h + 2) * s + p
+				(token.w + 2) * sX + p,
+				(token.h + 2) * sY + p
 			);
 
 			if (fillTexture) {
