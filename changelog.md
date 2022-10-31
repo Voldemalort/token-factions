@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### 0.3.4
+
+- Some bug fix and delete token behaviour
+
 ### 0.3.3
 
 - Bug fix: [[BUG] Scale Border Feature doesn't work](https://github.com/p4535992/foundryvtt-token-factions/issues/20)

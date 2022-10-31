@@ -101,6 +101,14 @@ const API = {
 		}
 		return borderColor.INT_S;
 	},
+
+	async clearAllGridFaction() {
+		TokenFactions.clearAllGridFaction();
+	},
+
+	async clearGridFaction(tokenId: string) {
+		TokenFactions.clearGridFaction(tokenId);
+	},
 };
 
 export default API;

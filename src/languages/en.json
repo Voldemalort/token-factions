@@ -134,5 +134,17 @@
 
 	"token-factions.label.chooseCustomColorToken": "Choose toogle border faction color",
 	"token-factions.label.applyCustomColor": "Apply custom color",
-	"token-factions.label.doNothing": "Do nothing"
+	"token-factions.label.doNothing": "Do nothing",
+
+	"token-factions.setting.reset.name": "Reset settings to default",
+	"token-factions.setting.reset.label": "Reset Settings To Default",
+	"token-factions.setting.reset.hint": "This will reset all of the settings of back to the active game system's default.",
+	"token-factions.setting.debug.name": "Enable debugging",
+	"token-factions.setting.debug.label": "Prints debug messages to the console",
+	"token-factions.setting.debug.hint": " ",
+
+	"token-factions.dialogs.resetsettings.title": "Reset Module Settings",
+	"token-factions.dialogs.resetsettings.content": "Are you sure you want to reset all of the module settings to the current system's defaults? <strong>THIS CANNOT BE UNDONE!</strong>",
+	"token-factions.dialogs.resetsettings.confirm": "Reset Module Settings",
+	"token-factions.dialogs.resetsettings.cancel": "Cancel"
 }

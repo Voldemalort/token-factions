@@ -164,6 +164,15 @@ export const readyHooks = () => {
 	// DO NOTHING
 };
 
+Hooks.on("deleteToken", async (tokenDocument: TokenDocument, data: any, updateData: any) => {
+	const isPlayerOwned = <boolean>tokenDocument.isOwner;
+	if (!game.user?.isGM && !isPlayerOwned) {
+		return;
+	}
+	TokenFactions.clearGridFaction(<string>tokenDocument.id);
+	//return true;
+});
+
 export const TokenPrototypeRefreshHandler = function (wrapped, ...args) {
 	const tokenData = this as TokenDocument;
 	TokenFactions.updateTokenDataFaction(tokenData);
